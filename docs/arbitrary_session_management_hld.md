@@ -122,7 +122,7 @@ This solution delegates session management responsibilities (storage and retriev
 
 In addition to core functionalities, the gRPC service should implement the following APIs:
 
-- **InitializeSession(request: InitializeSession) -> InitializeSessionResponse**
+- **InitializeSession(request: InitializeSessionRequest) -> InitializeSessionResponse**
 - **DestroySession(request: DestroySessionRequest) -> DestroySessionResponse**
 
 These APIs establish and terminate session connections. They may be named differently (e.g., `CreateSession`, `OpenSession`), but their core functionality must remain the same.
