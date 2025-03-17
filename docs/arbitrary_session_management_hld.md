@@ -45,7 +45,7 @@ A solution is needed to share, manage, and control access to arbitrary sessions 
 A **step-by-step user guide** will be provided to achieve session reservation and sharing of arbitrary sessions. The concise workflow is as follows, with detailed instructions available in the User Reference Guide:
 
 1. **User has to create a gRPC Server**  
-   - Define arbitrary functionalities (e.g., database or file operations).  
+   - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
    - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).  
 
 2. **User has to implement Session Initialization Behavior**  
@@ -60,16 +60,20 @@ A **step-by-step user guide** will be provided to achieve session reservation an
    - Create client stubs from the `.proto` file.  
    - Customize the generated stubs and files.  
 
-5. **Reserve the Resource in the Measurement Plugin**  
+5. **Create custom instrument in pinmap**:
+   - Create custom instrument in the pinmap.
+   - Use the instrument type ID in the measurement plugin when calling the initialize session API.
+
+6. **Reserve the Resource in the Measurement Plugin**  
    - Call the **Reserve Session API** (existing session management service).  
 
-6. **Initialize the Session**  
+7. **Initialize the Session**  
    - Invoke the gRPC server’s `InitializeSession` (or equivalent) from the measurement plugin.  
 
-7. **Perform Operations**  
+8. **Perform Operations**  
    - Execute desired tasks (e.g., database queries, file I/O) through the gRPC service.  
 
-8. **Unreserve the Session**  
+9. **Unreserve the Session**  
    - After finishing, call the **Unreserve Session API** so others can reserve and use it.
 
 ## Proposed Design & Implementation
@@ -87,6 +91,7 @@ The existing **reserve session API** can be used.
 In the first version of the solution, we are planning to go with pin centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable due to the following reasons.
 
 **Straightforward Solution:** Leverages a pin-centric workflow, providing a simple and efficient solution.
+
 **User Convenience:** Avoids additional overhead such as manual hardware definitions in NI MAX or JSON updates which is mandatory in the non-pin-centric workflow.
 
 Since the session reservation capability applies to arbitrary (non-instrument) sessions, extending the IO Discovery Service (non-pin-centric workflow) is not suitable due to the following reasons:
@@ -152,4 +157,4 @@ Although a centralized session server could be considered, it would introduce ad
 
 ## Future work items
 
-- Provide automation tool to automate the process.
+- Develop an automation tool to streamline the process and minimize user overhead, automating tasks to the possible extent.
