@@ -9,21 +9,26 @@
   - [Proposed Design \& Implementation](#proposed-design--implementation)
     - [Session Reservation](#session-reservation)
       - [Reserve Session](#reserve-session)
-      - [Why Use the Existing Reserve Session API?](#why-use-the-existing-reserve-session-api)
-      - [Why Not a New API?](#why-not-a-new-api)
+      - [Advantages](#advantages)
+      - [Disadvantages](#disadvantages)
       - [Unreserve Session](#unreserve-session)
+    - [Session Registration](#session-registration)
     - [Session Sharing](#session-sharing)
       - [gRPC Service APIs](#grpc-service-apis)
       - [Service Registration in Discovery Service](#service-registration-in-discovery-service)
       - [Session Initialization](#session-initialization)
-      - [Why Existing Session Sharing API?](#why-existing-session-sharing-api)
-      - [Why Not Another Solution for Session Sharing?](#why-not-another-solution-for-session-sharing)
-  - [Future work items](#future-work-items)
+      - [Advantages](#advantages-1)
+      - [Disadvantages](#disadvantages-1)
+  - [Alternate Design](#alternate-design)
+    - [Centralized Session Registry Server](#centralized-session-registry-server)
+    - [Create a server like NI gRPC Device Server](#create-a-server-like-ni-grpc-device-server)
+    - [Extending the Existing NI gRPC Device Server](#extending-the-existing-ni-grpc-device-server)
+  - [Future Work Items](#future-work-items)
 
 ## Who
 
-- **Author:** National Instruments
-- **Team:** _Intelligent Validation_  
+- Author: National Instruments
+- Team: _Intelligent Validation_  
 
 ## Feature WorkItem
 
@@ -31,41 +36,176 @@
 
 ## Problem Statement
 
-A solution is needed to share, manage, and control access to arbitrary sessions (e.g., database connections, file references, etc.) across multiple measurement plugins.
+A solution is needed to manage and share arbitrary sessions (e.g., database connections, file references, etc.,) across multiple measurement plugins ensuring controlled access through a session reservation mechanism to prevent conflicts.
 
 ### Key Requirements
 
 **Session Reservation:** A mechanism to reserve and unreserve sessions that prevents simultaneous access by multiple measurement plugins, thereby avoiding conflicts.
 
+**Session Registration:** A mechanism to register and unregister sessions in the session management service to enable the TestStand sequence workflow.
+
 **Session Sharing:** A mechanism to allow measurement plugins to share arbitrary sessions.
 
 ## Workflow
-<!-- Attach the overall workflow diagram here -->
 
-A **step-by-step user guide** will be provided to achieve session reservation and sharing of arbitrary sessions. The concise workflow is as follows, with detailed instructions available in the User Reference Guide:
+![alt text](workflow.png)
 
-1. **User has to create a gRPC Server**  
+A step-by-step user guide, along with Python and LabVIEW examples, will be provided to help users implement session reservation and the sharing of arbitrary sessions. The reference guide and examples will cover everything from defining arbitrary functions as a gRPC service to reserving and registering sessions using session management service APIs for both Python and LabVIEW. It will also guide users on implementing session sharing using the appropriate initialization behavior ENUM on the server side.
+
+The high-level workflow is outlined below, with detailed instructions available in the **User Reference Guide**.
+
+1. **User has to create a gRPC Service for the arbitrary functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
-   - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).  
+   - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).
+   - An example proto file is given below for a file service.
+
+      ```proto
+      syntax = "proto3";
+
+      package fileservice;
+
+      service FileService {
+      rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
+      rpc ReadFile(ReadFileRequest) returns (ReadFileResponse);
+      rpc WriteFile(WriteFileRequest) returns (WriteFileResponse);
+      rpc DestroyFile(DestroyFileRequest) returns (DestroyFileResponse);
+      }
+
+      message InitializeFileRequest {
+      string file_name = 1;
+      InitializationBehavior initialization_behavior = 2;
+      }
+
+      message InitializeFileResponse {
+      string session_id = 1;
+      }
+
+      message ReadFileRequest {
+      string session_id = 1;
+      }
+
+      message ReadFileResponse {
+      string content = 1;
+      }
+
+      message WriteFileRequest {
+      string session_id = 1;
+      string content = 2;
+      }
+
+      message WriteFileResponse {
+      bool success = 1;
+      }
+
+      message DestroyFileRequest {
+      string session_id = 1;
+      }
+
+      message DestroyFileResponse {
+      bool success = 1;
+      }
+
+      enum InitializationBehavior {
+      INITIALIZE_SERVER_SESSION = 0; 
+      ATTACH_TO_SERVER_SESSION = 1; 
+      AUTO = 2; 
+      INITIALIZE_SESSION_THEN_DETACH = 3;
+      ATTACH_TO_SESSION_THEN_CLOSE = 4;
+      }
+      ```
 
 2. **User has to implement Session Initialization Behavior**  
-   - Within the gRPC server, manage session creation or attachment (AUTO, ATTACH, etc.).  
-   - Store active sessions so multiple clients can discover and reuse them.
+   - Within the gRPC server, implement the logic to initialize and manage sessions based on the selected initialization behavior. The logical implementation of session initialization is as follows:
 
-3. **Host & Register the gRPC Service**  
-   - Host the service.  
-   - Register it with the Discovery Service for measurement plugin discoverability.  
+     - INITIALIZE_SERVER_SESSION - Initialize a new session, and store and share it with the client.
+     - ATTACH_TO_SERVER_SESSION - Attach to an existing session with the specified name and share it with the client.
+     - AUTO - Attach to an existing session if available; otherwise, initialize a new  session and share it with the client.
+     - INITIALIZE_SESSION_THEN_DETACH - Initialize a new session and detach instead of closing when exiting the context manager for future use.
+     - ATTACH_TO_SESSION_THEN_CLOSE - Attach to an existing session and automatically close it when exiting the context manager.
+   - An example is given for the AUTO initialization behavior.
 
-4. **Generate Language-Specific Client Files**  
-   - Create client stubs from the `.proto` file.  
-   - Customize the generated stubs and files.  
+      ```py
+      class FileServiceServicer(file_service_pb2_grpc.FileServiceServicer):
+         def __init__(self):
+            self.file_sessions = {}
+
+         def InitializeFile(self, request, context):
+            if request.initialization_behavior == INITIALIZATION_BEHAVIOR.AUTO: # Example Initialization Behavior
+                  # Check if there's already an open session for the given file
+                  for session_id, file_handle in self.file_sessions.items():
+                        if not file_handle.closed and file_handle.name == request.file_name:
+                           return file_service_pb2.InitializeFileResponse(session_id=session_id)
+                  session_id = str(uuid.uuid4())
+                  try:
+                        file_handle = open(request.file_name, request.mode)
+                        self.file_sessions[session_id] = file_handle
+                        print(self.file_sessions)
+                        return file_service_pb2.InitializeFileResponse(session_id=session_id, success=True)
+                  except Exception as e:
+                        print(f"Error initializing file: {e}")
+                        return file_service_pb2.InitializeFileResponse(session_id="", success=False)
+      ```
+
+3. **Host & Register the gRPC Service**
+
+   - Host the gRPC service.
+   - Register the service with the Discovery Service to ensure measurement plugins can dynamically discover and connect to it.
+
+      ```py
+      def serve():
+         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+         file_service_pb2_grpc.add_FileServiceServicer_to_server(FileServiceServicer(), server)
+         host = "[::1]"
+         port = str(server.add_insecure_port(f"{host}:0"))
+         server.start()
+
+         # Register the service in the discovery service.
+         discovery_client = DiscoveryClient()
+         service_location = ServiceLocation("localhost", f"{port}", "")
+         service_info = ServiceInfo(
+            service_class=GRPC_SERVICE_CLASS,
+            description_url="File Service",
+            provided_interfaces=[GRPC_SERVICE_INTERFACE_NAME],
+            display_name=DISPLAY_NAME,
+         )
+         registration_id = discovery_client.register_service(
+            service_info=service_info, service_location=service_location
+         )
+
+         _ = input("Press enter to stop the server.")
+         discovery_client.unregister_service(registration_id)
+         server.stop(grace=5)
+         server.wait_for_termination()
+      ```
+
+4. **Generate and Customize Language-Specific Client Files**
+
+   - Generate client stubs from the .proto file.
+   - Create new files from the generated stubs, such as:
+     - Create client interface using the generated stubs.
+     - Create a session constructor for the created client.
+   - The created files will be used in the measurement plugin for session initialization.
+
+      ![alt text](client_side_stubs.png)
+
+   ```py
+   # Session Constructor
+   class FileSessionConstructor:
+      def __init__(self, resource_name, initialization_behavior) -> None:
+         self.resource_name = resource_name
+         self.initialization_behavior = initialization_behavior
+
+      def __call__(self,) -> FileServiceClient:
+         file_client = FileServiceClient(file_name=self.resource_name, initialization_behavior=self.initialization_behavior)
+         return file_client
+   ```
 
 5. **Create custom instrument in pinmap**:
-   - Create custom instrument in the pinmap.
-   - Use the instrument type ID in the measurement plugin when calling the initialize session API.
+   - Create a custom instrument in the pinmap to enable the pin-centric workflow, which is the only supported workflow for now for the arbitrary session management.
+   - The instrument type ID defined in the pinmap is required when calling the session management service’s initialization API.
 
 6. **Reserve the Resource in the Measurement Plugin**  
-   - Call the **Reserve Session API** (existing session management service).  
+   - Call the **Reserve Session API** of the existing session management service.
 
 7. **Initialize the Session**  
    - Invoke the gRPC server’s `InitializeSession` (or equivalent) from the measurement plugin.  
@@ -75,8 +215,22 @@ A **step-by-step user guide** will be provided to achieve session reservation an
 
 9. **Unreserve the Session**  
    - After finishing, call the **Unreserve Session API** so others can reserve and use it.
+  
+```py
+   instrument_type_id = "ExampleFile" # Same instrument type ID given in pin map.
+   # Arbitrary session construction
+   file_session_constructor = FileSessionConstructor(file_resource_name, InitializationBehavior.AUTO)
+
+   with measurement_service.context.reserve_session(resource_name) as arbitrary_reservation:
+      with arbitrary_reservation.initialize_session(file_session_constructor, instrument_type_id) as arbitrary_session_info:
+         arbitrary_session = arbitrary_session_info.session
+         arbitrary_session.WriteFile(WriteFileRequest(session_id=arbitrary_session._session_id, content=content))
+         print(arbitrary_session.ReadFile(session_id=arbitrary_session._session_id))
+   ```
 
 ## Proposed Design & Implementation
+
+To address the problem, a reference guide and example will be provided which will demonstrate how to manage and share arbitrary sessions (e.g., database connections, file connections) across multiple measurement plugins. The solution will incorporate the session reservation mechanism using existing session management service.
 
 ### Session Reservation
 
@@ -84,13 +238,13 @@ The existing session management service of the measurement plugin will be used t
 
 #### Reserve Session
 
-The existing **reserve session API** can be used.
+The existing **reserve session API** of the session management service can be used.
 
-#### Why Use the Existing Reserve Session API?
+#### Advantages
 
-In the first version of the solution, we are planning to go with pin centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable due to the following reasons.
+**No Modifications to Session Management Service:** This approach allows us to leverage existing session management service without requiring any modifications to it.
 
-**Straightforward Solution:** Leverages a pin-centric workflow, providing a simple and efficient solution.
+In the first version of the solution, we are planning to go with pin centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable due to the following reason.
 
 **User Convenience:** Avoids additional overhead such as manual hardware definitions in NI MAX or JSON updates which is mandatory in the non-pin-centric workflow.
 
@@ -98,17 +252,21 @@ Since the session reservation capability applies to arbitrary (non-instrument) s
 
 - **Dependency on Hardware Configuration**: The IO Discovery Service retrieves information from a JSON file containing details about connected hardwares and instruments configured in **NI MAX**. This would require users to manually enter session-related details in the JSON, adding unnecessary overhead.
 
-- **Conflict with Pin Map Context**: If the pin map set to active and used by a measurement plugin, the session management service does not query the IO Discovery Service. This would restrict session reservation of arbitrary resources for non-pin-centric measurement plugins.
+- **Conflict with Pin Map Context**: If the pin map set to active and used by a measurement plugin, the session management service does not query the IO Discovery Service. This would restrict session reservation of arbitrary resources for pin-centric measurement plugins.
 
-Hence the existing API already meets the requirement for reserving & unreserving sessions without modifications.
+#### Disadvantages
 
-#### Why Not a New API?
-
-Introducing a new API would involve product-level changes on both the server and client sides.
+**Lacks support for non pin centric workflow**: Since the user is required to define the custom instrument in the pin map and make the pin map active, the measurement plugins that are non pin centric will not be able to reserve the session as the activeness of pin map hinders the session management service to query the IO Discovery Service.
 
 #### Unreserve Session
 
 This follows a similar solution as the Reserve Session. In other words, the session management service APIs used for unreserving a session are employed to unreserve it.
+
+### Session Registration
+
+This follows a similar solution as the reserve session. In other words, the session management service APIs used for registering and unregistering the session are utilized.
+
+The APIs register_session, unregister_session, and reserve_all_registered_session will be used in TestStand workflow.
 
 ### Session Sharing
 
@@ -122,14 +280,14 @@ This solution delegates session management responsibilities (storage and retriev
 
 In addition to core functionalities, the gRPC service should implement the following APIs:
 
-- **InitializeSession(request: InitializeSessionRequest) -> InitializeSessionResponse**
-- **DestroySession(request: DestroySessionRequest) -> DestroySessionResponse**
+- **InitializeSession(request: InitializeSessionRequest) -> InitializeSessionResponse** The request will include the resource name for which a session needs to be initialized. The response will return a session ID upon successful initialization. If initialization fails, the response will instead provide an error message detailing the reason for the failure.
+- **DestroySession(request: DestroySessionRequest) -> DestroySessionResponse** The request will contain the session ID to be terminated. The response will indicate the outcome, returning either a success message upon successful termination or an error message if the process encounters an issue.
 
 These APIs establish and terminate session connections. They may be named differently (e.g., `CreateSession`, `OpenSession`), but their core functionality must remain the same.
 
 #### Service Registration in Discovery Service
 
-The gRPC service will register itself with the **Discovery Service** on startup.
+The gRPC service will register itself with the **Discovery Service** on startup using the discovery client so that the service will be available for the measurement plugins to be able to connect and communicate with it.
 
 #### Session Initialization
 
@@ -145,16 +303,64 @@ The implementation of initialization behavior will align with **NI gRPC Device S
 | **INITIALIZE_SESSION_THEN_DETACH** | Initialize a new session; detach instead of closing when exiting the context manager. |
 | **ATTACH_TO_SESSION_THEN_CLOSE** | Attach to an existing session; automatically close it when exiting the context manager. |
 
-The gRPC service should implement these behaviors. The **User Reference Guide** will assist with session-sharing implementation.
+The gRPC service should implement these behaviors by initializing sessions upon request and storing them for future use based on the specified initialization behavior. Additionally, it should manage the logic for sharing an existing session with another measurement plugin when requested. The **User Reference Guide** will assist with session-sharing implementation.
 
-#### Why Existing Session Sharing API?
+#### Advantages
 
-Extending the session management service for reservation aligns with the existing solution, eliminating the need for a new API while ensuring consistency in session handling.
+- The gRPC service handles all session storage and retrieval acting as a central point of contact, thereby having less gRPC calls and hence less latency.
+- Since for session initialization, it uses the existing APIs of session management service thereby requiring no modifications in the existing session management service.
 
-#### Why Not Another Solution for Session Sharing?
+#### Disadvantages
 
-Although a centralized session server could be considered, it would introduce additional gRPC calls and latency.
+- Users are required to implement session-sharing logic on the gRPC service side, which can be complex and adds additional overhead.
 
-## Future work items
+## Alternate Design
 
-- Develop an automation tool to streamline the process and minimize user overhead, automating tasks to the possible extent.
+### Centralized Session Registry Server
+
+An alternative approach is to implement a centralized server dedicated to managing and storing session information. This server would act as a session registry, allowing multiple users and measurement plugins to store and retrieve sessions as needed.
+
+**Advantages**
+
+Centralized session storage ensures better organization and visibility.
+
+**Disadvantages**
+
+Introduces additional gRPC calls, increasing network latency.
+
+### Create a server like NI gRPC Device Server  
+
+Another alternative is to **create a server like the existing NI gRPC Device Server** to handle arbitrary session management. This approach mocks the existing solution but requires development from the scratch to the **client and server-side APIs**.  
+
+**Advantages**  
+
+- Reduces overhead for the users' in implementing session management.  
+
+**Disadvantages**
+
+- **Development from scratch** - requires developing both **client-side APIs** and **server-side session management logic**.
+
+### Extending the Existing NI gRPC Device Server  
+
+Another alternative is to **extend the existing NI gRPC Device Server** to handle arbitrary session management. This approach integrates with the existing solution but requires modifications to the **client and server-side APIs**.  
+
+**Advantages**  
+
+- Reduces overhead for the users' in implementing session management.  
+- Long-term stability as this is the support given for other NI's driver modules.
+
+**Disadvantages**
+
+- **Full-fledged implementation required** - requires developing both **client-side APIs** and **server-side session management logic**.
+- **Technology barrier** - requires familiarity with C++ (used in the NI gRPC Device Server).
+
+## Future Work Items  
+
+- Automate processes to minimize user effort, especially in handling session sharing logic and generating client-side files.
+  - **Python**:
+    - Server Side: Automate as much as possible. This area still needs exploration, and no concrete plan is in place yet.
+    - Client Side: Modify the existing multi-language client generator tool to also generate the session constructor file along with the client file and stubs.
+  - **LabVIEW**:
+    - Server Side: Modify the existing multi-language driver support proto file generator to also generate the proto file and server-side stubs.
+    - Client Side: Explore automation opportunities to reduce manual work. No fixed approach has been decided yet.
+- Add support for a non-pin-centric workflow to expand flexibility in session management.
