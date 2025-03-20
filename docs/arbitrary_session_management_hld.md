@@ -7,19 +7,18 @@
     - [Key Requirements](#key-requirements)
   - [Workflow](#workflow)
   - [Proposed Design \& Implementation](#proposed-design--implementation)
-    - [Session Reservation](#session-reservation)
-      - [Reserve Session](#reserve-session)
+    - [Session Reservation \& Registration](#session-reservation--registration)
       - [Advantages](#advantages)
       - [Disadvantages](#disadvantages)
-      - [Unreserve Session](#unreserve-session)
-    - [Session Registration](#session-registration)
     - [Session Sharing](#session-sharing)
       - [gRPC Service APIs](#grpc-service-apis)
       - [Service Registration in Discovery Service](#service-registration-in-discovery-service)
       - [Session Initialization](#session-initialization)
       - [Advantages](#advantages-1)
       - [Disadvantages](#disadvantages-1)
-  - [Alternate Design](#alternate-design)
+  - [Alternate Design for Session Reservation \& Registration](#alternate-design-for-session-reservation--registration)
+    - [Introducing APIs for Arbitrary Sessions](#introducing-apis-for-arbitrary-sessions)
+  - [Alternate Design for Session Sharing](#alternate-design-for-session-sharing)
     - [Centralized Session Registry Server](#centralized-session-registry-server)
     - [Create a Server Similar to NI gRPC Device Server](#create-a-server-similar-to-ni-grpc-device-server)
     - [Extending the Existing NI gRPC Device Server](#extending-the-existing-ni-grpc-device-server)
@@ -50,7 +49,7 @@ A solution is needed to manage and share arbitrary sessions (e.g., database conn
 
 ![alt text](workflow.png)
 
-A step-by-step user guide, along with Python and LabVIEW examples, will be provided to help users implement session reservation and the sharing of arbitrary sessions. The reference guide and examples will cover everything from defining arbitrary functions as a gRPC service to reserving and registering sessions using session management service APIs for both Python and LabVIEW. It will also guide users on implementing session sharing using the appropriate initialization behavior ENUM on the server side.
+A step-by-step user guide, along with Python and LabVIEW examples, will be provided to help users implement session reservation and the sharing of arbitrary sessions. The reference guide and examples will cover everything from defining arbitrary functions as a gRPC service to reserving and registering sessions using session management service APIs for both Python and LabVIEW. It will also guide users on implementing session sharing using the appropriate [initialization behavior ENUM](https://github.com/ni/measurement-plugin-python/blob/001af74269501f874aa4f092ee2963bb9290348e/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L457C1-L457C46) on the server side.
 
 The high-level workflow is outlined below, with detailed instructions available in the deliverable - **User Reference Guide**.
 
@@ -259,13 +258,9 @@ To address the problem, a reference guide and example for both Python and LabVIE
 
 In this workflow, users are expected to define core functionalities as APIs in the proto file and then host them as a gRPC service.
 
-### Session Reservation
+### Session Reservation & Registration
 
-The existing session management service of the measurement plugin will be used to handle reservation and unreservation of arbitrary sessions.
-
-#### Reserve Session
-
-The existing **reserve session API** of the session management service can be used.
+In this proposed workflow, the existing APIs such as reserves session, unreserve session, register session, unregister session and reserve all registered sessions of session management service will be used for arbitrary session reservation and registration.
 
 #### Advantages
 
@@ -281,19 +276,7 @@ Extending the IO Discovery Service (non-pin-centric workflow) is not suitable du
 
 #### Disadvantages
 
-**Lacks support for non pin centric workflow**: Since the user is required to define the custom instrument in the pin map and make the pin map active, the measurement plugins that are non pin centric will not be able to reserve the session as the activeness of pin map hinders the session management service to query the IO Discovery Service.
-
-#### Unreserve Session
-
-This follows a similar solution as the Reserve Session. In other words, the session management service APIs used for unreserving a session are employed to unreserve it.
-
-### Session Registration
-
-This follows a similar solution as the Session Reservation. In other words, the session management service APIs used for registering and unregistering the session are utilized.
-
-The APIs register_session, unregister_session, and reserve_all_registered_session will be used in TestStand workflow.
-
-As a result, the advantages and disadvantages of Session Reservation are also applicable to Session Registration.
+**Lacks support for non pin centric workflow**: Since the user is required to define the custom instrument in the pin map and make the pin map active, the measurement plugins that are non-pin-centric will not be able to reserve the session as the activeness of pin map hinders the session management service to query the IO Discovery Service.
 
 ### Session Sharing
 
@@ -341,7 +324,21 @@ The gRPC service should implement these behaviors by initializing sessions upon 
 
 - Users are required to implement session-sharing logic on the gRPC service side, which can be complex and adds additional overhead.
 
-## Alternate Design  
+## Alternate Design for Session Reservation & Registration
+
+### Introducing APIs for Arbitrary Sessions  
+
+An alternative approach is to introduce dedicated APIs for reserving and registering arbitrary sessions.  
+
+**Advantages**  
+
+- Aligns with the existing session management service.  
+
+**Disadvantages**  
+
+- Requires modifications to the session management service and corresponding client implementations.  
+
+## Alternate Design for Session Sharing
 
 ### Centralized Session Registry Server  
 
@@ -365,7 +362,8 @@ Another alternative is to **develop a server similar to the existing NI gRPC Dev
 
 **Disadvantages**  
 
-- **Requires development from scratch**, including both **client-side APIs** and **server-side session management logic**.  
+- **Requires development from scratch**, including both **client-side APIs** and **server-side session management logic**.
+- **Requires separate implementation** for each distinct arbitrary function group(e.g., file operations as one group and database operations as another and so on...).
 
 ### Extending the Existing NI gRPC Device Server  
 
@@ -378,7 +376,8 @@ A more integrated approach is to **extend the existing NI gRPC Device Server** t
 
 **Disadvantages**  
 
-- **Requires a full-fledged implementation**, involving both **client-side APIs** and **server-side session management logic**.  
+- **Requires a full-fledged implementation**, involving both **client-side APIs** and **server-side session management logic**.
+- **Requires separate implementation** for each distinct arbitrary function group(e.g., file operations as one group and database operations as another and so on...).
 - **Technology barrier** – demands proficiency in C++ (the language used in the NI gRPC Device Server).  
 
 ## Future Work Items  
@@ -386,7 +385,7 @@ A more integrated approach is to **extend the existing NI gRPC Device Server** t
 - Automate processes to minimize user effort, particularly in managing session sharing logic and generating client-side files.  
 
   - **Python**:  
-    - **Server Side**: Automate as much as possible. Further exploration is needed, and no concrete plan has been established yet.  
+    - **Server Side**: Automate the server side implementation of session sharing logic, proto file generation and reduce the user overhead as much as possible. Further exploration is needed, and no concrete plan has been established yet.  
     - **Client Side**: Modify the existing multi-language client generator tool to also generate the session constructor file along with the client file and stubs.  
   - **LabVIEW**:  
     - **Server Side**: Enhance the multi-language driver support proto file generator to include proto file and server-side stubs.  
