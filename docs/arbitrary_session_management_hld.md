@@ -8,14 +8,10 @@
   - [Workflow](#workflow)
   - [Proposed Design \& Implementation](#proposed-design--implementation)
     - [Session Reservation \& Registration](#session-reservation--registration)
-      - [Advantages](#advantages)
-      - [Disadvantages](#disadvantages)
     - [Session Sharing](#session-sharing)
       - [gRPC Service APIs](#grpc-service-apis)
       - [Service Registration in Discovery Service](#service-registration-in-discovery-service)
       - [Session Initialization](#session-initialization)
-      - [Advantages](#advantages-1)
-      - [Disadvantages](#disadvantages-1)
   - [Alternate Design for Session Reservation \& Registration](#alternate-design-for-session-reservation--registration)
     - [Introducing APIs for Arbitrary Sessions](#introducing-apis-for-arbitrary-sessions)
   - [Alternate Design for Session Sharing](#alternate-design-for-session-sharing)
@@ -262,7 +258,7 @@ In this workflow, users are expected to define core functionalities as APIs in t
 
 In this proposed workflow, the existing APIs such as reserves session, unreserve session, register session, unregister session and reserve all registered sessions of session management service will be used for arbitrary session reservation and registration.
 
-#### Advantages
+**Advantages**
 
 **No Modifications to Session Management Service:** This approach allows us to leverage existing session management service without requiring any modifications to it.
 
@@ -274,7 +270,7 @@ Extending the IO Discovery Service (non-pin-centric workflow) is not suitable du
 
 - **Conflict with Pin Map Context**: If the pin map set to active and used by a measurement plugin, the session management service does not query the IO Discovery Service. This would restrict session reservation of arbitrary resources for pin-centric measurement plugins.
 
-#### Disadvantages
+**Disadvantages**
 
 **Lacks support for non pin centric workflow**: Since the user is required to define the custom instrument in the pin map and make the pin map active, the measurement plugins that are non-pin-centric will not be able to reserve the session as the activeness of pin map hinders the session management service to query the IO Discovery Service.
 
@@ -315,12 +311,12 @@ The implementation of initialization behavior will align with **NI gRPC Device S
 
 The gRPC service should implement these behaviors by initializing sessions upon request and storing them for future use based on the specified initialization behavior. Additionally, it should manage the logic for sharing an existing session with another measurement plugin when requested. The **User Reference Guide** will assist with session-sharing implementation.
 
-#### Advantages
+**Advantages**
 
 - The gRPC service handles all session storage and retrieval acting as a central point of contact, thereby having less gRPC calls and hence less latency.
 - Since for session initialization, it uses the existing APIs thereby requiring no additional capabilities to be added.
 
-#### Disadvantages
+**Disadvantages**
 
 - Users are required to implement session-sharing logic on the gRPC service side, which can be complex and adds additional overhead.
 
