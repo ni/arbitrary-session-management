@@ -52,7 +52,7 @@ A solution is needed to manage and share arbitrary sessions (e.g., database conn
 
 A step-by-step user guide, along with Python and LabVIEW examples, will be provided to help users implement session reservation and the sharing of arbitrary sessions. The reference guide and examples will cover everything from defining arbitrary functions as a gRPC service to reserving and registering sessions using session management service APIs for both Python and LabVIEW. It will also guide users on implementing session sharing using the appropriate initialization behavior ENUM on the server side.
 
-The high-level workflow is outlined below, with detailed instructions available in the **User Reference Guide**.
+The high-level workflow is outlined below, with detailed instructions available in the deliverable - **User Reference Guide**.
 
 1. **User has to create a gRPC Service for the arbitrary functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
@@ -130,7 +130,7 @@ The high-level workflow is outlined below, with detailed instructions available 
      - AUTO - Attach to an existing session if available; otherwise, initialize a new  session and share it with the client.
      - INITIALIZE_SESSION_THEN_DETACH - Initialize a new session and detach instead of closing when exiting the context manager for future use.
      - ATTACH_TO_SESSION_THEN_CLOSE - Attach to an existing session and automatically close it when exiting the context manager.
-   - An example is given for the AUTO initialization behavior.
+   - A Python server side example is given for the AUTO initialization behavior.
 
       ```py
       class FileServiceServicer(file_service_pb2_grpc.FileServiceServicer):
@@ -255,7 +255,9 @@ The high-level workflow is outlined below, with detailed instructions available 
 
 ## Proposed Design & Implementation
 
-To address the problem, a reference guide and example will be provided which will demonstrate how to manage and share arbitrary sessions (e.g., database connections, file connections) across multiple measurement plugins. The solution will incorporate the session reservation mechanism using existing session management service.
+To address the problem, a reference guide and example for both Python and LabVIEW will be provided which will demonstrate how to manage and share arbitrary sessions (e.g., database connections, file connections) across multiple measurement plugins. The solution will incorporate the session reservation mechanism using the existing session management service.
+
+In this workflow, users are expected to define core functionalities as APIs in the proto file and then host them as a gRPC service.
 
 ### Session Reservation
 
@@ -269,13 +271,11 @@ The existing **reserve session API** of the session management service can be us
 
 **No Modifications to Session Management Service:** This approach allows us to leverage existing session management service without requiring any modifications to it.
 
-In the first version of the solution, we are planning to go with pin-centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable due to the following reason.
+In the first version of the solution, we are planning to go with pin-centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable as it avoids additional overhead such as manual hardware definitions in NI MAX or JSON updates which is mandatory in the non-pin-centric workflow.
 
-**User Convenience:** Avoids additional overhead such as manual hardware definitions in NI MAX or JSON updates which is mandatory in the non-pin-centric workflow.
+Extending the IO Discovery Service (non-pin-centric workflow) is not suitable due to the following reasons:
 
-Since the session reservation capability applies to arbitrary (non-instrument) sessions, extending the IO Discovery Service (non-pin-centric workflow) is not suitable due to the following reasons:
-
-- **Dependency on Hardware Configuration**: The IO Discovery Service retrieves information from a JSON file containing details about connected hardwares and instruments configured in **NI MAX**. This would require users to manually enter session-related details in the JSON, adding unnecessary overhead.
+- **Dependency on Hardware Configuration**: The IO Discovery Service retrieves information from a JSON file containing details about connected hardwares and instruments configured in **NI MAX**. This would require users to manually enter service-related details in the JSON, adding unnecessary overhead.
 
 - **Conflict with Pin Map Context**: If the pin map set to active and used by a measurement plugin, the session management service does not query the IO Discovery Service. This would restrict session reservation of arbitrary resources for pin-centric measurement plugins.
 
@@ -289,9 +289,11 @@ This follows a similar solution as the Reserve Session. In other words, the sess
 
 ### Session Registration
 
-This follows a similar solution as the reserve session. In other words, the session management service APIs used for registering and unregistering the session are utilized.
+This follows a similar solution as the Session Reservation. In other words, the session management service APIs used for registering and unregistering the session are utilized.
 
 The APIs register_session, unregister_session, and reserve_all_registered_session will be used in TestStand workflow.
+
+As a result, the advantages and disadvantages of Session Reservation are also applicable to Session Registration.
 
 ### Session Sharing
 
@@ -333,7 +335,7 @@ The gRPC service should implement these behaviors by initializing sessions upon 
 #### Advantages
 
 - The gRPC service handles all session storage and retrieval acting as a central point of contact, thereby having less gRPC calls and hence less latency.
-- Since for session initialization, it uses the existing APIs of session management service thereby requiring no modifications in the existing session management service.
+- Since for session initialization, it uses the existing APIs thereby requiring no additional capabilities to be added.
 
 #### Disadvantages
 
@@ -382,10 +384,12 @@ A more integrated approach is to **extend the existing NI gRPC Device Server** t
 ## Future Work Items  
 
 - Automate processes to minimize user effort, particularly in managing session sharing logic and generating client-side files.  
+
   - **Python**:  
     - **Server Side**: Automate as much as possible. Further exploration is needed, and no concrete plan has been established yet.  
     - **Client Side**: Modify the existing multi-language client generator tool to also generate the session constructor file along with the client file and stubs.  
   - **LabVIEW**:  
     - **Server Side**: Enhance the multi-language driver support proto file generator to include proto file and server-side stubs.  
-    - **Client Side**: Explore automation possibilities to reduce manual efforts. No definitive approach has been determined yet.  
+    - **Client Side**: Explore automation possibilities to reduce manual efforts. No definitive approach has been determined yet.
+
 - Introduce support for a **non-pin-centric workflow** to enhance flexibility in session management.  
