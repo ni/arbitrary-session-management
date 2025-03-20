@@ -21,7 +21,7 @@
       - [Disadvantages](#disadvantages-1)
   - [Alternate Design](#alternate-design)
     - [Centralized Session Registry Server](#centralized-session-registry-server)
-    - [Create a server like NI gRPC Device Server](#create-a-server-like-ni-grpc-device-server)
+    - [Create a Server Similar to NI gRPC Device Server](#create-a-server-similar-to-ni-grpc-device-server)
     - [Extending the Existing NI gRPC Device Server](#extending-the-existing-ni-grpc-device-server)
   - [Future Work Items](#future-work-items)
 
@@ -57,61 +57,69 @@ The high-level workflow is outlined below, with detailed instructions available 
 1. **User has to create a gRPC Service for the arbitrary functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
    - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).
-   - An example proto file is given below for a file service.
+   - An example proto file is given below for a file functions which will be hosted as gRPC service.
 
       ```proto
-      syntax = "proto3";
+         syntax = "proto3";
 
-      package fileservice;
+         package fileservice;
 
-      service FileService {
-      rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
-      rpc ReadFile(ReadFileRequest) returns (ReadFileResponse);
-      rpc WriteFile(WriteFileRequest) returns (WriteFileResponse);
-      rpc DestroyFile(DestroyFileRequest) returns (DestroyFileResponse);
-      }
+         // Service for file operations
+         service FileService {
+            // Initializes a file session
+            rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
+            
+            // Reads content from an initialized file session
+            rpc ReadFile(ReadFileRequest) returns (ReadFileResponse);
+            
+            // Writes content to an initialized file session
+            rpc WriteFile(WriteFileRequest) returns (WriteFileResponse);
+            
+            // Destroys an existing file session
+            rpc DestroyFile(DestroyFileRequest) returns (DestroyFileResponse);
+         }
 
-      message InitializeFileRequest {
-      string file_name = 1;
-      InitializationBehavior initialization_behavior = 2;
-      }
+         // Request message for initializing a file session
+         message InitializeFileRequest {
+            string file_name = 1; // Name of the file to initialize
+            InitializationBehavior initialization_behavior = 2; // Specifies how the session should be initialized
+         }
 
-      message InitializeFileResponse {
-      string session_id = 1;
-      }
+         // Response message for file initialization
+         message InitializeFileResponse {
+            string session_id = 1; // Unique identifier for the initialized session
+         }
 
-      message ReadFileRequest {
-      string session_id = 1;
-      }
+         // Request message for reading a file
+         message ReadFileRequest {
+            string session_id = 1; // Session ID of the file to read from
+         }
 
-      message ReadFileResponse {
-      string content = 1;
-      }
+         // Response message for reading a file
+         message ReadFileResponse {
+            string content = 1; // File content retrieved from the session
+         }
 
-      message WriteFileRequest {
-      string session_id = 1;
-      string content = 2;
-      }
+         // Request message for destroying a file session
+         message DestroyFileRequest {
+            string session_id = 1; // Session ID of the file to be destroyed
+         }
 
-      message WriteFileResponse {
-      bool success = 1;
-      }
+         // Response message for destroying a file session
+         message DestroyFileResponse {
+            bool success = 1; // Indicates whether the session was successfully destroyed
+         }
 
-      message DestroyFileRequest {
-      string session_id = 1;
-      }
+         // Enum defining different session initialization behaviors
+         enum InitializationBehavior {
+            INITIALIZE_SERVER_SESSION = 0;
+            ATTACH_TO_SERVER_SESSION = 1; 
+            AUTO = 2;
+            INITIALIZE_SESSION_THEN_DETACH = 3;
+            ATTACH_TO_SESSION_THEN_CLOSE = 4;
+         }
 
-      message DestroyFileResponse {
-      bool success = 1;
-      }
-
-      enum InitializationBehavior {
-      INITIALIZE_SERVER_SESSION = 0; 
-      ATTACH_TO_SERVER_SESSION = 1; 
-      AUTO = 2; 
-      INITIALIZE_SESSION_THEN_DETACH = 3;
-      ATTACH_TO_SESSION_THEN_CLOSE = 4;
-      }
+         // Similary other APIs for the core functionalities should be defined.
       ```
 
 2. **User has to implement Session Initialization Behavior**  
@@ -135,15 +143,14 @@ The high-level workflow is outlined below, with detailed instructions available 
                   for session_id, file_handle in self.file_sessions.items():
                         if not file_handle.closed and file_handle.name == request.file_name:
                            return file_service_pb2.InitializeFileResponse(session_id=session_id)
+
+                  # Create a new session with a unique ID
                   session_id = str(uuid.uuid4())
-                  try:
-                        file_handle = open(request.file_name, request.mode)
-                        self.file_sessions[session_id] = file_handle
-                        print(self.file_sessions)
-                        return file_service_pb2.InitializeFileResponse(session_id=session_id, success=True)
-                  except Exception as e:
-                        print(f"Error initializing file: {e}")
-                        return file_service_pb2.InitializeFileResponse(session_id="", success=False)
+                  file_handle = open(request.file_name, request.mode)
+                  self.file_sessions[session_id] = file_handle
+
+                  return file_service_pb2.InitializeFileResponse(session_id=session_id, success=True)
+
       ```
 
 3. **Host & Register the gRPC Service**
@@ -153,15 +160,21 @@ The high-level workflow is outlined below, with detailed instructions available 
 
       ```py
       def serve():
+         # Create a gRPC server with multiple worker threads
          server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+
+         # Add the FileServiceServicer to the server
          file_service_pb2_grpc.add_FileServiceServicer_to_server(FileServiceServicer(), server)
+
+         # Define host and assign a free available port
          host = "[::1]"
-         port = str(server.add_insecure_port(f"{host}:0"))
+         port = str(server.add_insecure_port(f"{host}:0"))  # Bind to an available port
+
+         # Start the server
          server.start()
 
-         # Register the service in the discovery service.
+         # Register the service with the discovery system
          discovery_client = DiscoveryClient()
-         service_location = ServiceLocation("localhost", f"{port}", "")
          service_info = ServiceInfo(
             service_class=GRPC_SERVICE_CLASS,
             description_url="File Service",
@@ -169,10 +182,13 @@ The high-level workflow is outlined below, with detailed instructions available 
             display_name=DISPLAY_NAME,
          )
          registration_id = discovery_client.register_service(
-            service_info=service_info, service_location=service_location
+            service_info=service_info, service_location=ServiceLocation("localhost", port, "")
          )
 
-         _ = input("Press enter to stop the server.")
+         # Keep the server running until user input is received
+         input("Press Enter to stop the server...")
+
+         # Unregister the service and gracefully shut down the server
          discovery_client.unregister_service(registration_id)
          server.stop(grace=5)
          server.wait_for_termination()
@@ -189,15 +205,16 @@ The high-level workflow is outlined below, with detailed instructions available 
       ![alt text](client_side_stubs.png)
 
    ```py
-   # Session Constructor
-   class FileSessionConstructor:
-      def __init__(self, resource_name, initialization_behavior) -> None:
-         self.resource_name = resource_name
-         self.initialization_behavior = initialization_behavior
+      # Session Constructor for managing file sessions
+      class FileSessionConstructor:
+         def __init__(self, resource_name, initialization_behavior):
+            # Store file resource name and initialization behavior
+            self.resource_name = resource_name
+            self.initialization_behavior = initialization_behavior
 
-      def __call__(self,) -> FileServiceClient:
-         file_client = FileServiceClient(file_name=self.resource_name, initialization_behavior=self.initialization_behavior)
-         return file_client
+         def __call__(self) -> FileServiceClient:
+            # Create and return a FileServiceClient instance
+            return FileServiceClient(self.resource_name, self.initialization_behavior)
    ```
 
 5. **Create custom instrument in pinmap**:
@@ -217,14 +234,22 @@ The high-level workflow is outlined below, with detailed instructions available 
    - After finishing, call the **Unreserve Session API** so others can reserve and use it.
   
 ```py
-   instrument_type_id = "ExampleFile" # Same instrument type ID given in pin map.
-   # Arbitrary session construction
+   # Instrument type ID (should match the one in the pin map)
+   instrument_type_id = "ExampleFile"
+
+   # Create a session constructor for file operations with auto-initialization
    file_session_constructor = FileSessionConstructor(file_resource_name, InitializationBehavior.AUTO)
 
+   # Reserve the session for the given resource
    with measurement_service.context.reserve_session(resource_name) as arbitrary_reservation:
+      # Initialize the session using the session constructor
       with arbitrary_reservation.initialize_session(file_session_constructor, instrument_type_id) as arbitrary_session_info:
-         arbitrary_session = arbitrary_session_info.session
+         arbitrary_session = arbitrary_session_info.session  # Extract the active session
+         
+         # Write content to the file
          arbitrary_session.WriteFile(WriteFileRequest(session_id=arbitrary_session._session_id, content=content))
+         
+         # Read and print file content
          print(arbitrary_session.ReadFile(session_id=arbitrary_session._session_id))
    ```
 
@@ -244,7 +269,7 @@ The existing **reserve session API** of the session management service can be us
 
 **No Modifications to Session Management Service:** This approach allows us to leverage existing session management service without requiring any modifications to it.
 
-In the first version of the solution, we are planning to go with pin centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable due to the following reason.
+In the first version of the solution, we are planning to go with pin-centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable due to the following reason.
 
 **User Convenience:** Avoids additional overhead such as manual hardware definitions in NI MAX or JSON updates which is mandatory in the non-pin-centric workflow.
 
@@ -314,53 +339,53 @@ The gRPC service should implement these behaviors by initializing sessions upon 
 
 - Users are required to implement session-sharing logic on the gRPC service side, which can be complex and adds additional overhead.
 
-## Alternate Design
+## Alternate Design  
 
-### Centralized Session Registry Server
+### Centralized Session Registry Server  
 
-An alternative approach is to implement a centralized server dedicated to managing and storing session information. This server would act as a session registry, allowing multiple users and measurement plugins to store and retrieve sessions as needed.
-
-**Advantages**
-
-Centralized session storage ensures better organization and visibility.
-
-**Disadvantages**
-
-Introduces additional gRPC calls, increasing network latency.
-
-### Create a server like NI gRPC Device Server  
-
-Another alternative is to **create a server like the existing NI gRPC Device Server** to handle arbitrary session management. This approach mocks the existing solution but requires development from the scratch to the **client and server-side APIs**.  
+One approach is to implement a centralized server dedicated to managing and storing session information. This server would function as a **session registry**, enabling multiple measurement plugins to efficiently store and retrieve sessions as needed.  
 
 **Advantages**  
 
-- Reduces overhead for the users' in implementing session management.  
+- Centralized session storage acts a single point of contact for sessions.  
 
-**Disadvantages**
+**Disadvantages**  
 
-- **Development from scratch** - requires developing both **client-side APIs** and **server-side session management logic**.
+- Increases network latency due to additional gRPC calls.  
+
+### Create a Server Similar to NI gRPC Device Server  
+
+Another alternative is to **develop a server similar to the existing NI gRPC Device Server** for handling arbitrary session management. This approach replicates the existing solution but requires development from scratch.  
+
+**Advantages**  
+
+- Simplifies session management for users by reducing implementation overhead.  
+
+**Disadvantages**  
+
+- **Requires development from scratch**, including both **client-side APIs** and **server-side session management logic**.  
 
 ### Extending the Existing NI gRPC Device Server  
 
-Another alternative is to **extend the existing NI gRPC Device Server** to handle arbitrary session management. This approach integrates with the existing solution but requires modifications to the **client and server-side APIs**.  
+A more integrated approach is to **extend the existing NI gRPC Device Server** to support arbitrary session management. While this aligns with the prevailing methods, it necessitates modifications to both **client and server-side APIs**.  
 
 **Advantages**  
 
-- Reduces overhead for the users' in implementing session management.  
-- Long-term stability as this is the support given for other NI's driver modules.
+- Reduces the burden on users by streamlining session management.  
+- Ensures long-term stability, as this is the standard approach for other NI driver modules.  
 
-**Disadvantages**
+**Disadvantages**  
 
-- **Full-fledged implementation required** - requires developing both **client-side APIs** and **server-side session management logic**.
-- **Technology barrier** - requires familiarity with C++ (used in the NI gRPC Device Server).
+- **Requires a full-fledged implementation**, involving both **client-side APIs** and **server-side session management logic**.  
+- **Technology barrier** – demands proficiency in C++ (the language used in the NI gRPC Device Server).  
 
 ## Future Work Items  
 
-- Automate processes to minimize user effort, especially in handling session sharing logic and generating client-side files.
-  - **Python**:
-    - Server Side: Automate as much as possible. This area still needs exploration, and no concrete plan is in place yet.
-    - Client Side: Modify the existing multi-language client generator tool to also generate the session constructor file along with the client file and stubs.
-  - **LabVIEW**:
-    - Server Side: Modify the existing multi-language driver support proto file generator to also generate the proto file and server-side stubs.
-    - Client Side: Explore automation opportunities to reduce manual work. No fixed approach has been decided yet.
-- Add support for a non-pin-centric workflow to expand flexibility in session management.
+- Automate processes to minimize user effort, particularly in managing session sharing logic and generating client-side files.  
+  - **Python**:  
+    - **Server Side**: Automate as much as possible. Further exploration is needed, and no concrete plan has been established yet.  
+    - **Client Side**: Modify the existing multi-language client generator tool to also generate the session constructor file along with the client file and stubs.  
+  - **LabVIEW**:  
+    - **Server Side**: Enhance the multi-language driver support proto file generator to include proto file and server-side stubs.  
+    - **Client Side**: Explore automation possibilities to reduce manual efforts. No definitive approach has been determined yet.  
+- Introduce support for a **non-pin-centric workflow** to enhance flexibility in session management.  
