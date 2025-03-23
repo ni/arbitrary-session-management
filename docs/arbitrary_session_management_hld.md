@@ -49,10 +49,10 @@ A step-by-step user guide, along with Python and LabVIEW examples, will be provi
 
 The high-level workflow is outlined below, with detailed instructions available in the deliverable - **User Reference Guide**.
 
-1. **User has to create a gRPC Service for the arbitrary functions**  
+1. **User has to Create a gRPC Service for the Arbitrary Functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
    - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).
-   - An example proto file is given below for a file functions which will be hosted as gRPC service.
+   - An example proto file for a FileLogger with read/write functions to be hosted as gRPC service is shown below.
 
       ```proto
          syntax = "proto3";
@@ -76,7 +76,7 @@ The high-level workflow is outlined below, with detailed instructions available 
 
          // Request message for initializing a file session
          message InitializeFileRequest {
-            string file_name = 1; // Name of the file to initialize
+            string file_path = 1; // Path of the file to initialize
             InitializationBehavior initialization_behavior = 2; // Specifies how the session should be initialized
          }
 
@@ -117,7 +117,7 @@ The high-level workflow is outlined below, with detailed instructions available 
          // Similary other APIs for the core functionalities should be defined.
       ```
 
-2. **User has to implement Session Initialization Behavior**  
+2. **User has to Implement Session Initialization Behavior**  
    - Within the gRPC server, implement the logic to initialize and manage sessions based on the selected initialization behavior. The logical implementation of session initialization is as follows:
 
      - INITIALIZE_SERVER_SESSION - Initialize a new session, and store and share it with the client.
@@ -136,21 +136,19 @@ The high-level workflow is outlined below, with detailed instructions available 
             if request.initialization_behavior == INITIALIZATION_BEHAVIOR.AUTO: # Example Initialization Behavior
                   # Check if there's already an open session for the given file
                   for session_id, file_handle in self.file_sessions.items():
-                        if not file_handle.closed and file_handle.name == request.file_name:
+                        if not file_handle.closed and Path(file_handle.name).resolve() == Path(request.file_path).resolve():
                            return file_service_pb2.InitializeFileResponse(session_id=session_id)
 
                   # Create a new session with a unique ID
                   session_id = str(uuid.uuid4())
-                  file_handle = open(request.file_name, request.mode)
+                  file_handle = open(request.file_path, request.mode)
                   self.file_sessions[session_id] = file_handle
 
                   return file_service_pb2.InitializeFileResponse(session_id=session_id, success=True)
-
       ```
 
 3. **Host & Register the gRPC Service**
-
-   - Host the gRPC service.
+   - Host the FileLogger as gRPC service.
    - Register the service with the Discovery Service to ensure measurement plugins can dynamically discover and connect to it.
 
       ```py
@@ -190,7 +188,6 @@ The high-level workflow is outlined below, with detailed instructions available 
       ```
 
 4. **Generate and Customize Language-Specific Client Files**
-
    - Generate client stubs from the .proto file.
    - Create new files from the generated stubs, such as:
      - Create client interface using the generated stubs.
@@ -212,8 +209,8 @@ The high-level workflow is outlined below, with detailed instructions available 
             return FileServiceClient(self.resource_name, self.initialization_behavior)
    ```
 
-5. **Create custom instrument in pinmap**:
-   - Create a custom instrument in the pinmap to enable the pin-centric workflow, which is the only supported workflow for now for the arbitrary session management.
+5. **Create Custom Instrument in PinMap**:
+   - This design uses pin-centric workflow and requires a custom instrument in the PinMap to be associated with the arbitrary gRPC service.
    - The instrument type ID defined in the pinmap is required when calling the session management service’s initialization API.
 
 6. **Reserve the Resource in the Measurement Plugin**  
@@ -229,8 +226,8 @@ The high-level workflow is outlined below, with detailed instructions available 
    - After finishing, call the **Unreserve Session API** so others can reserve and use it.
   
 ```py
-   # Instrument type ID (should match the one in the pin map)
-   instrument_type_id = "ExampleFile"
+   # Instrument type ID (should match the one in the PinMap)
+   instrument_type_id = "FileLogger"
 
    # Create a session constructor for file operations with auto-initialization
    file_session_constructor = FileSessionConstructor(file_resource_name, InitializationBehavior.AUTO)
@@ -242,10 +239,10 @@ The high-level workflow is outlined below, with detailed instructions available 
          arbitrary_session = arbitrary_session_info.session  # Extract the active session
          
          # Write content to the file
-         arbitrary_session.WriteFile(WriteFileRequest(session_id=arbitrary_session._session_id, content=content))
+         arbitrary_session.WriteFile(content=content)
          
          # Read and print file content
-         print(arbitrary_session.ReadFile(session_id=arbitrary_session._session_id))
+         print(arbitrary_session.ReadFile())
    ```
 
 ## Proposed Design & Implementation
@@ -260,9 +257,9 @@ In this proposed workflow, the existing APIs such as reserves session, unreserve
 
 **Advantages**
 
-**No Modifications to Session Management Service:** This approach allows us to leverage existing session management service without requiring any modifications to it.
+**No Modifications to Session Management Service:** This approach allows the leveraging of existing session management service without requiring any modifications to it.
 
-In the first version of the solution, we are planning to go with pin-centric workflow. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable as it avoids additional overhead such as manual hardware definitions in NI MAX or JSON updates which is mandatory in the non-pin-centric workflow.
+The first version of the solution aims to cover only pin-centric workflows. Since the session reservation capability applies to arbitrary sessions, the pin map service (pin-centric workflow) is applicable as it avoids additional overhead such as manual hardware definitions in NI MAX or JSON updates, which are mandatory in the non-pin-centric workflow.
 
 Extending the IO Discovery Service (non-pin-centric workflow) is not suitable due to the following reasons:
 
@@ -280,7 +277,7 @@ This solution delegates session management responsibilities (storage and retriev
 
 - Maintain and manage active sessions.
 - Be discoverable via the **Discovery Service**.
-- Expose its core functionalities through APIs based on its intended purpose. For example, if the service is designed for file management, it should include APIs for reading, writing, and creating files.
+- Expose its core functionalities through APIs based on its intended purpose. For example, if the service is designed for file logging, it should include APIs for reading, writing, and creating files.
 
 #### gRPC Service APIs
 
