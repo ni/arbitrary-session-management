@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package logger_service;
+
+service logger_service {
+  rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
+  rpc LogData(LogDataRequest) returns (LogDataResponse);
+  rpc CloseFile(CloseFileRequest) returns (CloseFileResponse);
+}
+
+message InitializeFileRequest {
+  string file_name = 1; // Also the session name
+  InitializationBehavior initialization_behavior = 2; // Defines how the session should be initialized
+}
+
+message InitializeFileResponse {
+  string file_name = 1;
+  bool new_session = 2;
+}
+
+message LogDataRequest {
+  string file_name = 1;
+  string content = 2;
+}
+
+// Empty response message; success is indicated by the gRPC status code.
+message LogDataResponse {
+}
+
+message CloseFileRequest {
+  string file_name = 1;
+}
+
+message CloseFileResponse {
+}
+
+// Enum to define initialization behavior
+enum InitializationBehavior {
+  AUTO = 0;               // Automatically decide whether to initialize or attach
+  INITIALIZE_NEW = 1;     // Always create a new session
+  ATTACH_TO_EXISTING = 2; // Always attach to an existing session
+}
