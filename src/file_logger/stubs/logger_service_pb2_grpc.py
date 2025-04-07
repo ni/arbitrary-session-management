@@ -2,8 +2,8 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import warnings
 
+import file_logger.stubs.logger_service_pb2 as logger__service__pb2
 import grpc
-import logger_service_pb2 as logger__service__pb2
 
 GRPC_GENERATED_VERSION = "1.71.0"
 GRPC_VERSION = grpc.__version__
