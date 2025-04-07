@@ -172,6 +172,7 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
             )
 
         file_handle.close()
+
         return logger_service_pb2.CloseFileResponse()
 
 
@@ -201,6 +202,8 @@ def start_server() -> None:
     discovery_client.unregister_service(registration_id)
     server.stop(grace=5)
     server.wait_for_termination()
+
+    print("Aborted!")
 
 
 if __name__ == "__main__":
