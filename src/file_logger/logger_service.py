@@ -47,11 +47,19 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
         Returns:
             InitializeResponse with file name and new session status.
         """
-        if request.initialization_behavior == logger_service_pb2.AUTO:
+        if request.initialization_behavior == logger_service_pb2.InitializationBehavior.AUTO:
             return self._auto_initialize_session(request.file_name, context)
-        elif request.initialization_behavior == logger_service_pb2.INITIALIZE_NEW:
+
+        elif (
+            request.initialization_behavior
+            == logger_service_pb2.InitializationBehavior.INITIALIZE_NEW
+        ):
             return self._create_new_session(request.file_name, context)
-        elif request.initialization_behavior == logger_service_pb2.ATTACH_TO_EXISTING:
+
+        elif (
+            request.initialization_behavior
+            == logger_service_pb2.InitializationBehavior.ATTACH_TO_EXISTING
+        ):
             return self._attach_existing_session(request.file_name, context)
 
         return context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
@@ -83,7 +91,7 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
         file_name: str,
         context: grpc.ServicerContext,
     ) -> InitializeFileResponse:
-        """Initialize a new session by always creating a new session.
+        """Creat a new session.
 
         Args:
             file_name: Name of the file to create a new session.
@@ -107,7 +115,7 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
         file_name: str,
         context: grpc.ServicerContext,
     ) -> InitializeFileResponse:
-        """Initialize a session by attaching to the existing session.
+        """Attach to the existing session.
 
         Args:
             file_name: Name of the file to attach to the existing session.
