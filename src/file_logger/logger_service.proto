@@ -9,8 +9,8 @@ service logger_service {
 }
 
 message InitializeFileRequest {
-  string file_name = 1; // Also the session name
-  InitializationBehavior initialization_behavior = 2; // Defines how the session should be initialized
+  string file_name = 1; // Also the session name.
+  InitializationBehavior initialization_behavior = 2; // Defines how the session should be initialized.
 }
 
 message InitializeFileResponse {
@@ -34,9 +34,9 @@ message CloseFileRequest {
 message CloseFileResponse {
 }
 
-// Enum to define initialization behavior
+// Enum to define initialization behavior.
 enum InitializationBehavior {
-  AUTO = 0;               // Automatically decide whether to initialize or attach
-  INITIALIZE_NEW = 1;     // Always create a new session
-  ATTACH_TO_EXISTING = 2; // Always attach to an existing session
+  AUTO = 0;               // Automatically decide whether to initialize or attach.
+  INITIALIZE_NEW = 1;     // Always create a new session.
+  ATTACH_TO_EXISTING = 2; // Always attach to an existing session.
 }
