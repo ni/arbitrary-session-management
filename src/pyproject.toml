@@ -1,12 +1,33 @@
 [project]
-name = "session-managed-file-logger"
+name = "file-logger"
 version = "1.0.0"
 description = "A user-defined service that manages sessions and logs data to a file."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
 license = { text = "MIT" }
-readme = "README.md"
+
 requires-python = "^3.9"
 [tool.poetry.dependencies]
+ni-measurement-plugin-sdk-service = { version = "^2.0.0" }
+
+[tool.poetry.group.dev.dependencies]
+ni-python-styleguide = ">=0.4.1"
+mypy = "^1.13.0"
+grpc-stubs = "^1.53"
+grpcio-tools = "1.59.0"
+mypy-protobuf = "^3.6.0"
+types-protobuf = "^5.28.3.20241030"
+bandit = { version = "^1.7", extras = ["toml"] }
+
+[tool.ni-python-styleguide]
+extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
+
+
+[tool.mypy]
+exclude = ["^stubs/.*"]
+disallow_untyped_defs = true
+
+[tool.bandit]
+exclude_dirs = [".venv"]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

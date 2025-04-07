@@ -7,7 +7,7 @@ import abc
 import collections.abc
 import grpc
 import grpc.aio
-import logger_service_pb2
+import file_logger.stubs.logger_service_pb2 as logger_service_pb2
 import typing
 
 _T = typing.TypeVar("_T")
