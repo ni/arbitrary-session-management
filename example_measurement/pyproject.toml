@@ -1,31 +1,35 @@
-[tool.poetry]
-name = "nidmm_measurement"
+[project]
+name = "nidmm-measurement"
 version = "0.5.0"
-package-mode = false
-description = "Measurement plug-in example that performs a measurement using an NI DMM."
-authors = ["National Instruments"]
+description = "Measurement plug-in example that performs a DMM measurement using NI DMM with session managed file logging service"
+authors = [
+    {name = "National Instruments"}
+]
+readme = "README.md"
+requires-python = "^3.9"
+dependencies = [
+    "grpcio-tools (>=1.71.0,<2.0.0)",
+    "protobuf (>=6.30.2,<7.0.0)"
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-nidmm = { version = ">=1.4.4", extras = ["grpc"] }
-ni-measurement-plugin-sdk-service = {version = "^2.3.0"}
-click = ">=7.1.2, !=8.1.4" # mypy fails with click 8.1.4: https://github.com/pallets/click/issues/2558
-grpcio = "*"
-
-[tool.poetry.group.dev.dependencies]
-ni-python-styleguide = ">=0.4.1"
-mypy = ">=1.0"
-grpc-stubs = "^1.53"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ni-python-styleguide = "^0.4.6"
+mypy = "^1.15.0"
+bandit = "^1.8.3"
 
 [tool.mypy]
 disallow_untyped_defs = true
-
-[[tool.mypy.overrides]]
-module = [
-    "nidmm.*",
-]
 ignore_missing_imports = true
+exclude = ["^stubs/.*"]
+
+[tool.ni-python-styleguide]
+extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
+
+[tool.black]
+extend_exclude = '\.tox/|_pb2(_grpc)?\.(py|pyi)$'
+line-length = 100
