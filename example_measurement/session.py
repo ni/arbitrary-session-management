@@ -101,14 +101,14 @@ class LoggerServiceClient:
             self._initialization_behavior == InitializationBehavior.AUTO
             or self._initialization_behavior == InitializationBehavior.INITIALIZE_NEW
         ):
-            self.close_file(request=logger_pb2.CloseFileRequest(file_name=self._file_name))
+            self.close_file(file_name=self._file_name)
 
         elif (
             not self._new_session
             and self._initialization_behavior
             == InitializationBehavior.ATTACH_TO_EXISTING_THEN_CLOSE
         ):
-            self.close_file(request=logger_pb2.CloseFileRequest(file_name=self._file_name))
+            self.close_file(file_name=self._file_name)
 
     def _get_stub(self) -> logger_grpc.logger_serviceStub:
         """Get the stub for the LoggerService service.
