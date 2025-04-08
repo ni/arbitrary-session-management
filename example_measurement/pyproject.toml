@@ -1,0 +1,35 @@
+[project]
+name = "nidmm-measurement"
+version = "0.5.0"
+description = "Measurement plug-in example that performs a DMM measurement using NI DMM with session managed file logging service"
+authors = [
+    {name = "National Instruments"}
+]
+readme = "README.md"
+requires-python = "^3.9"
+dependencies = [
+    "grpcio-tools (>=1.71.0,<2.0.0)",
+    "protobuf (>=6.30.2,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ni-python-styleguide = "^0.4.6"
+mypy = "^1.15.0"
+bandit = "^1.8.3"
+
+[tool.mypy]
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["^stubs/.*"]
+
+[tool.ni-python-styleguide]
+extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
+
+[tool.black]
+extend_exclude = '\.tox/|_pb2(_grpc)?\.(py|pyi)$'
+line-length = 100
