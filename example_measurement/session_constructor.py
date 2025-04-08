@@ -9,7 +9,7 @@ class LoggerSessionConstructor:
     def __init__(
         self,
         file_name: str,
-        initialization_behavior: InitializationBehavior.AUTO,
+        initialization_behavior: InitializationBehavior = InitializationBehavior.AUTO,
     ) -> None:
         """Initialize the LoggerSessionConstructor.
 
