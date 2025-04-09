@@ -70,7 +70,7 @@ class LoggerServiceClient:
         This method is called when the context manager is entered.
 
         Returns:
-            self: The LoggerServiceClient instance.
+            self: The LoggerServiceClient object.
         """
         return self
 
@@ -143,8 +143,8 @@ class LoggerServiceClient:
                 - AUTO: Automatically determine the initialization behavior.
                 - INITIALIZE_NEW: Create a new file.
                 - ATTACH_TO_EXISTING: Attach to an existing file.
-                - INITIALIZE_NEW_THEN_DETACH: Create a new file and detach from it.
-                - ATTACH_TO_EXISTING_THEN_CLOSE: Attach to an existing file and close it.
+                - INITIALIZE_NEW_THEN_DETACH: Create a new file session and detach from it.
+                - ATTACH_TO_EXISTING_THEN_CLOSE: Attach to an existing file session and close it.
             context: The gRPC context.
 
         Returns:
@@ -182,15 +182,7 @@ class LoggerServiceClient:
     ) -> logger_pb2.CloseFileResponse:
         """Close the file.
 
-        This method is called when the context manager is exited.
-
-        It closes the file session if the initialization behavior is AUTO
-        only if the session is newly created.
-        If the initialization behavior INITIALIZE_NEW, it will close the file session.
-        If the initialization behavior is ATTACH_TO_EXISTING, it will not close the file session.
-        If the initialization behavior is INITIALIZE_NEW_THEN_DETACH,
-        it will not close the file session.
-        If the initialization behavior is ATTACH_TO_EXISTING_THEN_CLOSE, it closes the file session.
+        This method is called mostly from __exit__ method when the context manager is exited.
 
         Args:
             file_name: The name of the file to close.
