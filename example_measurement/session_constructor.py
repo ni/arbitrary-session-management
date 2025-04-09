@@ -1,5 +1,6 @@
 """File containing class for constructing logger session."""
 
+from ni_measurement_plugin_sdk_service.session_management import SessionInformation
 from session import InitializationBehavior, LoggerServiceClient
 
 
@@ -8,7 +9,6 @@ class LoggerSessionConstructor:
 
     def __init__(
         self,
-        file_name: str,
         initialization_behavior: InitializationBehavior = InitializationBehavior.AUTO,
     ) -> None:
         """Initialize the LoggerSessionConstructor.
@@ -20,17 +20,16 @@ class LoggerSessionConstructor:
             initialization_behavior: Initialization behavior for the logger session.
                 Defaults to InitializationBehavior.AUTO.
         """
-        self.file_name = file_name
         self.initialization_behavior = initialization_behavior
 
-    def __call__(self) -> LoggerServiceClient:
+    def __call__(self, session_info: SessionInformation) -> LoggerServiceClient:
         """Call the LoggerServiceClient when this is called from a context manager.
 
         Returns:
-            The LoggerServiceClient instance.
+            The LoggerServiceClient object.
         """
         client = LoggerServiceClient(
-            file_name=self.file_name,
+            file_name=session_info.session_name,
             initialization_behavior=self.initialization_behavior,
         )
         return client
