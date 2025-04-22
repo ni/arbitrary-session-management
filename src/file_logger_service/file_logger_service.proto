@@ -30,7 +30,7 @@ message LogDataResponse {
 }
 
 message CloseFileRequest {
-  string file_name = 1;
+  string session_name = 1;
 }
 
 message CloseFileResponse {

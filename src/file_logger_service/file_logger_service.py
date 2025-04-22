@@ -3,10 +3,10 @@
 from concurrent import futures
 from typing import Dict, TextIO
 
-import file_logger.stubs.logger_service_pb2 as logger_service_pb2
-import file_logger.stubs.logger_service_pb2_grpc as logger_service_pb2_grpc
+import file_logger_service.stubs.file_logger_service_pb2 as logger_service_pb2
+import file_logger_service.stubs.file_logger_service_pb2_grpc as logger_service_pb2_grpc
 import grpc
-from file_logger.stubs.logger_service_pb2 import (
+from file_logger_service.stubs.file_logger_service_pb2 import (
     CloseFileRequest,
     CloseFileResponse,
     InitializeFileRequest,
@@ -22,7 +22,7 @@ GRPC_SERVICE_CLASS = "user.defined.logger.v1.LogService"
 DISPLAY_NAME = "File Logger Service"
 
 
-class LoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
+class FileLoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
     """A file logger service that logs data to a file.
 
     Args:
@@ -59,7 +59,7 @@ class LoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
         handler = initialization_behaviour.get(request.initialization_behavior)
 
         if handler:
-            return handler(request.file_name, context)
+            return handler(request.session_name, context)
 
         context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
@@ -154,12 +154,12 @@ class LoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
         Returns:
             LogDataResponse indicating the success of the operation.
         """
-        file_handle = self.sessions.get(request.file_name)
+        file_handle = self.sessions.get(request.session_name)
 
         if not file_handle or file_handle.closed:
             context.abort(
                 grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.file_name}'",
+                f"No active session for '{request.session_name}'",
             )
 
         try:
@@ -167,12 +167,12 @@ class LoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
         except OSError as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
-                f"Failed to write to file '{request.file_name}': {e}",
+                f"Failed to write to file '{request.session_name}': {e}",
             )
         except Exception as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
-                f"An unexpected error occurred while writing to file '{request.file_name}': {e}",
+                f"An unexpected error occurred while writing to file '{request.session_name}': {e}",
             )
         return logger_service_pb2.LogDataResponse()
 
@@ -192,12 +192,12 @@ class LoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
         Returns:
             CloseFileResponse indicating the success of the operation.
         """
-        file_handle = self.sessions.pop(request.file_name, None)
+        file_handle = self.sessions.pop(request.session_name, None)
 
         if not file_handle or file_handle.closed:
             context.abort(
                 grpc.StatusCode.NOT_FOUND,
-                f"Session '{request.file_name}' not found or already closed.",
+                f"Session '{request.session_name}' not found or already closed.",
             )
 
         file_handle.close()
@@ -207,7 +207,7 @@ class LoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
 def start_server() -> None:
     """Starts the gRPC server and registers the service with the service registry."""
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    logger_service_pb2_grpc.add_logger_serviceServicer_to_server(LoggerServicer(), server)
+    logger_service_pb2_grpc.add_FileLoggerServiceServicer_to_server(FileLoggerServicer(), server)
 
     host = "[::1]"
     port = str(server.add_insecure_port(f"{host}:0"))
