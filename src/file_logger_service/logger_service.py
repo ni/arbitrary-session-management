@@ -22,7 +22,7 @@ GRPC_SERVICE_CLASS = "user.defined.logger.v1.LogService"
 DISPLAY_NAME = "File Logger Service"
 
 
-class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
+class LoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
     """A file logger service that logs data to a file.
 
     Args:
@@ -40,29 +40,28 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
     ) -> InitializeFileResponse:
         """Initialize a file session based on the initialization behavior.
 
+        Calls the appropriate handler based on the initialization behavior specified in the request.
+        Returns an INVALID_ARGUMENT error if the initialization behavior is invalid.
+
         Args:
             request: InitializeFileRequest containing the file name and initialization behavior.
             context: gRPC context object for the request.
 
         Returns:
-            InitializeResponse with file name and new session status.
+            InitializeFileResponse with file name and new session status.
         """
-        if request.initialization_behavior == logger_service_pb2.InitializationBehavior.AUTO:
-            return self._auto_initialize_session(request.file_name, context)
+        initialization_behaviour = {
+            logger_service_pb2.InitializationBehavior.AUTO: self._auto_initialize_session,
+            logger_service_pb2.InitializationBehavior.INITIALIZE_NEW: self._create_new_session,
+            logger_service_pb2.InitializationBehavior.ATTACH_TO_EXISTING: self._attach_existing_session,
+        }
 
-        elif (
-            request.initialization_behavior
-            == logger_service_pb2.InitializationBehavior.INITIALIZE_NEW
-        ):
-            return self._create_new_session(request.file_name, context)
+        handler = initialization_behaviour.get(request.initialization_behavior)
 
-        elif (
-            request.initialization_behavior
-            == logger_service_pb2.InitializationBehavior.ATTACH_TO_EXISTING
-        ):
-            return self._attach_existing_session(request.file_name, context)
+        if handler:
+            return handler(request.file_name, context)
 
-        return context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
+        context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
     def _auto_initialize_session(
         self,
@@ -91,7 +90,10 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
         file_name: str,
         context: grpc.ServicerContext,
     ) -> InitializeFileResponse:
-        """Creat a new session.
+        """Create a new session.
+
+        If the session does not exist, it creates a new session.
+        Returns an ALREADY_EXISTS error if the session already exists and is open.
 
         Args:
             file_name: Name of the file to create a new session.
@@ -117,6 +119,9 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
     ) -> InitializeFileResponse:
         """Attach to the existing session.
 
+        Returns the existing session if it is open.
+        If the session does not exist or is closed, it returns NOT_FOUND error.
+
         Args:
             file_name: Name of the file to attach to the existing session.
             context: gRPC context object for the request.
@@ -139,6 +144,9 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
     ) -> LogDataResponse:
         """Log data to the file associated with the session.
 
+        If the session does not exist or is closed, it returns NOT_FOUND error.
+        If the file is not writable, it returns INTERNAL error.
+
         Args:
             request: LogDataRequest containing the file name and content to log.
             context: gRPC context object for the request.
@@ -154,7 +162,18 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
                 f"No active session for '{request.file_name}'",
             )
 
-        file_handle.write(request.content)
+        try:
+            file_handle.write(request.content)
+        except OSError as e:
+            context.abort(
+                grpc.StatusCode.INTERNAL,
+                f"Failed to write to file '{request.file_name}': {e}",
+            )
+        except Exception as e:
+            context.abort(
+                grpc.StatusCode.INTERNAL,
+                f"An unexpected error occurred while writing to file '{request.file_name}': {e}",
+            )
         return logger_service_pb2.LogDataResponse()
 
     def CloseFile(  # noqa: N802 - function name should be lowercase
@@ -163,6 +182,8 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
         context: grpc.ServicerContext,
     ) -> CloseFileResponse:
         """Close the file associated with the session.
+
+        Return NOT_FOUND error if the session does not exist or is already closed.
 
         Args:
             request: CloseFileRequest containing the file name to close.
@@ -186,7 +207,7 @@ class LoggerServiceServicer(logger_service_pb2_grpc.logger_serviceServicer):
 def start_server() -> None:
     """Starts the gRPC server and registers the service with the service registry."""
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    logger_service_pb2_grpc.add_logger_serviceServicer_to_server(LoggerServiceServicer(), server)
+    logger_service_pb2_grpc.add_logger_serviceServicer_to_server(LoggerServicer(), server)
 
     host = "[::1]"
     port = str(server.add_insecure_port(f"{host}:0"))
