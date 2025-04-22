@@ -2,10 +2,10 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import warnings
 
+import file_logger_service.stubs.file_logger_service_pb2 as file__logger__service__pb2
 import grpc
-import logger_service_pb2 as logger__service__pb2
 
-GRPC_GENERATED_VERSION = "1.71.0"
+GRPC_GENERATED_VERSION = "1.72.0rc1"
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -19,14 +19,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f"The grpc package installed is at version {GRPC_VERSION},"
-        + f" but the generated code in logger_service_pb2_grpc.py depends on"
+        + f" but the generated code in file_logger_service_pb2_grpc.py depends on"
         + f" grpcio>={GRPC_GENERATED_VERSION}."
         + f" Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}"
         + f" or downgrade your generated code using grpcio-tools<={GRPC_VERSION}."
     )
 
 
-class logger_serviceStub(object):
+class FileLoggerServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -36,26 +36,26 @@ class logger_serviceStub(object):
             channel: A grpc.Channel.
         """
         self.InitializeFile = channel.unary_unary(
-            "/logger_service.logger_service/InitializeFile",
-            request_serializer=logger__service__pb2.InitializeFileRequest.SerializeToString,
-            response_deserializer=logger__service__pb2.InitializeFileResponse.FromString,
+            "/file_logger_service.FileLoggerService/InitializeFile",
+            request_serializer=file__logger__service__pb2.InitializeFileRequest.SerializeToString,
+            response_deserializer=file__logger__service__pb2.InitializeFileResponse.FromString,
             _registered_method=True,
         )
         self.LogData = channel.unary_unary(
-            "/logger_service.logger_service/LogData",
-            request_serializer=logger__service__pb2.LogDataRequest.SerializeToString,
-            response_deserializer=logger__service__pb2.LogDataResponse.FromString,
+            "/file_logger_service.FileLoggerService/LogData",
+            request_serializer=file__logger__service__pb2.LogDataRequest.SerializeToString,
+            response_deserializer=file__logger__service__pb2.LogDataResponse.FromString,
             _registered_method=True,
         )
         self.CloseFile = channel.unary_unary(
-            "/logger_service.logger_service/CloseFile",
-            request_serializer=logger__service__pb2.CloseFileRequest.SerializeToString,
-            response_deserializer=logger__service__pb2.CloseFileResponse.FromString,
+            "/file_logger_service.FileLoggerService/CloseFile",
+            request_serializer=file__logger__service__pb2.CloseFileRequest.SerializeToString,
+            response_deserializer=file__logger__service__pb2.CloseFileResponse.FromString,
             _registered_method=True,
         )
 
 
-class logger_serviceServicer(object):
+class FileLoggerServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def InitializeFile(self, request, context):
@@ -77,33 +77,35 @@ class logger_serviceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
 
-def add_logger_serviceServicer_to_server(servicer, server):
+def add_FileLoggerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "InitializeFile": grpc.unary_unary_rpc_method_handler(
             servicer.InitializeFile,
-            request_deserializer=logger__service__pb2.InitializeFileRequest.FromString,
-            response_serializer=logger__service__pb2.InitializeFileResponse.SerializeToString,
+            request_deserializer=file__logger__service__pb2.InitializeFileRequest.FromString,
+            response_serializer=file__logger__service__pb2.InitializeFileResponse.SerializeToString,
         ),
         "LogData": grpc.unary_unary_rpc_method_handler(
             servicer.LogData,
-            request_deserializer=logger__service__pb2.LogDataRequest.FromString,
-            response_serializer=logger__service__pb2.LogDataResponse.SerializeToString,
+            request_deserializer=file__logger__service__pb2.LogDataRequest.FromString,
+            response_serializer=file__logger__service__pb2.LogDataResponse.SerializeToString,
         ),
         "CloseFile": grpc.unary_unary_rpc_method_handler(
             servicer.CloseFile,
-            request_deserializer=logger__service__pb2.CloseFileRequest.FromString,
-            response_serializer=logger__service__pb2.CloseFileResponse.SerializeToString,
+            request_deserializer=file__logger__service__pb2.CloseFileRequest.FromString,
+            response_serializer=file__logger__service__pb2.CloseFileResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "logger_service.logger_service", rpc_method_handlers
+        "file_logger_service.FileLoggerService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers("logger_service.logger_service", rpc_method_handlers)
+    server.add_registered_method_handlers(
+        "file_logger_service.FileLoggerService", rpc_method_handlers
+    )
 
 
 # This class is part of an EXPERIMENTAL API.
-class logger_service(object):
+class FileLoggerService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -122,9 +124,9 @@ class logger_service(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/logger_service.logger_service/InitializeFile",
-            logger__service__pb2.InitializeFileRequest.SerializeToString,
-            logger__service__pb2.InitializeFileResponse.FromString,
+            "/file_logger_service.FileLoggerService/InitializeFile",
+            file__logger__service__pb2.InitializeFileRequest.SerializeToString,
+            file__logger__service__pb2.InitializeFileResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -152,9 +154,9 @@ class logger_service(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/logger_service.logger_service/LogData",
-            logger__service__pb2.LogDataRequest.SerializeToString,
-            logger__service__pb2.LogDataResponse.FromString,
+            "/file_logger_service.FileLoggerService/LogData",
+            file__logger__service__pb2.LogDataRequest.SerializeToString,
+            file__logger__service__pb2.LogDataResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -182,9 +184,9 @@ class logger_service(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/logger_service.logger_service/CloseFile",
-            logger__service__pb2.CloseFileRequest.SerializeToString,
-            logger__service__pb2.CloseFileResponse.FromString,
+            "/file_logger_service.FileLoggerService/CloseFile",
+            file__logger__service__pb2.CloseFileRequest.SerializeToString,
+            file__logger__service__pb2.CloseFileResponse.FromString,
             options,
             channel_credentials,
             insecure,
