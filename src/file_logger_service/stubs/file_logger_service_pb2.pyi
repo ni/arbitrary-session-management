@@ -24,40 +24,40 @@ class _InitializationBehavior:
 class _InitializationBehaviorEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_InitializationBehavior.ValueType], builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     AUTO: _InitializationBehavior.ValueType  # 0
-    """Automatically decide whether to initialize or attach"""
+    """Automatically decide whether to initialize or attach."""
     INITIALIZE_NEW: _InitializationBehavior.ValueType  # 1
-    """Always create a new session"""
+    """Always create a new session."""
     ATTACH_TO_EXISTING: _InitializationBehavior.ValueType  # 2
-    """Always attach to an existing session"""
+    """Always attach to an existing session."""
 
 class InitializationBehavior(_InitializationBehavior, metaclass=_InitializationBehaviorEnumTypeWrapper):
-    """Enum to define initialization behavior"""
+    """Enum to define initialization behavior."""
 
 AUTO: InitializationBehavior.ValueType  # 0
-"""Automatically decide whether to initialize or attach"""
+"""Automatically decide whether to initialize or attach."""
 INITIALIZE_NEW: InitializationBehavior.ValueType  # 1
-"""Always create a new session"""
+"""Always create a new session."""
 ATTACH_TO_EXISTING: InitializationBehavior.ValueType  # 2
-"""Always attach to an existing session"""
+"""Always attach to an existing session."""
 global___InitializationBehavior = InitializationBehavior
 
 @typing.final
 class InitializeFileRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    FILE_NAME_FIELD_NUMBER: builtins.int
+    SESSION_NAME_FIELD_NUMBER: builtins.int
     INITIALIZATION_BEHAVIOR_FIELD_NUMBER: builtins.int
-    file_name: builtins.str
-    """Also the session name"""
+    session_name: builtins.str
+    """Also the complete file path."""
     initialization_behavior: global___InitializationBehavior.ValueType
-    """Defines how the session should be initialized"""
+    """Defines how the session should be initialized."""
     def __init__(
         self,
         *,
-        file_name: builtins.str = ...,
+        session_name: builtins.str = ...,
         initialization_behavior: global___InitializationBehavior.ValueType = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["file_name", b"file_name", "initialization_behavior", b"initialization_behavior"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["initialization_behavior", b"initialization_behavior", "session_name", b"session_name"]) -> None: ...
 
 global___InitializeFileRequest = InitializeFileRequest
 
@@ -65,17 +65,17 @@ global___InitializeFileRequest = InitializeFileRequest
 class InitializeFileResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    FILE_NAME_FIELD_NUMBER: builtins.int
+    SESSION_NAME_FIELD_NUMBER: builtins.int
     NEW_SESSION_FIELD_NUMBER: builtins.int
-    file_name: builtins.str
+    session_name: builtins.str
     new_session: builtins.bool
     def __init__(
         self,
         *,
-        file_name: builtins.str = ...,
+        session_name: builtins.str = ...,
         new_session: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["file_name", b"file_name", "new_session", b"new_session"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["new_session", b"new_session", "session_name", b"session_name"]) -> None: ...
 
 global___InitializeFileResponse = InitializeFileResponse
 
@@ -83,17 +83,17 @@ global___InitializeFileResponse = InitializeFileResponse
 class LogDataRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    FILE_NAME_FIELD_NUMBER: builtins.int
+    SESSION_NAME_FIELD_NUMBER: builtins.int
     CONTENT_FIELD_NUMBER: builtins.int
-    file_name: builtins.str
+    session_name: builtins.str
     content: builtins.str
     def __init__(
         self,
         *,
-        file_name: builtins.str = ...,
+        session_name: builtins.str = ...,
         content: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["content", b"content", "file_name", b"file_name"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["content", b"content", "session_name", b"session_name"]) -> None: ...
 
 global___LogDataRequest = LogDataRequest
 
@@ -126,8 +126,6 @@ global___CloseFileRequest = CloseFileRequest
 
 @typing.final
 class CloseFileResponse(google.protobuf.message.Message):
-    """Empty response message; success is indicated by the gRPC status code."""
-
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     def __init__(
