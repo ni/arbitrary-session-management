@@ -130,7 +130,7 @@ class FileLoggerServicer(logger_service_pb2_grpc.logger_serviceServicer):
             InitializeResponse with file name and new session status.
         """
         if file_name in self.sessions and not self.sessions[file_name].closed:
-            return logger_service_pb2.InitializeFileResponse(file_name=file_name, new_session=False)
+            return logger_service_pb2.InitializeFileResponse(session_name=file_name, new_session=False)
 
         context.abort(
             grpc.StatusCode.NOT_FOUND,
