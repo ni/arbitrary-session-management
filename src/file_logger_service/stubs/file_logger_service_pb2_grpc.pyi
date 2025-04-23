@@ -5,7 +5,7 @@ isort:skip_file
 
 import abc
 import collections.abc
-import file_logger_service.stubs.file_logger_service_pb2 as file_logger_service_pb2
+import file_logger_service.stubs.file_logger_service_pb2
 import grpc
 import grpc.aio
 import typing
