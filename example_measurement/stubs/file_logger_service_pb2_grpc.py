@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import file_logger_service_pb2 as file__logger__service__pb2
+import stubs.file_logger_service_pb2 as file__logger__service__pb2
 
 GRPC_GENERATED_VERSION = '1.72.0rc1'
 GRPC_VERSION = grpc.__version__
@@ -35,17 +35,17 @@ class FileLoggerServiceStub(object):
             channel: A grpc.Channel.
         """
         self.InitializeFile = channel.unary_unary(
-                '/logger_service.FileLoggerService/InitializeFile',
+                '/file_logger_service.FileLoggerService/InitializeFile',
                 request_serializer=file__logger__service__pb2.InitializeFileRequest.SerializeToString,
                 response_deserializer=file__logger__service__pb2.InitializeFileResponse.FromString,
                 _registered_method=True)
         self.LogData = channel.unary_unary(
-                '/logger_service.FileLoggerService/LogData',
+                '/file_logger_service.FileLoggerService/LogData',
                 request_serializer=file__logger__service__pb2.LogDataRequest.SerializeToString,
                 response_deserializer=file__logger__service__pb2.LogDataResponse.FromString,
                 _registered_method=True)
         self.CloseFile = channel.unary_unary(
-                '/logger_service.FileLoggerService/CloseFile',
+                '/file_logger_service.FileLoggerService/CloseFile',
                 request_serializer=file__logger__service__pb2.CloseFileRequest.SerializeToString,
                 response_deserializer=file__logger__service__pb2.CloseFileResponse.FromString,
                 _registered_method=True)
@@ -92,9 +92,9 @@ def add_FileLoggerServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'logger_service.FileLoggerService', rpc_method_handlers)
+            'file_logger_service.FileLoggerService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('logger_service.FileLoggerService', rpc_method_handlers)
+    server.add_registered_method_handlers('file_logger_service.FileLoggerService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
@@ -115,7 +115,7 @@ class FileLoggerService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/logger_service.FileLoggerService/InitializeFile',
+            '/file_logger_service.FileLoggerService/InitializeFile',
             file__logger__service__pb2.InitializeFileRequest.SerializeToString,
             file__logger__service__pb2.InitializeFileResponse.FromString,
             options,
@@ -142,7 +142,7 @@ class FileLoggerService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/logger_service.FileLoggerService/LogData',
+            '/file_logger_service.FileLoggerService/LogData',
             file__logger__service__pb2.LogDataRequest.SerializeToString,
             file__logger__service__pb2.LogDataResponse.FromString,
             options,
@@ -169,7 +169,7 @@ class FileLoggerService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/logger_service.FileLoggerService/CloseFile',
+            '/file_logger_service.FileLoggerService/CloseFile',
             file__logger__service__pb2.CloseFileRequest.SerializeToString,
             file__logger__service__pb2.CloseFileResponse.FromString,
             options,

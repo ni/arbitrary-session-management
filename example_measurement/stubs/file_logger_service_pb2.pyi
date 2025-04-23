@@ -48,7 +48,7 @@ class InitializeFileRequest(google.protobuf.message.Message):
     SESSION_NAME_FIELD_NUMBER: builtins.int
     INITIALIZATION_BEHAVIOR_FIELD_NUMBER: builtins.int
     session_name: builtins.str
-    """Also the file name."""
+    """Also the complete file path."""
     initialization_behavior: global___InitializationBehavior.ValueType
     """Defines how the session should be initialized."""
     def __init__(
@@ -113,14 +113,14 @@ global___LogDataResponse = LogDataResponse
 class CloseFileRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    FILE_NAME_FIELD_NUMBER: builtins.int
-    file_name: builtins.str
+    SESSION_NAME_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
     def __init__(
         self,
         *,
-        file_name: builtins.str = ...,
+        session_name: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["file_name", b"file_name"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["session_name", b"session_name"]) -> None: ...
 
 global___CloseFileRequest = CloseFileRequest
 

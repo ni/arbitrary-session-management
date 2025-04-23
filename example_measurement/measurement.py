@@ -11,6 +11,8 @@ import click
 import ni_measurement_plugin_sdk_service as nims
 import nidmm
 from _helpers import configure_logging, verbosity_option
+from session import InitializationBehavior
+from session_constructor import FileLoggerSessionConstructor
 
 script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
 service_directory = pathlib.Path(script_or_exe).resolve().parent
@@ -51,7 +53,7 @@ class Function(Enum):
 @measurement_service.configuration(
     "arbitrary_resource_name",
     nims.DataType.IOResource,
-    "Pin1",
+    "C:User/armurali",
 )
 @measurement_service.configuration(
     "measurement_type", nims.DataType.Enum, Function.DC_VOLTS, enum_type=Function
@@ -89,14 +91,14 @@ def measure(
             absolute_resolution = session.resolution_absolute
 
     with measurement_service.context.reserve_session(arbitrary_resource_name) as arbitrary_reservation:
-        session_constructor = LoggerSessionConstructor(
+        session_constructor = FileLoggerSessionConstructor(
             initialization_behavior=InitializationBehavior.AUTO,
         )
         with arbitrary_reservation.initialize_session(
-            session_constructor=session_constructor, instrument_type_id="FileService"
-        ) as arbitrary_session:
-            session = arbitrary_session.session
-            session.log_data(content=str(measured_value))
+            session_constructor=session_constructor, instrument_type_id="FileLoggerService"
+        ) as arbitrary_session_info:
+            arbitrary_session = arbitrary_session_info.session
+            arbitrary_session.log_data(content=f"Measured Value is {measured_value}")
 
     logging.info(
         "Completed measurement: measured_value=%g signal_out_of_range=%s absolute_resolution=%g",

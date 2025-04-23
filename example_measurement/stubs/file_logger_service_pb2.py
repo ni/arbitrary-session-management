@@ -24,27 +24,27 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x66ile_logger_service.proto\x12\x0elogger_service\"v\n\x15InitializeFileRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12G\n\x17initialization_behavior\x18\x02 \x01(\x0e\x32&.logger_service.InitializationBehavior\"C\n\x16InitializeFileResponse\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x13\n\x0bnew_session\x18\x02 \x01(\x08\"7\n\x0eLogDataRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\"\x11\n\x0fLogDataResponse\"%\n\x10\x43loseFileRequest\x12\x11\n\tfile_name\x18\x01 \x01(\t\"\x13\n\x11\x43loseFileResponse*N\n\x16InitializationBehavior\x12\x08\n\x04\x41UTO\x10\x00\x12\x12\n\x0eINITIALIZE_NEW\x10\x01\x12\x16\n\x12\x41TTACH_TO_EXISTING\x10\x02\x32\x92\x02\n\x11\x46ileLoggerService\x12_\n\x0eInitializeFile\x12%.logger_service.InitializeFileRequest\x1a&.logger_service.InitializeFileResponse\x12J\n\x07LogData\x12\x1e.logger_service.LogDataRequest\x1a\x1f.logger_service.LogDataResponse\x12P\n\tCloseFile\x12 .logger_service.CloseFileRequest\x1a!.logger_service.CloseFileResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x66ile_logger_service.proto\x12\x13\x66ile_logger_service\"{\n\x15InitializeFileRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12L\n\x17initialization_behavior\x18\x02 \x01(\x0e\x32+.file_logger_service.InitializationBehavior\"C\n\x16InitializeFileResponse\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x13\n\x0bnew_session\x18\x02 \x01(\x08\"7\n\x0eLogDataRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\"\x11\n\x0fLogDataResponse\"(\n\x10\x43loseFileRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"\x13\n\x11\x43loseFileResponse*N\n\x16InitializationBehavior\x12\x08\n\x04\x41UTO\x10\x00\x12\x12\n\x0eINITIALIZE_NEW\x10\x01\x12\x16\n\x12\x41TTACH_TO_EXISTING\x10\x02\x32\xb0\x02\n\x11\x46ileLoggerService\x12i\n\x0eInitializeFile\x12*.file_logger_service.InitializeFileRequest\x1a+.file_logger_service.InitializeFileResponse\x12T\n\x07LogData\x12#.file_logger_service.LogDataRequest\x1a$.file_logger_service.LogDataResponse\x12Z\n\tCloseFile\x12%.file_logger_service.CloseFileRequest\x1a&.file_logger_service.CloseFileResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'file_logger_service_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_INITIALIZATIONBEHAVIOR']._serialized_start=370
-  _globals['_INITIALIZATIONBEHAVIOR']._serialized_end=448
-  _globals['_INITIALIZEFILEREQUEST']._serialized_start=45
-  _globals['_INITIALIZEFILEREQUEST']._serialized_end=163
-  _globals['_INITIALIZEFILERESPONSE']._serialized_start=165
-  _globals['_INITIALIZEFILERESPONSE']._serialized_end=232
-  _globals['_LOGDATAREQUEST']._serialized_start=234
-  _globals['_LOGDATAREQUEST']._serialized_end=289
-  _globals['_LOGDATARESPONSE']._serialized_start=291
-  _globals['_LOGDATARESPONSE']._serialized_end=308
-  _globals['_CLOSEFILEREQUEST']._serialized_start=310
-  _globals['_CLOSEFILEREQUEST']._serialized_end=347
-  _globals['_CLOSEFILERESPONSE']._serialized_start=349
-  _globals['_CLOSEFILERESPONSE']._serialized_end=368
-  _globals['_FILELOGGERSERVICE']._serialized_start=451
-  _globals['_FILELOGGERSERVICE']._serialized_end=725
+  _globals['_INITIALIZATIONBEHAVIOR']._serialized_start=383
+  _globals['_INITIALIZATIONBEHAVIOR']._serialized_end=461
+  _globals['_INITIALIZEFILEREQUEST']._serialized_start=50
+  _globals['_INITIALIZEFILEREQUEST']._serialized_end=173
+  _globals['_INITIALIZEFILERESPONSE']._serialized_start=175
+  _globals['_INITIALIZEFILERESPONSE']._serialized_end=242
+  _globals['_LOGDATAREQUEST']._serialized_start=244
+  _globals['_LOGDATAREQUEST']._serialized_end=299
+  _globals['_LOGDATARESPONSE']._serialized_start=301
+  _globals['_LOGDATARESPONSE']._serialized_end=318
+  _globals['_CLOSEFILEREQUEST']._serialized_start=320
+  _globals['_CLOSEFILEREQUEST']._serialized_end=360
+  _globals['_CLOSEFILERESPONSE']._serialized_start=362
+  _globals['_CLOSEFILERESPONSE']._serialized_end=381
+  _globals['_FILELOGGERSERVICE']._serialized_start=464
+  _globals['_FILELOGGERSERVICE']._serialized_end=768
 # @@protoc_insertion_point(module_scope)

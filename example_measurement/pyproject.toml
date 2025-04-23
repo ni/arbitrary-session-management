@@ -1,7 +1,7 @@
 [project]
 name = "nidmm-measurement"
 version = "0.5.0"
-description = "Measurement plug-in example that performs a DMM measurement using NI DMM with session managed file logging service"
+description = "Measurement plug-in example that performs a DMM measurement using NI DMM with file logging service"
 authors = [
     {name = "National Instruments"}
 ]

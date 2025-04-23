@@ -1,10 +1,10 @@
 """File containing class for constructing logger session."""
 
 from ni_measurement_plugin_sdk_service.session_management import SessionInformation
-from session import InitializationBehavior, LoggerServiceClient
+from session import InitializationBehavior, FileLoggerServiceClient
 
 
-class LoggerSessionConstructor:
+class FileLoggerSessionConstructor:
     """Class for constructing a file logger session."""
 
     def __init__(
@@ -22,13 +22,13 @@ class LoggerSessionConstructor:
         """
         self.initialization_behavior = initialization_behavior
 
-    def __call__(self, session_info: SessionInformation) -> LoggerServiceClient:
-        """Call the LoggerServiceClient when this is called from a context manager.
+    def __call__(self, session_info: SessionInformation) -> FileLoggerServiceClient:
+        """Call the FileLoggerServiceClient when this is called from a context manager.
 
         Returns:
-            The LoggerServiceClient object.
+            The FileLoggerServiceClient object.
         """
-        client = LoggerServiceClient(
+        client = FileLoggerServiceClient(
             file_name=session_info.session_name,
             initialization_behavior=self.initialization_behavior,
         )

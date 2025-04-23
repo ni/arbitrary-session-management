@@ -5,8 +5,8 @@ from types import TracebackType
 from typing import Optional, Type
 
 import grpc
-import stubs.logger_service_pb2 as logger_pb2
-import stubs.logger_service_pb2_grpc as logger_grpc
+import stubs.file_logger_service_pb2 as logger_pb2
+import stubs.file_logger_service_pb2_grpc as logger_grpc
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
 
 GRPC_SERVICE_INTERFACE_NAME = "user.defined.file.v1.LogService"
@@ -36,7 +36,7 @@ _INITIALIZATION_BEHAVIOR = {
 }
 
 
-class LoggerServiceClient:
+class FileLoggerServiceClient:
     """Client for the LoggerService service."""
 
     def __init__(
@@ -54,17 +54,17 @@ class LoggerServiceClient:
             discovery_client: Client to the discovery service. Defaults to DiscoveryClient().
         """
         self._discovery_client = discovery_client
-        self._stub: Optional[logger_grpc.logger_serviceStub] = None
+        self._stub: Optional[logger_grpc.FileLoggerServiceStub] = None
         self._initialization_behavior = initialization_behavior
 
         response = self.initialize_file(
-            file_name=file_name,
+            session_name=file_name,
             initialization_behavior=initialization_behavior,
         )
-        self._file_name = response.file_name
+        self._file_name = response.session_name
         self._new_session = response.new_session
 
-    def __enter__(self) -> "LoggerServiceClient":
+    def __enter__(self) -> "FileLoggerServiceClient":
         """Enter the context manager.
 
         This method is called when the context manager is entered.
@@ -110,7 +110,7 @@ class LoggerServiceClient:
         ):
             self.close_file(file_name=self._file_name)
 
-    def _get_stub(self) -> logger_grpc.logger_serviceStub:
+    def _get_stub(self) -> logger_grpc.FileLoggerServiceStub:
         """Get the stub for the LoggerService service.
 
         This method creates a new stub if one does not already exist.
@@ -125,13 +125,13 @@ class LoggerServiceClient:
                 service_class=GRPC_SERVICE_CLASS,
             )
             channel = grpc.insecure_channel(service_location.insecure_address)
-            self._stub = logger_grpc.logger_serviceStub(channel)
+            return logger_grpc.FileLoggerServiceStub(channel)
 
         return self._stub
 
     def initialize_file(
         self,
-        file_name: str,
+        session_name: str,
         initialization_behavior: InitializationBehavior,
         context: grpc.ServicerContext = None,
     ) -> logger_pb2.InitializeFileResponse:
@@ -152,7 +152,7 @@ class LoggerServiceClient:
             stating whether a new session was created.
         """
         request = logger_pb2.InitializeFileRequest(
-            file_name=file_name or self._file_name,
+            session_name=session_name,
             initialization_behavior=_INITIALIZATION_BEHAVIOR[initialization_behavior],
         )
         return self._get_stub().InitializeFile(request)
@@ -172,7 +172,7 @@ class LoggerServiceClient:
             The empty response from the server if the request is successful.
         """
         request = logger_pb2.LogDataRequest(
-            file_name=self._file_name,
+            session_name=self._file_name,
             content=content,
         )
         return self._get_stub().LogData(request)
@@ -191,5 +191,5 @@ class LoggerServiceClient:
         Returns:
             The empty response from the server if the request is successful.
         """
-        request = logger_pb2.CloseFileRequest(file_name=file_name)
+        request = logger_pb2.CloseFileRequest(session_name=file_name)
         return self._get_stub().CloseFile(request)
