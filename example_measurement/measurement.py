@@ -43,6 +43,9 @@ class Function(Enum):
     INDUCTANCE = nidmm.Function.INDUCTANCE.value
 
 
+INSTRUMENT_TYPE = "FileLoggerService"
+
+
 @measurement_service.register_measurement
 @measurement_service.configuration(
     "pin_name",
@@ -53,7 +56,8 @@ class Function(Enum):
 @measurement_service.configuration(
     "arbitrary_resource_name",
     nims.DataType.IOResource,
-    "C:User/armurali",
+    "Pin2",
+    instrument_type=INSTRUMENT_TYPE,
 )
 @measurement_service.configuration(
     "measurement_type", nims.DataType.Enum, Function.DC_VOLTS, enum_type=Function
@@ -90,15 +94,20 @@ def measure(
             signal_out_of_range = math.isnan(measured_value) or math.isinf(measured_value)
             absolute_resolution = session.resolution_absolute
 
-    with measurement_service.context.reserve_session(arbitrary_resource_name) as arbitrary_reservation:
+    with measurement_service.context.reserve_session(
+        arbitrary_resource_name
+    ) as arbitrary_reservation:
+
         session_constructor = FileLoggerSessionConstructor(
-            initialization_behavior=InitializationBehavior.AUTO,
+            initialization_behavior=InitializationBehavior.AUTO
         )
+
         with arbitrary_reservation.initialize_session(
-            session_constructor=session_constructor, instrument_type_id="FileLoggerService"
+            session_constructor=session_constructor,
+            instrument_type_id=INSTRUMENT_TYPE,
         ) as arbitrary_session_info:
             arbitrary_session = arbitrary_session_info.session
-            arbitrary_session.log_data(content=f"Measured Value is {measured_value}")
+            arbitrary_session.log_data(content=f"Measured Value = {measured_value}")
 
     logging.info(
         "Completed measurement: measured_value=%g signal_out_of_range=%s absolute_resolution=%g",

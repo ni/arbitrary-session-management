@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SourceFile Checksum="523DB686B34D4CFFD1E7070D0F875D71325D6A7407B0164CDB85966C4BD0311022E929BB7F29747CC8BC5D9D23E17CF362EA81E1DB5ED39339BD0EBFC4568C2D" Timestamp="1DBB4857A91DC1A" xmlns="http://www.ni.com/PlatformFramework">
+<SourceFile Checksum="F475B4BA0893E16C4437A9836915E2D4E12196880FF5EF75ECB68119C20A49924F60B662C9C6D0429F6B3DA4F0639C95732D036330390452546F23FE194479F8" Timestamp="1DBB4886E962ED8" xmlns="http://www.ni.com/PlatformFramework">
 	<SourceModelFeatureSet>
 		<ParsableNamespace AssemblyFileVersion="9.15.0.49535" FeatureSetName="Configuration Based Software Core" Name="http://www.ni.com/ConfigurationBasedSoftware.Core" OldestCompatibleVersion="6.3.0.49152" Version="9.15.0.49152" />
 		<ParsableNamespace AssemblyFileVersion="9.15.0.49535" FeatureSetName="LabVIEW Controls" Name="http://www.ni.com/Controls.LabVIEW.Design" OldestCompatibleVersion="8.1.0.49152" Version="8.1.0.49152" />
@@ -46,7 +46,7 @@
 				<RingSelectorInfo DisplayValue="[string]INDUCTANCE" IsEnabled="[bool]True" Value="[int]1006" xmlns="http://www.ni.com/Controls.LabVIEW.Design" />
 			</ChannelEnumSelector>
 			<Label Height="[float]16" Id="d1f28964d0af4b10835729f4ec94466e" LabelOwner="[UIModel]b97cd7939a794245b11a90b37c297997" Left="[float]22" Text="[string]Measurement type" Top="[float]127" Width="[float]100" xmlns="http://www.ni.com/PanelCommon" />
-			<ChannelPinSelector AllowUndefinedValues="[bool]True" BaseName="[string]Pin" Channel="[string]{6254879f-afe1-4206-af54-fceebd851b8e}/Configuration/arbitrary_resource_name" DataType="[Type]String" Enabled="[bool]True" Height="[float]24" Id="ee881704da1e4ddda4a390181139968f" Label="[UIModel]df48f0ad589f4b8bb351510817933059" Left="[float]22" SelectedResource="[NI_Core_DataValues_TagRefnum]DUTPin1" Top="[float]86" Width="[float]128" xmlns="http://www.ni.com/InstrumentFramework/ScreenDocument" />
+			<ChannelPinSelector AllowUndefinedValues="[bool]True" BaseName="[string]Pin" Channel="[string]{6254879f-afe1-4206-af54-fceebd851b8e}/Configuration/arbitrary_resource_name" DataType="[Type]String" Enabled="[bool]True" Height="[float]24" Id="ee881704da1e4ddda4a390181139968f" Label="[UIModel]df48f0ad589f4b8bb351510817933059" Left="[float]22" SelectedResource="[NI_Core_DataValues_TagRefnum]Pin2" Top="[float]86" Width="[float]128" xmlns="http://www.ni.com/InstrumentFramework/ScreenDocument" />
 			<Label Height="[float]16" Id="df48f0ad589f4b8bb351510817933059" LabelOwner="[UIModel]ee881704da1e4ddda4a390181139968f" Left="[float]22" Text="[string]arbitrary_resource_name" Top="[float]66" Width="[float]130" xmlns="http://www.ni.com/PanelCommon" />
 		</ScreenSurface>
 	</Screen>
