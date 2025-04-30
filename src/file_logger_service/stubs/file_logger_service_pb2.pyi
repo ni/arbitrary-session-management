@@ -5,6 +5,7 @@ isort:skip_file
 
 import builtins
 import google.protobuf.descriptor
+<<<<<<< HEAD
 import google.protobuf.internal.enum_type_wrapper
 import google.protobuf.message
 import sys
@@ -41,23 +42,46 @@ ATTACH_TO_EXISTING: InitializationBehavior.ValueType  # 2
 """Always attach to an existing session."""
 global___InitializationBehavior = InitializationBehavior
 
+=======
+import google.protobuf.message
+import file_logger_service.stubs.session_pb2 as session_pb2
+import typing
+
+DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
+
+>>>>>>> c0203f120d2cd06892bac598e3b499b588858537
 @typing.final
 class InitializeFileRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+<<<<<<< HEAD
     SESSION_NAME_FIELD_NUMBER: builtins.int
     INITIALIZATION_BEHAVIOR_FIELD_NUMBER: builtins.int
     session_name: builtins.str
     """Also the complete file path."""
     initialization_behavior: global___InitializationBehavior.ValueType
+=======
+    FILE_PATH_FIELD_NUMBER: builtins.int
+    INITIALIZATION_BEHAVIOR_FIELD_NUMBER: builtins.int
+    file_path: builtins.str
+    """The complete file path."""
+    initialization_behavior: session_pb2.SessionInitializationBehavior.ValueType
+>>>>>>> c0203f120d2cd06892bac598e3b499b588858537
     """Defines how the session should be initialized."""
     def __init__(
         self,
         *,
+<<<<<<< HEAD
         session_name: builtins.str = ...,
         initialization_behavior: global___InitializationBehavior.ValueType = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["initialization_behavior", b"initialization_behavior", "session_name", b"session_name"]) -> None: ...
+=======
+        file_path: builtins.str = ...,
+        initialization_behavior: session_pb2.SessionInitializationBehavior.ValueType = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["file_path", b"file_path", "initialization_behavior", b"initialization_behavior"]) -> None: ...
+>>>>>>> c0203f120d2cd06892bac598e3b499b588858537
 
 global___InitializeFileRequest = InitializeFileRequest
 
