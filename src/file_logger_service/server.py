@@ -190,6 +190,12 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         """
         session = self._get_session_by_id(request.session_name, context)
 
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+
         try:
             session.file_handle.write(request.content)
             session.file_handle.flush()
@@ -245,7 +251,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         self,
         session_name: str,
         context: grpc.ServicerContext,
-    ) -> Session:
+    ) -> Optional[Session]:
         """Retrieve a session by its unique ID or abort with NOT_FOUND.
 
         Args:
@@ -253,13 +259,13 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             context: gRPC context object for the request.
 
         Returns:
-            Session object associated with the session name.
+            Session object associated with the session name, or None if not found.
         """
         for session in self.sessions.values():
             if session.session_name == session_name and not session.file_handle.closed:
                 return session
 
-        context.abort(grpc.StatusCode.NOT_FOUND, f"No active session for ID '{session_name}'.")
+        return None
 
     def _get_file_path_by_session_name(self, session_name: str) -> Optional[str]:
         """Helper to retrieve the file name associated with a session ID.
