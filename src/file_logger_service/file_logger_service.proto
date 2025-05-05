@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package logger_service;
+package file_logger_service;
 
 service FileLoggerService {
   rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
@@ -9,10 +9,10 @@ service FileLoggerService {
 }
 
 message InitializeFileRequest {
-  // Also the file name.
-  string session_name = 1; 
+  // The complete file path.
+  string file_path = 1;
   // Defines how the session should be initialized.
-  InitializationBehavior initialization_behavior = 2; 
+  SessionInitializationBehavior initialization_behavior = 2;
 }
 
 message InitializeFileResponse {
@@ -30,18 +30,15 @@ message LogDataResponse {
 }
 
 message CloseFileRequest {
-  string file_name = 1;
+  string session_name = 1;
 }
 
 message CloseFileResponse {
 }
 
-// Enum to define initialization behavior.
-enum InitializationBehavior {
-  // Automatically decide whether to initialize or attach.
-  AUTO = 0;
-  // Always create a new session.               
-  INITIALIZE_NEW = 1;    
-  // Always attach to an existing session. 
-  ATTACH_TO_EXISTING = 2;
+enum SessionInitializationBehavior {
+   // Automatically decide whether to initialize new or attach.
+  SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED = 0;
+  SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW = 1;
+  SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING = 2;
 }
