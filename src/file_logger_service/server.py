@@ -19,10 +19,10 @@ from file_logger_service.stubs.file_logger_service_pb2_grpc import (
     FileLoggerServiceServicer,
     add_FileLoggerServiceServicer_to_server,
 )
-from file_logger_service.stubs.session_pb2 import (
-    SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
-    SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
+from file_logger_service.stubs.file_logger_service_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
+    SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
+    SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
 )
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
