@@ -1,6 +1,12 @@
 syntax = "proto3";
 
 package file_logger_service;
+<<<<<<< HEAD
+=======
+
+// Importing session.proto - A file used in NI gRPC Device Server.
+import "session.proto"; 
+>>>>>>> c0203f120d2cd06892bac598e3b499b588858537
 
 service FileLoggerService {
   rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
@@ -12,7 +18,11 @@ message InitializeFileRequest {
   // The complete file path.
   string file_path = 1;
   // Defines how the session should be initialized.
+<<<<<<< HEAD
   SessionInitializationBehavior initialization_behavior = 2;
+=======
+  nidevice_grpc.SessionInitializationBehavior initialization_behavior = 2;
+>>>>>>> c0203f120d2cd06892bac598e3b499b588858537
 }
 
 message InitializeFileResponse {
@@ -35,6 +45,7 @@ message CloseFileRequest {
 
 message CloseFileResponse {
 }
+<<<<<<< HEAD
 
 enum SessionInitializationBehavior {
    // Automatically decide whether to initialize new or attach.
@@ -42,3 +53,5 @@ enum SessionInitializationBehavior {
   SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW = 1;
   SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING = 2;
 }
+=======
+>>>>>>> c0203f120d2cd06892bac598e3b499b588858537

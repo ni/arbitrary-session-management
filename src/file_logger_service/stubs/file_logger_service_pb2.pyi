@@ -5,36 +5,11 @@ isort:skip_file
 
 import builtins
 import google.protobuf.descriptor
-import google.protobuf.internal.enum_type_wrapper
 import google.protobuf.message
-import sys
+import file_logger_service.stubs.session_pb2 as session_pb2
 import typing
 
-if sys.version_info >= (3, 10):
-    import typing as typing_extensions
-else:
-    import typing_extensions
-
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
-
-class _SessionInitializationBehavior:
-    ValueType = typing.NewType("ValueType", builtins.int)
-    V: typing_extensions.TypeAlias = ValueType
-
-class _SessionInitializationBehaviorEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_SessionInitializationBehavior.ValueType], builtins.type):
-    DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-    SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED: _SessionInitializationBehavior.ValueType  # 0
-    """Automatically decide whether to initialize new or attach."""
-    SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW: _SessionInitializationBehavior.ValueType  # 1
-    SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING: _SessionInitializationBehavior.ValueType  # 2
-
-class SessionInitializationBehavior(_SessionInitializationBehavior, metaclass=_SessionInitializationBehaviorEnumTypeWrapper): ...
-
-SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED: SessionInitializationBehavior.ValueType  # 0
-"""Automatically decide whether to initialize new or attach."""
-SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW: SessionInitializationBehavior.ValueType  # 1
-SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING: SessionInitializationBehavior.ValueType  # 2
-global___SessionInitializationBehavior = SessionInitializationBehavior
 
 @typing.final
 class InitializeFileRequest(google.protobuf.message.Message):
@@ -44,13 +19,13 @@ class InitializeFileRequest(google.protobuf.message.Message):
     INITIALIZATION_BEHAVIOR_FIELD_NUMBER: builtins.int
     file_path: builtins.str
     """The complete file path."""
-    initialization_behavior: global___SessionInitializationBehavior.ValueType
+    initialization_behavior: session_pb2.SessionInitializationBehavior.ValueType
     """Defines how the session should be initialized."""
     def __init__(
         self,
         *,
         file_path: builtins.str = ...,
-        initialization_behavior: global___SessionInitializationBehavior.ValueType = ...,
+        initialization_behavior: session_pb2.SessionInitializationBehavior.ValueType = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["file_path", b"file_path", "initialization_behavior", b"initialization_behavior"]) -> None: ...
 
