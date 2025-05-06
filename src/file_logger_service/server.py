@@ -8,6 +8,9 @@ from typing import Dict, Optional, TextIO
 
 import grpc
 from file_logger_service.stubs.file_logger_service_pb2 import (
+    SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
+    SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
+    SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
     CloseFileRequest,
     CloseFileResponse,
     InitializeFileRequest,
@@ -18,11 +21,6 @@ from file_logger_service.stubs.file_logger_service_pb2 import (
 from file_logger_service.stubs.file_logger_service_pb2_grpc import (
     FileLoggerServiceServicer,
     add_FileLoggerServiceServicer_to_server,
-)
-from file_logger_service.stubs.file_logger_service_pb2 import (
-    SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
-    SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
-    SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
 )
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
@@ -51,7 +49,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         """Initialize the service with an empty session dictionary."""
         self.sessions: Dict[str, Session] = {}
 
-    def InitializeFile(  # noqa: N802 - function name should be lowercase
+    def InitializeFile(  # type: ignore # noqa: N802 function name should be lowercase
         self,
         request: InitializeFileRequest,
         context: grpc.ServicerContext,
@@ -141,7 +139,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             new_session=True,
         )
 
-    def _attach_existing_session(
+    def _attach_existing_session( # type: ignore
         self,
         file_path: str,
         context: grpc.ServicerContext,
@@ -197,8 +195,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
         try:
-            session.file_handle.write(request.content)
-            session.file_handle.flush()
+            session.file_handle.write(request.content) # type: ignore
+            session.file_handle.flush() # type: ignore
         except OSError as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
@@ -212,7 +210,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         return LogDataResponse()
 
-    def CloseFile(  # noqa: N802 - function name should be lowercase
+    def CloseFile(  # type: ignore
         self,
         request: CloseFileRequest,
         context: grpc.ServicerContext,
@@ -236,7 +234,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
                 f"Session '{request.session_name}' not found.",
             )
 
-        session = self.sessions.pop(file_path)
+        session = self.sessions.pop(file_path) # type: ignore
 
         if session.file_handle.closed:
             context.abort(
