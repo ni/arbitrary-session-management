@@ -32,7 +32,7 @@ DISPLAY_NAME = "File Logger Service"
 
 @dataclass
 class Session:
-    """A session that contains a unique ID and a file handle."""
+    """A session that contains a unique name and a file handle."""
 
     session_name: str
     file_handle: TextIO
@@ -60,7 +60,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         Returns an INVALID_ARGUMENT error if the initialization behavior is invalid.
 
         Args:
-            request: InitializeFileRequest containing the file name and initialization behavior.
+            request: InitializeFileRequest containing the file path and initialization behavior.
             context: gRPC context object for the request.
 
         Returns:
@@ -121,10 +121,9 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             context: gRPC context object for the request.
 
         Returns:
-            InitializeResponse with file name and new session status.
+            InitializeResponse with session name and new session status.
         """
         if file_path in self.sessions and not self.sessions[file_path].file_handle.closed:
-
             context.abort(
                 grpc.StatusCode.ALREADY_EXISTS,
                 f"Session for '{file_path}' already exists and is open.",
@@ -139,7 +138,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             new_session=True,
         )
 
-    def _attach_existing_session( # type: ignore
+    def _attach_existing_session(  # type: ignore
         self,
         file_path: str,
         context: grpc.ServicerContext,
@@ -154,7 +153,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             context: gRPC context object for the request.
 
         Returns:
-            InitializeResponse with file name and new session status.
+            InitializeResponse with session name and new session status.
         """
         session = self.sessions.get(file_path)
 
@@ -180,13 +179,13 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         If the file is not writable, it returns INTERNAL error.
 
         Args:
-            request: LogDataRequest containing the file name and content to log.
+            request: LogDataRequest containing the session name and content to log.
             context: gRPC context object for the request.
 
         Returns:
             LogDataResponse indicating the success of the operation.
         """
-        session = self._get_session_by_id(request.session_name, context)
+        session = self._get_session_by_name(request.session_name, context)
 
         if session is None:
             context.abort(
@@ -195,8 +194,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
         try:
-            session.file_handle.write(request.content) # type: ignore
-            session.file_handle.flush() # type: ignore
+            session.file_handle.write(request.content)  # type: ignore
+            session.file_handle.flush()  # type: ignore
         except OSError as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
@@ -210,7 +209,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         return LogDataResponse()
 
-    def CloseFile(  # type: ignore
+    def CloseFile(  # type: ignore # noqa: N802 function name should be lowercase
         self,
         request: CloseFileRequest,
         context: grpc.ServicerContext,
@@ -234,7 +233,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
                 f"Session '{request.session_name}' not found.",
             )
 
-        session = self.sessions.pop(file_path) # type: ignore
+        session = self.sessions.pop(file_path)  # type: ignore
 
         if session.file_handle.closed:
             context.abort(
@@ -245,12 +244,12 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         session.file_handle.close()
         return CloseFileResponse()
 
-    def _get_session_by_id(
+    def _get_session_by_name(
         self,
         session_name: str,
         context: grpc.ServicerContext,
     ) -> Optional[Session]:
-        """Retrieve a session by its unique ID or abort with NOT_FOUND.
+        """Retrieve a session by its unique name.
 
         Args:
             session_name: Session name.
@@ -266,7 +265,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         return None
 
     def _get_file_path_by_session_name(self, session_name: str) -> Optional[str]:
-        """Helper to retrieve the file name associated with a session ID.
+        """Retrieve the file path associated with a session name.
 
         Args:
             session_name: Session name.
@@ -285,7 +284,7 @@ def start_server() -> None:
     """Start the gRPC server and register the service with the service registry."""
     logging.basicConfig(format="%(message)s", level=logging.INFO)
     logger = logging.getLogger(__name__)
-    logger.info("Starting File Logger Service...")
+    logger.info("Starting the File Logger Service...")
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     add_FileLoggerServiceServicer_to_server(FileLoggerServicer(), server)
