@@ -1,32 +1,27 @@
 [project]
-name = "file-logger"
+name = "file-logger-service"
 version = "1.0.0"
-description = "A user-defined service that manages sessions and logs data to a file."
+description = "A user-defined service that manages file sessions and logs data to the file."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
 license = { text = "MIT" }
 
-requires-python = "^3.9"
-[tool.poetry.dependencies]
-ni-measurement-plugin-sdk-service = { version = "^2.0.0" }
-grpcio = "*"
-protobuf = "^5.26.0"
+requires-python = ">=3.9"
+dependencies = [
+    "python (>=3.9.0,<4.0.0)",
+    "grpcio-tools (>=1.71.0,<2.0.0)",
+    "protobuf (>=6.30.2,<7.0.0)",
+    "ni-measurement-plugin-sdk (>=2.3.0,<3.0.0)",
+]
 
 [tool.poetry.group.dev.dependencies]
-ni-python-styleguide = ">=0.4.1"
-mypy = "^1.13.0"
-grpc-stubs = "^1.53"
-grpcio-tools = "^1.71.0"
-mypy-protobuf = "^3.6.0"
-types-protobuf = "^5.28.3.20241030"
-bandit = { version = "^1.7", extras = ["toml"] }
-
-[tool.ni-python-styleguide]
-extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
-
+ni-python-styleguide = "^0.4.6"
+mypy = "^1.15.0"
+bandit = "^1.8.3"
 
 [tool.mypy]
-exclude = ["^stubs/.*"]
 disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["^stubs/.*"]
 
 [tool.bandit]
 exclude_dirs = [".venv"]
@@ -34,3 +29,10 @@ exclude_dirs = [".venv"]
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ni-python-styleguide]
+extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
+
+[tool.black]
+extend_exclude = '\.tox/|_pb2(_grpc)?\.(py|pyi)$'
+line-length = 100
