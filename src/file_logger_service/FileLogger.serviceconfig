@@ -2,10 +2,12 @@
   "services": [
     {
       "displayName": "File Logger Service",
-      "serviceClass": "user.defined.file.v1.LogService",
+      "version": "1.0.0",
+      "serviceClass": "user.defined.FileLogService",
       "descriptionUrl": "",
-      "providedInterface": "user.defined.logger.v1.LogService",
-      "path": "start.bat"
+      "providedInterface": "user.defined.v1.CustomService",
+      "path": "start.bat",
+      "installPath": "install.bat",
     }
   ]
 }
