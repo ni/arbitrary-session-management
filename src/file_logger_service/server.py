@@ -1,10 +1,13 @@
-"""A user-defined service to log the measurement data to the file."""
+"""A user-defined service to log data to the file."""
 
 import logging
+import threading
 import uuid
 from concurrent import futures
 from dataclasses import dataclass
-from typing import Dict, Optional, TextIO
+from functools import wraps
+from pathlib import Path
+from typing import Any, Callable, Dict, Optional, TextIO, TypeVar, cast
 
 import grpc
 from file_logger_service.stubs.file_logger_service_pb2 import (
@@ -28,6 +31,30 @@ from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 GRPC_SERVICE_INTERFACE_NAME = "user.defined.v1.CustomService"
 GRPC_SERVICE_CLASS = "user.defined.FileLogService"
 DISPLAY_NAME = "File Logger Service"
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def with_lock(func: F) -> F:
+    """Decorator to acquire a lock before executing the function and release it afterward.
+
+    Args:
+        func: Function to be decorated.
+
+    Returns:
+        Wrapper function that acquires the lock before executing the original function.
+    """
+
+    @wraps(func)
+    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
+        """Wrapper function to acquire the lock.
+
+        Returns:
+            The result of the original function.
+        """
+        with self.lock:
+            return func(self, *args, **kwargs)
+
+    return cast(F, wrapper)
 
 
 @dataclass
@@ -47,8 +74,10 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
     def __init__(self) -> None:
         """Initialize the service with an empty session dictionary."""
-        self.sessions: Dict[str, Session] = {}
+        self.sessions: Dict[Path, Session] = {}
+        self.lock = threading.Lock()
 
+    @with_lock
     def InitializeFile(  # type: ignore # noqa: N802 function name should be lowercase
         self,
         request: InitializeFileRequest,
@@ -75,11 +104,12 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         handler = initialization_behaviour.get(request.initialization_behavior)
 
         if handler:
-            return handler(request.file_path, context)
+            return handler(Path(request.file_path), context)
 
         context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
-    def LogData(  # noqa: N802 - function name should be lowercase
+    @with_lock
+    def LogData(  # type: ignore # noqa: N802 - function name should be lowercase
         self,
         request: LogDataRequest,
         context: grpc.ServicerContext,
@@ -96,7 +126,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         Returns:
             LogDataResponse indicating the success of the operation.
         """
-        session = self._get_session_by_name(request.session_name, context)
+        session = self._get_session_by_name(request.session_name)
 
         if session is None:
             context.abort(
@@ -107,19 +137,27 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         try:
             session.file_handle.write(request.content)  # type: ignore
             session.file_handle.flush()  # type: ignore
+            return LogDataResponse()
+
         except OSError as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
                 f"Failed to write to file for session '{request.session_name}': {e}",
             )
+
+        except PermissionError:
+            context.abort(
+                grpc.StatusCode.PERMISSION_DENIED,
+                f"Permission denied while writing to file for session '{request.session_name}'.",
+            )
+
         except Exception as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
                 f"An error occurred while writing, session - '{request.session_name}': {e}",
             )
 
-        return LogDataResponse()
-
+    @with_lock
     def CloseFile(  # type: ignore # noqa: N802 function name should be lowercase
         self,
         request: CloseFileRequest,
@@ -144,17 +182,22 @@ class FileLoggerServicer(FileLoggerServiceServicer):
                 f"Session '{request.session_name}' not found.",
             )
 
-        session = self.sessions.pop(file_path)  # type: ignore
+        try:
+            session = self.sessions.pop(file_path)  # type: ignore
+            if session.file_handle.closed:
+                context.abort(
+                    grpc.StatusCode.NOT_FOUND,
+                    f"Session '{request.session_name}' already closed.",
+                )
 
-        if session.file_handle.closed:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"Session '{request.session_name}' already closed.",
-            )
+            session.file_handle.close()
 
-        session.file_handle.close()
-        return CloseFileResponse()
+            return CloseFileResponse()
 
+        except Exception as e:
+            context.abort(grpc.StatusCode.INTERNAL, f"Error while closing file: {e}")
+
+    @with_lock
     def clean_up(self) -> None:
         """Clean up all active file sessions."""
         for session in self.sessions.values():
@@ -164,7 +207,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
     def _auto_initialize_session(
         self,
-        file_path: str,
+        file_path: Path,
         context: grpc.ServicerContext,
     ) -> InitializeFileResponse:
         """Initialize the session for UNSPECIFIED behavior of the initialization behavior.
@@ -189,9 +232,9 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         return self._create_new_session(file_path, context)
 
-    def _create_new_session(
+    def _create_new_session(  # type: ignore
         self,
-        file_path: str,
+        file_path: Path,
         context: grpc.ServicerContext,
     ) -> InitializeFileResponse:
         """Create a new session.
@@ -214,35 +257,34 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         try:
             file_handle: TextIO = open(file_path, "a+")
+            session_name: str = str(uuid.uuid4())
+            self.sessions[file_path] = Session(session_name=session_name, file_handle=file_handle)
+
+            return InitializeFileResponse(session_name=session_name, new_session=True)
+
         except FileNotFoundError:
             context.abort(
                 grpc.StatusCode.NOT_FOUND, f"The specified path '{file_path}' does not exist."
             )
+
         except PermissionError:
             context.abort(
                 grpc.StatusCode.PERMISSION_DENIED,
                 f"Permission denied while accessing '{file_path}'.",
             )
+
         except OSError as e:
             context.abort(grpc.StatusCode.INTERNAL, f"Failed to open file '{file_path}': {e}")
-        
+
         except Exception as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
                 f"An error occurred while opening the file '{file_path}': {e}",
             )
 
-        session_name: str = str(uuid.uuid4())
-        self.sessions[file_path] = Session(session_name=session_name, file_handle=file_handle)
-
-        return InitializeFileResponse(
-            session_name=session_name,
-            new_session=True,
-        )
-
     def _attach_existing_session(  # type: ignore
         self,
-        file_path: str,
+        file_path: Path,
         context: grpc.ServicerContext,
     ) -> InitializeFileResponse:
         """Attach to the existing session.
@@ -270,16 +312,11 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             f"Session for '{file_path}' does not exist or is closed.",
         )
 
-    def _get_session_by_name(
-        self,
-        session_name: str,
-        context: grpc.ServicerContext,
-    ) -> Optional[Session]:
+    def _get_session_by_name(self, session_name: str) -> Optional[Session]:
         """Retrieve a session by its unique name.
 
         Args:
             session_name: Session name.
-            context: gRPC context object for the request.
 
         Returns:
             Session object associated with the session name, or None if not found.
@@ -290,7 +327,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         return None
 
-    def _get_file_path_by_session_name(self, session_name: str) -> Optional[str]:
+    def _get_file_path_by_session_name(self, session_name: str) -> Optional[Path]:
         """Retrieve the file path associated with a session name.
 
         Args:
