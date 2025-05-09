@@ -1,13 +1,15 @@
 """A user-defined service to log data to the file."""
 
+import json
 import logging
 import threading
 import uuid
+from collections.abc import Callable
 from concurrent import futures
 from dataclasses import dataclass
 from functools import wraps
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional, TextIO, TypeVar, cast
+from typing import Any, Optional, TextIO, TypeVar, cast
 
 import grpc
 from file_logger_service.stubs.file_logger_service_pb2 import (
@@ -28,10 +30,24 @@ from file_logger_service.stubs.file_logger_service_pb2_grpc import (
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 
-GRPC_SERVICE_INTERFACE_NAME = "user.defined.v1.CustomService"
-GRPC_SERVICE_CLASS = "user.defined.FileLogService"
-DISPLAY_NAME = "File Logger Service"
 F = TypeVar("F", bound=Callable[..., Any])
+
+
+def get_service_config(file_name: str = "FileLogger.serviceconfig") -> dict[str, Any]:
+    """Get the service configurations from a .serviceconfig file.
+
+    Args:
+        file_name: Name of .serviceconfig file.
+
+    Returns:
+        A dictionary of the service configuration.
+    """
+    complete_path = Path(__file__).parent / file_name
+
+    with open(complete_path, encoding="utf-8") as f:
+        config = json.load(f)
+        service_config = config["services"][0]
+        return service_config
 
 
 def with_lock(func: F) -> F:
@@ -74,11 +90,11 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
     def __init__(self) -> None:
         """Initialize the service with an empty session dictionary."""
-        self.sessions: Dict[Path, Session] = {}
+        self.sessions: dict[Path, Session] = {}
         self.lock = threading.Lock()
 
     @with_lock
-    def InitializeFile(  # type: ignore # noqa: N802 function name should be lowercase
+    def InitializeFile(  # type: ignore[return] # noqa: N802 function name should be lowercase
         self,
         request: InitializeFileRequest,
         context: grpc.ServicerContext,
@@ -109,7 +125,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
     @with_lock
-    def LogData(  # type: ignore # noqa: N802 - function name should be lowercase
+    def LogData(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: LogDataRequest,
         context: grpc.ServicerContext,
@@ -135,8 +151,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
         try:
-            session.file_handle.write(request.content)  # type: ignore
-            session.file_handle.flush()  # type: ignore
+            session.file_handle.write(request.content)  # type: ignore[union-attr]
+            session.file_handle.flush()  # type: ignore[union-attr]
             return LogDataResponse()
 
         except OSError as e:
@@ -158,7 +174,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
     @with_lock
-    def CloseFile(  # type: ignore # noqa: N802 function name should be lowercase
+    def CloseFile(  # type: ignore[return] # noqa: N802 function name should be lowercase
         self,
         request: CloseFileRequest,
         context: grpc.ServicerContext,
@@ -183,7 +199,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
         try:
-            session = self.sessions.pop(file_path)  # type: ignore
+            session = self.sessions.pop(file_path)  # type: ignore[arg-type]
             if session.file_handle.closed:
                 context.abort(
                     grpc.StatusCode.NOT_FOUND,
@@ -232,7 +248,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         return self._create_new_session(file_path, context)
 
-    def _create_new_session(  # type: ignore
+    def _create_new_session(  # type: ignore[return]
         self,
         file_path: Path,
         context: grpc.ServicerContext,
@@ -282,7 +298,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
                 f"An error occurred while opening the file '{file_path}': {e}",
             )
 
-    def _attach_existing_session(  # type: ignore
+    def _attach_existing_session(  # type: ignore[return]
         self,
         file_path: Path,
         context: grpc.ServicerContext,
@@ -358,11 +374,12 @@ def start_server() -> None:
 
     discovery_client = DiscoveryClient()
     service_location = ServiceLocation("localhost", f"{port}", "")
+    service_config = get_service_config()
     service_info = ServiceInfo(
-        service_class=GRPC_SERVICE_CLASS,
+        service_class=service_config["serviceClass"],
         description_url="",
-        provided_interfaces=[GRPC_SERVICE_INTERFACE_NAME],
-        display_name=DISPLAY_NAME,
+        provided_interfaces=[service_config["providedInterface"]],
+        display_name=service_config["displayName"],
     )
     registration_id = discovery_client.register_service(service_info, service_location)
 

@@ -3,11 +3,11 @@
     {
       "displayName": "File Logger Service",
       "version": "1.0.0",
-      "serviceClass": "user.defined.FileLogService",
+      "serviceClass": "ni.user.defined.FileLogService",
       "descriptionUrl": "",
-      "providedInterface": "user.defined.v1.CustomService",
+      "providedInterface": "ni.user.defined.v1.CustomService",
       "path": "start.bat",
-      "installPath": "install.bat",
+      "installPath": "install.bat"
     }
   ]
 }
