@@ -7,9 +7,8 @@ import uuid
 from collections.abc import Callable
 from concurrent import futures
 from dataclasses import dataclass
-from functools import wraps
 from pathlib import Path
-from typing import Any, Optional, TextIO, TypeVar, cast
+from typing import Any, Optional, TextIO, TypeVar
 
 import grpc
 from file_logger_service.stubs.file_logger_service_pb2 import (
@@ -50,29 +49,6 @@ def get_service_config(file_name: str = "FileLogger.serviceconfig") -> dict[str,
         return service_config
 
 
-def with_lock(func: F) -> F:
-    """Decorator to acquire a lock before executing the function and release it afterward.
-
-    Args:
-        func: Function to be decorated.
-
-    Returns:
-        Wrapper function that acquires the lock before executing the original function.
-    """
-
-    @wraps(func)
-    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
-        """Wrapper function to acquire the lock.
-
-        Returns:
-            The result of the original function.
-        """
-        with self.lock:
-            return func(self, *args, **kwargs)
-
-    return cast(F, wrapper)
-
-
 @dataclass
 class Session:
     """A session that contains a unique name and a file handle."""
@@ -89,11 +65,10 @@ class FileLoggerServicer(FileLoggerServiceServicer):
     """
 
     def __init__(self) -> None:
-        """Initialize the service with an empty session dictionary."""
+        """Initialize the service with an empty session dictionary and a lock."""
         self.sessions: dict[Path, Session] = {}
         self.lock = threading.Lock()
 
-    @with_lock
     def InitializeFile(  # type: ignore[return] # noqa: N802 function name should be lowercase
         self,
         request: InitializeFileRequest,
@@ -124,7 +99,6 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
-    @with_lock
     def LogData(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: LogDataRequest,
@@ -133,7 +107,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         """Log data to the file associated with the session.
 
         If the session does not exist or is closed, it returns NOT_FOUND error.
-        If the file is not writable, it returns INTERNAL error.
+        If the file is not accessible, it returns PERMISSION_DENIED error.
+        If the file is not writable or for any unexpected errors, it returns INTERNAL error.
 
         Args:
             request: LogDataRequest containing the session name and content to log.
@@ -142,7 +117,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         Returns:
             LogDataResponse indicating the success of the operation.
         """
-        session = self._get_session_by_name(request.session_name)
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
 
         if session is None:
             context.abort(
@@ -173,7 +149,6 @@ class FileLoggerServicer(FileLoggerServiceServicer):
                 f"An error occurred while writing, session - '{request.session_name}': {e}",
             )
 
-    @with_lock
     def CloseFile(  # type: ignore[return] # noqa: N802 function name should be lowercase
         self,
         request: CloseFileRequest,
@@ -182,6 +157,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         """Close the file associated with the session.
 
         Return NOT_FOUND error if the session does not exist or is already closed.
+        For any unexpected errors, return INTERNAL error.
 
         Args:
             request: CloseFileRequest containing the session name to close.
@@ -190,7 +166,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         Returns:
             CloseFileResponse indicating the success of the operation.
         """
-        file_path = self._get_file_path_by_session_name(request.session_name)
+        with self.lock:
+            file_path = self._get_file_path_by_session_name(request.session_name)
 
         if file_path is None:
             context.abort(
@@ -199,7 +176,9 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
         try:
-            session = self.sessions.pop(file_path)  # type: ignore[arg-type]
+            with self.lock:
+                session = self.sessions.pop(file_path)  # type: ignore[arg-type]
+
             if session.file_handle.closed:
                 context.abort(
                     grpc.StatusCode.NOT_FOUND,
@@ -207,19 +186,18 @@ class FileLoggerServicer(FileLoggerServiceServicer):
                 )
 
             session.file_handle.close()
-
             return CloseFileResponse()
 
         except Exception as e:
             context.abort(grpc.StatusCode.INTERNAL, f"Error while closing file: {e}")
 
-    @with_lock
     def clean_up(self) -> None:
         """Clean up all active file sessions."""
-        for session in self.sessions.values():
-            if not session.file_handle.closed:
-                session.file_handle.close()
-        self.sessions.clear()
+        with self.lock:
+            for session in self.sessions.values():
+                if not session.file_handle.closed:
+                    session.file_handle.close()
+            self.sessions.clear()
 
     def _auto_initialize_session(
         self,
@@ -238,7 +216,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         Returns:
             InitializeResponse with session name and new session status.
         """
-        session = self.sessions.get(file_path)
+        with self.lock:
+            session = self.sessions.get(file_path)
 
         if session and not session.file_handle.closed:
             return InitializeFileResponse(
@@ -274,7 +253,12 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         try:
             file_handle: TextIO = open(file_path, "a+")
             session_name: str = str(uuid.uuid4())
-            self.sessions[file_path] = Session(session_name=session_name, file_handle=file_handle)
+            
+            with self.lock:
+                self.sessions[file_path] = Session(
+                    session_name=session_name,
+                    file_handle=file_handle,
+                )
 
             return InitializeFileResponse(session_name=session_name, new_session=True)
 
@@ -315,7 +299,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         Returns:
             InitializeResponse with session name and new session status.
         """
-        session = self.sessions.get(file_path)
+        with self.lock:
+            session = self.sessions.get(file_path)
 
         if session and not session.file_handle.closed:
             return InitializeFileResponse(
