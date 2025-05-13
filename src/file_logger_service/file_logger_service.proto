@@ -3,8 +3,26 @@ syntax = "proto3";
 package file_logger_service;
 
 service FileLoggerService {
+  // Initializes the given file for logging.
+  // Status Codes for errors:
+  // - INVALID_ARGUMENT: Invalid Session Initialization Behavior.
+  // - PERMISSION_DENIED: Permission denied for the File.
+  // - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+  // - ALREADY_EXISTS: File has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
+  // - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
   rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
+
+  // Logs data to the file of the session.
+  // Status Codes for errors:
+  // - PERMISSION_DENIED: Permission denied for the File.
+  // - NOT_FOUND: Session does not exist.
+  // - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
   rpc LogData(LogDataRequest) returns (LogDataResponse);
+
+  // Closes the file handle of the session.
+  // Status Codes for errors:
+  // - NOT_FOUND: Session does not exist.
+  // - INTERNAL: Any unexpected behavior.
   rpc CloseFile(CloseFileRequest) returns (CloseFileResponse);
 }
 
