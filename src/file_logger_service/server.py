@@ -108,7 +108,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         If the session does not exist or is closed, it returns NOT_FOUND error.
         If the file is not accessible, it returns PERMISSION_DENIED error.
-        If the file is not writable or for any unexpected errors, it returns INTERNAL error.
+        If the file is not writable or for any other errors, it returns INTERNAL error.
 
         Args:
             request: LogDataRequest containing the session name and content to log.
@@ -156,8 +156,8 @@ class FileLoggerServicer(FileLoggerServiceServicer):
     ) -> CloseFileResponse:
         """Close the file associated with the session.
 
-        Return NOT_FOUND error if the session does not exist or is already closed.
-        For any unexpected errors, return INTERNAL error.
+        Returns NOT_FOUND error if the session does not exist or is already closed.
+        Returns INTERNAL error for other errors.
 
         Args:
             request: CloseFileRequest containing the session name to close.
@@ -236,6 +236,9 @@ class FileLoggerServicer(FileLoggerServiceServicer):
 
         If the session does not exist, it creates a new session.
         Returns an ALREADY_EXISTS error if the session already exists and is open.
+        Returns NOT_FOUND error if the file path does not exist.
+        Returns PERMISSION_DENIED error if the file path is not accessible.
+        Returns INTERNAL error for other errors.
 
         Args:
             file_path: Path of the file to create a new session.
@@ -353,12 +356,12 @@ def start_server() -> None:
     servicer = FileLoggerServicer()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     add_FileLoggerServiceServicer_to_server(servicer, server)
-    host = "[::1]"
+    host = "localhost"
     port = str(server.add_insecure_port(f"{host}:0"))
     server.start()
 
     discovery_client = DiscoveryClient()
-    service_location = ServiceLocation("localhost", f"{port}", "")
+    service_location = ServiceLocation(host, f"{port}", "")
     service_config = get_service_config()
     service_info = ServiceInfo(
         service_class=service_config["serviceClass"],
@@ -376,7 +379,7 @@ def start_server() -> None:
     server.stop(grace=5)
     server.wait_for_termination()
 
-    logger.info("Aborted!")
+    logger.info("Service stopped!")
 
 
 if __name__ == "__main__":

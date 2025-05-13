@@ -1,3 +1,4 @@
+# This project requires Poetry >= 2.0.0
 [project]
 name = "file-logger-service"
 version = "1.0.0"
