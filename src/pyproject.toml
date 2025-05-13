@@ -1,16 +1,15 @@
+# This project requires Poetry >= 2.0.0
 [project]
 name = "file-logger-service"
 version = "1.0.0"
-description = "A user-defined service that manages file sessions and logs data to the file."
+description = "A user-defined service to log data to files while managing sessions efficiently."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
 license = { text = "MIT" }
 
-requires-python = ">=3.9"
+requires-python = ">=3.9,<4.0"
 dependencies = [
-    "python (>=3.9.0,<4.0.0)",
     "grpcio-tools (>=1.71.0,<2.0.0)",
-    "protobuf (>=6.30.2,<7.0.0)",
-    "ni-measurement-plugin-sdk (>=2.3.0,<3.0.0)",
+    "ni-measurement-plugin-sdk-service (>=2.3.0,<3.0.0)",
 ]
 
 [tool.poetry.group.dev.dependencies]

@@ -1,0 +1,12 @@
+{
+  "services": [
+    {
+      "displayName": "File Logger Service",
+      "version": "1.0.0",
+      "serviceClass": "ni.logger.FileLogService",
+      "descriptionUrl": "",
+      "providedInterface": "ni.logger.v1.file",
+      "path": "start.bat"
+    }
+  ]
+}
