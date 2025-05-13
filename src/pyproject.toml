@@ -1,7 +1,7 @@
 [project]
 name = "file-logger-service"
 version = "1.0.0"
-description = "A user-defined service that manages file sessions and logs data to the file."
+description = "A user-defined service to log data to files while managing sessions efficiently."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
 license = { text = "MIT" }
 

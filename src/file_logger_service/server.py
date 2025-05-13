@@ -1,4 +1,4 @@
-"""A user-defined service to log data to the file."""
+"""A user-defined service to log data to files while managing sessions efficiently."""
 
 import json
 import logging
