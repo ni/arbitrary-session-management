@@ -1,4 +1,4 @@
-"""Perform a measurement using an NI DMM."""
+"""Perform a measurement using an NI DMM and log results to a file using file logging service."""
 
 import logging
 import math
@@ -9,17 +9,19 @@ from typing import Tuple
 
 import click
 import ni_measurement_plugin_sdk_service as nims
+from ni_measurement_plugin_sdk_service.session_management import SessionInitializationBehavior
 import nidmm
 from _helpers import configure_logging, verbosity_option
-from session import InitializationBehavior
 from session_constructor import FileLoggerSessionConstructor
 
 script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
 service_directory = pathlib.Path(script_or_exe).resolve().parent
 measurement_service = nims.MeasurementService(
-    service_config_path=service_directory / "NIDmmMeasurement.serviceconfig",
+    service_config_path=service_directory / "DmmMeasurementWithLogger.serviceconfig",
     ui_file_paths=[service_directory / "NIDmmMeasurement.measui"],
 )
+
+INSTRUMENT_TYPE = "FileLoggerService"
 
 
 class Function(Enum):
@@ -43,9 +45,6 @@ class Function(Enum):
     INDUCTANCE = nidmm.Function.INDUCTANCE.value
 
 
-INSTRUMENT_TYPE = "FileLoggerService"
-
-
 @measurement_service.register_measurement
 @measurement_service.configuration(
     "pin_name",
@@ -54,7 +53,7 @@ INSTRUMENT_TYPE = "FileLoggerService"
     instrument_type=nims.session_management.INSTRUMENT_TYPE_NI_DMM,
 )
 @measurement_service.configuration(
-    "arbitrary_resource_name",
+    "file_path",
     nims.DataType.IOResource,
     "Pin2",
     instrument_type=INSTRUMENT_TYPE,
@@ -69,21 +68,22 @@ INSTRUMENT_TYPE = "FileLoggerService"
 @measurement_service.output("absolute_resolution", nims.DataType.Double)
 def measure(
     pin_name: str,
-    arbitrary_resource_name: str,
+    file_path: str,
     measurement_type: Function,
     range: float,
     resolution_digits: float,
 ) -> Tuple[float, bool, float]:
     """Perform a measurement using an NI DMM."""
+
     logging.info(
-        "Starting measurement: pin_name=%s measurement_type=%s range=%g resolution_digits=%g",
+        "Starting measurement: pin_name=%s, measurement_type=%s, range=%g, resolution_digits=%g",
         pin_name,
-        measurement_type,
+        measurement_type.name,
         range,
         resolution_digits,
     )
 
-    # If the measurement type is not specified, use DC_VOLTS.
+    # Default to DC_VOLTS if not specified
     nidmm_function = nidmm.Function(measurement_type.value or Function.DC_VOLTS.value)
 
     with measurement_service.context.reserve_session(pin_name) as reservation:
@@ -94,38 +94,38 @@ def measure(
             signal_out_of_range = math.isnan(measured_value) or math.isinf(measured_value)
             absolute_resolution = session.resolution_absolute
 
-    with measurement_service.context.reserve_session(
-        arbitrary_resource_name
-    ) as arbitrary_reservation:
+    logging.info(f"Reserving the file: {file_path}")
 
-        session_constructor = FileLoggerSessionConstructor(
-            initialization_behavior=InitializationBehavior.AUTO
-        )
+    with measurement_service.context.reserve_session(file_path) as file_session_reservation:
+        logging.info("Initializing the file logger session.")
+        file_session_constructor = FileLoggerSessionConstructor(SessionInitializationBehavior.AUTO)
 
-        with arbitrary_reservation.initialize_session(
-            session_constructor=session_constructor,
-            instrument_type_id=INSTRUMENT_TYPE,
-        ) as arbitrary_session_info:
-            arbitrary_session = arbitrary_session_info.session
-            arbitrary_session.log_data(content=f"Measured Value = {measured_value}")
+        with file_session_reservation.initialize_session(
+            file_session_constructor, INSTRUMENT_TYPE
+        ) as file_session_info:
+            file_session = file_session_info.session
+            file_session.log_data(
+                content=(
+                    f"Completed measurement: "
+                    f"measured_value={measured_value}, "
+                    f"signal_out_of_range={signal_out_of_range}, "
+                    f"absolute_resolution={absolute_resolution}\n"
+                )
+            )
 
-    logging.info(
-        "Completed measurement: measured_value=%g signal_out_of_range=%s absolute_resolution=%g",
-        measured_value,
-        signal_out_of_range,
-        absolute_resolution,
-    )
-    return (measured_value, signal_out_of_range, absolute_resolution)
+            logging.info("Data successfully logged.")
+
+    return measured_value, signal_out_of_range, absolute_resolution
 
 
-@click.command
+@click.command()
 @verbosity_option
-def main(verbosity: int) -> None:
-    """Perform a measurement using an NI DMM."""
+def main(verbosity: int = 1) -> None:
+    """Run the NI DMM measurement."""
     configure_logging(verbosity)
 
     with measurement_service.host_service():
-        input("Press enter to close the measurement service.\n")
+        input("Press Enter to close the measurement service...\n")
 
 
 if __name__ == "__main__":

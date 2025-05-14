@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SourceFile Checksum="1F81AA9791AF9ADCF152F948FA0C5E4A9BD9CD80D0270CC34BC60DD1100F5A47B7134FA2708B044E0EC7FF8D2F7BB6229F218DD2C876F53513FE8DA0B89FA898" xmlns="http://www.ni.com/PlatformFramework">
+	<SourceModelFeatureSet>
+		<ParsableNamespace AssemblyFileVersion="24.8.0.49911" FeatureSetName="Pin Map" Name="http://www.ni.com/InstrumentFramework/PinMap" OldestCompatibleVersion="21.3.0.0" Version="21.3.0.0" />
+		<ParsableNamespace AssemblyFileVersion="9.14.0.49911" FeatureSetName="Editor" Name="http://www.ni.com/PlatformFramework" OldestCompatibleVersion="8.1.0.49152" Version="8.1.0.49152" />
+		<ApplicationVersionInfo Build="24.8.0.49911" Name="InstrumentStudio" PersistenceVersion="22.1.0.0" Version="24.8.0.49911" />
+	</SourceModelFeatureSet>
+	<Project xmlns="http://www.ni.com/PlatformFramework">
+		<EnvoyManagerRootEnvoy Id="f53d543da7be447d977505512a9de1b1" ModelDefinitionType="EnvoyManagerRootEnvoy" Name="RootEnvoy" />
+		<EmbeddedDefinitionReference Id="7a73cec96722445aaeae940b880f627c" ModelDefinitionType="NationalInstruments.ProjectExplorer.Modeling.ProjectDataManager" Name="ProjectExplorer">
+			<ProjectExplorer />
+		</EmbeddedDefinitionReference>
+		<NameScopingEnvoy Id="f0fd0a1d98c944258fd0797c80775378" ModelDefinitionType="DefaultTarget" Name="DefaultTarget">
+			<DefaultTarget />
+			<FileReference Id="56e70fed357c4d8e9ceee504efb458ff" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="DmmMeasurementWithLogger.pinmap" StoragePath="DmmMeasurementWithLogger.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
+			<SourceFileReference Bindings="EnvoyManager" Id="84d8af5ffcfb41e0a2365b7d65155660" ModelDefinitionType="NationalInstruments.InstrumentFramework.Document.SourceModel.UnifiedTask" Name="Instrument.sfp" StoragePath="Instrument.sfp" />
+		</NameScopingEnvoy>
+	</Project>
+	<ProjectInformation xmlns="http://www.ni.com/PlatformFramework">
+		<p.ProjectProperties>
+			<Kind Name="plugin.reference">
+				<Item Name="ni.examples.NIDmmMeasurement_Python" Value="1.0.0" />
+			</Kind>
+		</p.ProjectProperties>
+	</ProjectInformation>
+</SourceFile>
