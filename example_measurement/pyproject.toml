@@ -1,5 +1,5 @@
 [project]
-name = "nidmm-measurement"
+name = "nidmm-measurement-with-file-logging"
 version = "1.0.0"
 description = "Measurement plug-in example that performs a DMM measurement using NI DMM and logs results using the File Logging Service."
 authors = [{name = "NI", email = "opensource@ni.com"}]
