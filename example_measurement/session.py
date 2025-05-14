@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import logging
 import threading
 from types import TracebackType
 from typing import Optional, Type
 
 import grpc
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
-from ni_measurement_plugin_sdk_service.session_management import SessionInitializationBehavior
+from ni_measurement_plugin_sdk_service.session_management import (
+    SessionInitializationBehavior,
+)
 from stubs.file_logger_service_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -21,6 +24,9 @@ from stubs.file_logger_service_pb2 import (
     LogDataResponse,
 )
 from stubs.file_logger_service_pb2_grpc import FileLoggerServiceStub
+
+logging.basicConfig(format="%(message)s", level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 GRPC_SERVICE_INTERFACE_NAME = "ni.logger.v1.file"
 GRPC_SERVICE_CLASS = "ni.logger.FileLogService"
@@ -43,7 +49,6 @@ class FileLoggerServiceClient:
 
     def __init__(
         self,
-        *,
         file_path: str,
         initialization_behavior: SessionInitializationBehavior = SessionInitializationBehavior.AUTO,
         discovery_client: DiscoveryClient = DiscoveryClient(),
@@ -60,12 +65,16 @@ class FileLoggerServiceClient:
         self._stub_lock = threading.Lock()
         self._initialization_behavior = initialization_behavior
 
-        response = self.initialize_file(
-            file_path=file_path,
-            initialization_behavior=initialization_behavior,
-        )
-        self._session_name = response.session_name
-        self._new_session = response.new_session
+        try:
+            response = self.initialize_file(
+                file_path=file_path,
+                initialization_behavior=initialization_behavior,
+            )
+            self._session_name = response.session_name
+            self._new_session = response.new_session
+        except grpc.RpcError:
+            logger.error("Error while initializing the file session.", exc_info=True)
+            raise
 
     def __enter__(self) -> FileLoggerServiceClient:
         """Enter the context manager and return the FileLoggerServiceClient."""
@@ -92,19 +101,23 @@ class FileLoggerServiceClient:
             exc_val: Value of the exception raised, if any.
             traceback: Traceback of the exception raised, if any.
         """
-        if self._new_session and (
-            self._initialization_behavior == SessionInitializationBehavior.AUTO
-            or self._initialization_behavior
-            == SessionInitializationBehavior.INITIALIZE_SERVER_SESSION
-        ):
-            self.close_file()
+        try:
+            if self._new_session and (
+                self._initialization_behavior == SessionInitializationBehavior.AUTO
+                or self._initialization_behavior
+                == SessionInitializationBehavior.INITIALIZE_SERVER_SESSION
+            ):
+                self.close_file()
 
-        elif (
-            not self._new_session
-            and self._initialization_behavior
-            == SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE
-        ):
-            self.close_file()
+            elif (
+                not self._new_session
+                and self._initialization_behavior
+                == SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE
+            ):
+                self.close_file()
+        except grpc.RpcError:
+            logger.error("Failed to close file session.")
+            raise
 
     def initialize_file(
         self,
@@ -114,11 +127,11 @@ class FileLoggerServiceClient:
         """Initialize the file for logging.
 
         Args:
-            file_path: The complete file path.
+            file_path: The complete path of the file.
             initialization_behavior: The initialization behavior to use.
                 - AUTO: Automatically determine the initialization behavior.
-                - INITIALIZE_NEW: Create a new file.
-                - ATTACH_TO_EXISTING: Attach to an existing file.
+                - INITIALIZE_NEW: Create a new file session.
+                - ATTACH_TO_EXISTING: Attach to an existing file session.
                 - INITIALIZE_NEW_THEN_DETACH: Create a new file session and detach from it.
                 - ATTACH_TO_EXISTING_THEN_CLOSE: Attach to an existing file session and close it.
 
@@ -130,7 +143,10 @@ class FileLoggerServiceClient:
             file_path=file_path,
             initialization_behavior=_SERVER_INITIALIZATION_BEHAVIOR_MAP[initialization_behavior],
         )
-        return self._get_stub().InitializeFile(request)
+        try:
+            return self._get_stub().InitializeFile(request)
+        except grpc.RpcError:
+            raise
 
     def log_data(self, content: str) -> LogDataResponse:
         """Log data to the file.
@@ -142,21 +158,25 @@ class FileLoggerServiceClient:
             The empty response from the server if the request is successful.
         """
         request = LogDataRequest(session_name=self._session_name, content=content)
-        return self._get_stub().LogData(request)
+        try:
+            return self._get_stub().LogData(request)
+        except grpc.RpcError:
+            logger.error("Failed to log data.", exc_info=True)
+            raise
 
     def close_file(self) -> CloseFileResponse:
         """Close the file.
 
-        This method is called mostly from __exit__ method when the context manager is exited.
-
-        Args:
-            file_name: The name of the file to close.
+        This method is called from __exit__ method when the context manager is exited.
 
         Returns:
             The empty response from the server if the request is successful.
         """
         request = CloseFileRequest(session_name=self._session_name)
-        return self._get_stub().CloseFile(request)
+        try:
+            return self._get_stub().CloseFile(request)
+        except grpc.RpcError:
+            raise
 
     def _get_stub(self) -> FileLoggerServiceStub:
         """Get the stub for the FileLoggerService.
@@ -169,11 +189,15 @@ class FileLoggerServiceClient:
         """
         with self._stub_lock:
             if self._stub is None:
-                service_location = self._discovery_client.resolve_service(
-                    provided_interface=GRPC_SERVICE_INTERFACE_NAME,
-                    service_class=GRPC_SERVICE_CLASS,
-                )
-                channel = grpc.insecure_channel(service_location.insecure_address)
-                self._stub = FileLoggerServiceStub(channel)
+                try:
+                    service_location = self._discovery_client.resolve_service(
+                        provided_interface=GRPC_SERVICE_INTERFACE_NAME,
+                        service_class=GRPC_SERVICE_CLASS,
+                    )
+                    channel = grpc.insecure_channel(service_location.insecure_address)
+                    self._stub = FileLoggerServiceStub(channel)
+                except grpc.RpcError:
+                    logger.error("Failed to create gRPC Stub.", exc_info=True)
+                    raise
 
         return self._stub

@@ -27,11 +27,14 @@ class FileLoggerSessionConstructor:
     def __call__(self, session_info: SessionInformation) -> FileLoggerServiceClient:
         """Call the FileLoggerServiceClient when this is called from a context manager.
 
+        Args:
+            session_info: The session information object containing the session name.
+
         Returns:
             The FileLoggerServiceClient object.
         """
         client = FileLoggerServiceClient(
-            file_path=session_info.session_name,
+            file_path=session_info.session_name,  # The session name is the file path.
             initialization_behavior=self.initialization_behavior,
         )
         return client

@@ -3,9 +3,9 @@
 import grpc
 import warnings
 
-import file_logger_service_pb2 as file__logger__service__pb2
+import stubs.file_logger_service_pb2 as file__logger__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.0rc1'
+GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 

@@ -9,7 +9,6 @@ readme = "README.md"
 requires-python = ">=3.9,<4.0"
 dependencies = [
     "grpcio-tools (>=1.71.0,<2.0.0)",
-    "protobuf (>=6.30.2,<7.0.0)",
     "ni-measurement-plugin-sdk (>=2.3.0,<3.0.0)",
     "nidmm (>=1.4.9,<2.0.0)"
 ]
