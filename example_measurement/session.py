@@ -136,7 +136,7 @@ class FileLoggerServiceClient:
                 - ATTACH_TO_EXISTING_THEN_CLOSE: Attach to an existing file session and close it.
 
         Returns:
-            The response containing name of the file that was initialized and a boolean value
+            The response containing name of the session that was initialized and a boolean value
             stating whether a new session was created.
         """
         request = InitializeFileRequest(

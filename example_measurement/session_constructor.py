@@ -19,7 +19,7 @@ class FileLoggerSessionConstructor:
         This class is used to construct a file logger session.
 
         Args:
-            initialization_behavior: Initialization behavior for the logger session.
+            initialization_behavior: Initialization behavior for the file logger session.
                 Defaults to SessionInitializationBehavior.AUTO.
         """
         self.initialization_behavior = initialization_behavior
