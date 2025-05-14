@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package file_logger_service;
 
+// Importing session.proto - A file used in NI gRPC Device Server.
+import "session.proto";
+
 service FileLoggerService {
   // Initializes the given file for logging.
   // Status Codes for errors:
@@ -27,6 +30,8 @@ service FileLoggerService {
 }
 
 message InitializeFileRequest {
+  // The complete file path.
+  string file_path = 1;
   // The complete file path.
   string file_path = 1;
   // Defines how the session should be initialized.
