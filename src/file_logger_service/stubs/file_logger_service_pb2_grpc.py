@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import stubs.file_logger_service_pb2 as file__logger__service__pb2
+import file_logger_service.stubs.file_logger_service_pb2 as file__logger__service__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -55,35 +55,19 @@ class FileLoggerServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def InitializeFile(self, request, context):
-        """Initializes the given file for logging.
-        Status Codes for errors:
-        - INVALID_ARGUMENT: Invalid Session Initialization Behavior.
-        - PERMISSION_DENIED: Permission denied for the File.
-        - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
-        - ALREADY_EXISTS: File has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
-        - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def LogData(self, request, context):
-        """Logs data to the file of the session.
-        Status Codes for errors:
-        - PERMISSION_DENIED: Permission denied for the File.
-        - NOT_FOUND: Session does not exist.
-        - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CloseFile(self, request, context):
-        """Closes the file handle of the session.
-        Status Codes for errors:
-        - NOT_FOUND: Session does not exist.
-        - INTERNAL: Any unexpected behavior.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')

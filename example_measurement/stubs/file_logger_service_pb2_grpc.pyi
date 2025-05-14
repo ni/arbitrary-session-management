@@ -23,32 +23,70 @@ class FileLoggerServiceStub:
         file_logger_service_pb2.InitializeFileRequest,
         file_logger_service_pb2.InitializeFileResponse,
     ]
+    """Initializes the given file for logging.
+    Status Codes for errors:
+    - INVALID_ARGUMENT: Invalid Session Initialization Behavior.
+    - PERMISSION_DENIED: Permission denied for the File.
+    - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+    - ALREADY_EXISTS: File has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
+    - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
+    """
 
     LogData: grpc.UnaryUnaryMultiCallable[
         file_logger_service_pb2.LogDataRequest,
         file_logger_service_pb2.LogDataResponse,
     ]
+    """Logs data to the file of the session.
+    Status Codes for errors:
+    - PERMISSION_DENIED: Permission denied for the File.
+    - NOT_FOUND: Session does not exist.
+    - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+    """
 
     CloseFile: grpc.UnaryUnaryMultiCallable[
         file_logger_service_pb2.CloseFileRequest,
         file_logger_service_pb2.CloseFileResponse,
     ]
+    """Closes the file handle of the session.
+    Status Codes for errors:
+    - NOT_FOUND: Session does not exist.
+    - INTERNAL: Any unexpected behavior.
+    """
 
 class FileLoggerServiceAsyncStub:
     InitializeFile: grpc.aio.UnaryUnaryMultiCallable[
         file_logger_service_pb2.InitializeFileRequest,
         file_logger_service_pb2.InitializeFileResponse,
     ]
+    """Initializes the given file for logging.
+    Status Codes for errors:
+    - INVALID_ARGUMENT: Invalid Session Initialization Behavior.
+    - PERMISSION_DENIED: Permission denied for the File.
+    - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+    - ALREADY_EXISTS: File has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
+    - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
+    """
 
     LogData: grpc.aio.UnaryUnaryMultiCallable[
         file_logger_service_pb2.LogDataRequest,
         file_logger_service_pb2.LogDataResponse,
     ]
+    """Logs data to the file of the session.
+    Status Codes for errors:
+    - PERMISSION_DENIED: Permission denied for the File.
+    - NOT_FOUND: Session does not exist.
+    - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+    """
 
     CloseFile: grpc.aio.UnaryUnaryMultiCallable[
         file_logger_service_pb2.CloseFileRequest,
         file_logger_service_pb2.CloseFileResponse,
     ]
+    """Closes the file handle of the session.
+    Status Codes for errors:
+    - NOT_FOUND: Session does not exist.
+    - INTERNAL: Any unexpected behavior.
+    """
 
 class FileLoggerServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
@@ -56,20 +94,39 @@ class FileLoggerServiceServicer(metaclass=abc.ABCMeta):
         self,
         request: file_logger_service_pb2.InitializeFileRequest,
         context: _ServicerContext,
-    ) -> typing.Union[file_logger_service_pb2.InitializeFileResponse, collections.abc.Awaitable[file_logger_service_pb2.InitializeFileResponse]]: ...
+    ) -> typing.Union[file_logger_service_pb2.InitializeFileResponse, collections.abc.Awaitable[file_logger_service_pb2.InitializeFileResponse]]:
+        """Initializes the given file for logging.
+        Status Codes for errors:
+        - INVALID_ARGUMENT: Invalid Session Initialization Behavior.
+        - PERMISSION_DENIED: Permission denied for the File.
+        - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+        - ALREADY_EXISTS: File has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
+        - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
+        """
 
     @abc.abstractmethod
     def LogData(
         self,
         request: file_logger_service_pb2.LogDataRequest,
         context: _ServicerContext,
-    ) -> typing.Union[file_logger_service_pb2.LogDataResponse, collections.abc.Awaitable[file_logger_service_pb2.LogDataResponse]]: ...
+    ) -> typing.Union[file_logger_service_pb2.LogDataResponse, collections.abc.Awaitable[file_logger_service_pb2.LogDataResponse]]:
+        """Logs data to the file of the session.
+        Status Codes for errors:
+        - PERMISSION_DENIED: Permission denied for the File.
+        - NOT_FOUND: Session does not exist.
+        - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+        """
 
     @abc.abstractmethod
     def CloseFile(
         self,
         request: file_logger_service_pb2.CloseFileRequest,
         context: _ServicerContext,
-    ) -> typing.Union[file_logger_service_pb2.CloseFileResponse, collections.abc.Awaitable[file_logger_service_pb2.CloseFileResponse]]: ...
+    ) -> typing.Union[file_logger_service_pb2.CloseFileResponse, collections.abc.Awaitable[file_logger_service_pb2.CloseFileResponse]]:
+        """Closes the file handle of the session.
+        Status Codes for errors:
+        - NOT_FOUND: Session does not exist.
+        - INTERNAL: Any unexpected behavior.
+        """
 
 def add_FileLoggerServiceServicer_to_server(servicer: FileLoggerServiceServicer, server: typing.Union[grpc.Server, grpc.aio.Server]) -> None: ...
