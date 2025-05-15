@@ -18,7 +18,7 @@ script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
 service_directory = pathlib.Path(script_or_exe).resolve().parent
 measurement_service = nims.MeasurementService(
     service_config_path=service_directory / "DmmMeasurementWithLogger.serviceconfig",
-    ui_file_paths=[service_directory / "NIDmmMeasurement.measui"],
+    ui_file_paths=[service_directory / "DmmMeasurementWithLogger.measui"],
 )
 
 INSTRUMENT_TYPE = "FileLoggerService"
