@@ -1,7 +1,7 @@
-## NI-DMM Measurement With File Logger and Session Sharing
+## NI-DMM Measurement With File Logger
 
-This is a measurement plug-in example that performs a measurement using an NI DMM, logs the results 
-using a `FileLoggerService`, and supports sharing both the instrument session (NI-DMM) 
+This is a measurement plug-in example that performs a measurement using an NI DMM, logs the results
+using a `FileLoggerService`, and supports sharing both the instrument session (NI-DMM)
 and non-instrument session (file session) with TestStand sequences.
 
 ### Features
@@ -11,8 +11,8 @@ and non-instrument session (file session) with TestStand sequences.
 - Logs measurement results via a custom `FileLoggerService` implementation
 - Includes InstrumentStudio and Measurement Plug-In UI Editor project files
 - Includes a TestStand sequence showing how to configure the pin map, register NI-DMM
-  (instrument sessions) with session management service and file sessions (non-instrument) 
-  with file service respectively, and run a measurement
+  (instrument sessions) with session management service and file sessions (non-instrument)
+  with file service, and run a measurement
   - For the sake of simplicity, the TestStand sequence handles pin map and
     session registration and unregistration in the `Setup` and `Cleanup`
     sections of the main sequence. For **Test UUTs** and batch process model use
@@ -50,3 +50,7 @@ follow the steps below:
   MEASUREMENT_PLUGIN_NIDMM_BOARD_TYPE=PXIe
   MEASUREMENT_PLUGIN_NIDMM_MODEL=4081
   ```
+
+### Note
+
+Make sure to update the file path in the `DmmMeasurementWithLogger.pinmap` file to use an **absolute path**.

@@ -11,7 +11,7 @@
       ],
       "path": "start.bat",
       "annotations": {
-        "ni/service.description": "Measurement plug-in example that performs a measurement using an NI DMM and log results to a file using file logging service..",
+        "ni/service.description": "Measurement plug-in example that performs a measurement using an NI DMM and log results to a file using file logging service.",
         "ni/service.collection": "NI.Examples",
         "ni/service.tags": []
       }

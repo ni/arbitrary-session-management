@@ -25,9 +25,6 @@ from stubs.file_logger_service_pb2 import (
 )
 from stubs.file_logger_service_pb2_grpc import FileLoggerServiceStub
 
-logging.basicConfig(format="%(message)s", level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 GRPC_SERVICE_INTERFACE_NAME = "ni.logger.v1.file"
 GRPC_SERVICE_CLASS = "ni.logger.FileLogService"
 
@@ -73,7 +70,7 @@ class FileLoggerServiceClient:
             self._session_name = response.session_name
             self._new_session = response.new_session
         except grpc.RpcError as error:
-            logger.error(f"Error while initializing the file session: {error}", exc_info=True)
+            logging.error(f"Error while initializing the file session: {error}", exc_info=True)
             raise
 
     def __enter__(self) -> FileLoggerServiceClient:
@@ -112,7 +109,7 @@ class FileLoggerServiceClient:
                 self.close_file()
 
         except grpc.RpcError as error:
-            logger.error(f"Failed to close file session: {error}", exc_info=True)
+            logging.error(f"Failed to close file session: {error}", exc_info=True)
             raise
 
     def initialize_file(
@@ -157,7 +154,7 @@ class FileLoggerServiceClient:
         try:
             return self._get_stub().LogData(request)
         except grpc.RpcError as error:
-            logger.error(f"Failed to log data: {error}", exc_info=True)
+            logging.error(f"Failed to log data: {error}", exc_info=True)
             raise
 
     def close_file(self) -> CloseFileResponse:
@@ -193,7 +190,7 @@ class FileLoggerServiceClient:
                     channel = grpc.insecure_channel(service_location.insecure_address)
                     self._stub = FileLoggerServiceStub(channel)
                 except grpc.RpcError as error:
-                    logger.error(f"Failed to create gRPC Stub: {error}", exc_info=True)
+                    logging.error(f"Failed to create gRPC Stub: {error}", exc_info=True)
                     raise
 
         return self._stub

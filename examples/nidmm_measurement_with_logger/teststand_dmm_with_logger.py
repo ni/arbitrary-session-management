@@ -1,4 +1,4 @@
-"""Functions to set up and tear down sessions of NI-DMM devices & files in NI TestStand."""
+"""Functions to set up and tear down sessions of NI-DMM devices and files in NI TestStand."""
 
 from typing import Any
 
@@ -88,7 +88,7 @@ def create_file_sessions(sequence_context: Any) -> None:
         session_management_client = SessionManagementClient(
             discovery_client=discovery_client, grpc_channel_pool=grpc_channel_pool
         )
-        # Prepare a session constructor with INITIALIZE and then DETACH behavior for file logger.
+        # Prepare a session constructor with INITIALIZE and then DETACH behavior for the logger.
         session_constructor = FileLoggerSessionConstructor(
             SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH
         )
@@ -117,7 +117,7 @@ def destroy_file_sessions() -> None:
             discovery_client=discovery_client, grpc_channel_pool=grpc_channel_pool
         )
 
-        # Prepare a session constructor with ATTACH and then CLOSE behavior for file logger
+        # Prepare a session constructor with ATTACH and then CLOSE behavior for the logger.
         session_constructor = FileLoggerSessionConstructor(
             SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE
         )

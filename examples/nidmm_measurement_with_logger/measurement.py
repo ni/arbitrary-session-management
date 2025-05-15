@@ -11,9 +11,6 @@ import click
 import ni_measurement_plugin_sdk_service as nims
 import nidmm
 from _helpers import configure_logging, verbosity_option
-from ni_measurement_plugin_sdk_service.session_management import (
-    SessionInitializationBehavior,
-)
 from session_constructor import FileLoggerSessionConstructor
 
 script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
@@ -23,6 +20,7 @@ measurement_service = nims.MeasurementService(
     ui_file_paths=[service_directory / "DmmMeasurementWithLogger.measui"],
 )
 
+# Use the same instrument type ID configured in PinMap.
 FILE_SERVICE_INSTRUMENT_TYPE = "FileLoggerService"
 
 
@@ -98,8 +96,10 @@ def measure(
     logging.info(f"Reserving the file: {file_path}")
 
     with measurement_service.context.reserve_session(file_path) as file_session_reservation:
-        logging.info("Initializing the file logger session.")
-        file_session_constructor = FileLoggerSessionConstructor(SessionInitializationBehavior.AUTO)
+        logging.info("Initializing the file logger session...")
+
+        # Defaults to AUTO initialization behavior.
+        file_session_constructor = FileLoggerSessionConstructor()
 
         with file_session_reservation.initialize_session(
             file_session_constructor, FILE_SERVICE_INSTRUMENT_TYPE
@@ -121,7 +121,7 @@ def measure(
 
 @click.command()
 @verbosity_option
-def main(verbosity: int = 1) -> None:
+def main(verbosity: int) -> None:
     """Run the NI DMM measurement."""
     configure_logging(verbosity)
 

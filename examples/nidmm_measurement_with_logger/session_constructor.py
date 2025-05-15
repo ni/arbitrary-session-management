@@ -34,7 +34,7 @@ class FileLoggerSessionConstructor:
             The FileLoggerServiceClient object.
         """
         client = FileLoggerServiceClient(
-            file_path=session_info.resource_name,  # The session name is the file path.
+            file_path=session_info.resource_name,  # The resource name is the absolute file path.
             initialization_behavior=self.initialization_behavior,
         )
         return client
