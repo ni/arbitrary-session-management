@@ -1,4 +1,4 @@
-"""Perform a measurement using an NI DMM and log results to a file using file logging service."""
+"""Perform a measurement using an NI DMM and log results to a file using the FileLoggerService."""
 
 import logging
 import math
@@ -9,9 +9,11 @@ from typing import Tuple
 
 import click
 import ni_measurement_plugin_sdk_service as nims
-from ni_measurement_plugin_sdk_service.session_management import SessionInitializationBehavior
 import nidmm
 from _helpers import configure_logging, verbosity_option
+from ni_measurement_plugin_sdk_service.session_management import (
+    SessionInitializationBehavior,
+)
 from session_constructor import FileLoggerSessionConstructor
 
 script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
@@ -21,7 +23,7 @@ measurement_service = nims.MeasurementService(
     ui_file_paths=[service_directory / "DmmMeasurementWithLogger.measui"],
 )
 
-INSTRUMENT_TYPE = "FileLoggerService"
+FILE_SERVICE_INSTRUMENT_TYPE = "FileLoggerService"
 
 
 class Function(Enum):
@@ -56,7 +58,7 @@ class Function(Enum):
     "file_path",
     nims.DataType.IOResource,
     "Pin2",
-    instrument_type=INSTRUMENT_TYPE,
+    instrument_type=FILE_SERVICE_INSTRUMENT_TYPE,
 )
 @measurement_service.configuration(
     "measurement_type", nims.DataType.Enum, Function.DC_VOLTS, enum_type=Function
@@ -74,7 +76,6 @@ def measure(
     resolution_digits: float,
 ) -> Tuple[float, bool, float]:
     """Perform a measurement using an NI DMM."""
-
     logging.info(
         "Starting measurement: pin_name=%s, measurement_type=%s, range=%g, resolution_digits=%g",
         pin_name,
@@ -101,7 +102,7 @@ def measure(
         file_session_constructor = FileLoggerSessionConstructor(SessionInitializationBehavior.AUTO)
 
         with file_session_reservation.initialize_session(
-            file_session_constructor, INSTRUMENT_TYPE
+            file_session_constructor, FILE_SERVICE_INSTRUMENT_TYPE
         ) as file_session_info:
             file_session = file_session_info.session
             file_session.log_data(
