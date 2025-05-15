@@ -95,25 +95,25 @@ def create_file_sessions(sequence_context: Any) -> None:
             session_management_client.register_sessions(reservation.session_info)
 
 
-def destroy_nidmm_sessions() -> None:
+def destroy_file_sessions() -> None:
     """Destroy and unregister file sessions."""
     with GrpcChannelPool() as grpc_channel_pool:
         discovery_client = DiscoveryClient(grpc_channel_pool=grpc_channel_pool)
         session_management_client = SessionManagementClient(
             discovery_client=discovery_client, grpc_channel_pool=grpc_channel_pool
         )
+        session_constructor = FileLoggerSessionConstructor(
+            SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE
+        )
+
         with session_management_client.reserve_all_registered_sessions(
             instrument_type_id=INSTRUMENT_TYPE,
         ) as reservation:
             if not reservation.session_info:
                 return
 
-            session_management_client.unregister_sessions(reservation.session_info)
-
-            session_constructor = FileLoggerSessionConstructor(
-                SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH
-            )
             with reservation.initialize_sessions(
                 session_constructor=session_constructor, instrument_type_id=INSTRUMENT_TYPE
             ):
                 pass
+            session_management_client.unregister_sessions(reservation.session_info)
