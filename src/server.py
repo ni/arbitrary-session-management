@@ -79,7 +79,7 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
         """Initialize a file session based on the initialization behavior.
 
         Calls the appropriate handler based on the initialization behavior specified in the request.
-        Returns an INVALID_ARGUMENT error if the initialization behavior is invalid.
+        Returns an INVALID_ARGUMENT error if the file path or initialization behavior is invalid .
 
         Args:
             request: InitializeFileRequest containing the file path and initialization behavior.
@@ -235,6 +235,7 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
                     if line.strip():  # Ignore blank lines
                         json.loads(line)
             return True
+
         except json.JSONDecodeError:
             return False
 
@@ -390,7 +391,7 @@ def start_server() -> None:
     """Start the gRPC server and register the service with the service registry."""
     logging.basicConfig(format="%(message)s", level=logging.INFO)
     logger = logging.getLogger(__name__)
-    logger.info("Starting the File Logger Service...")
+    logger.info("Starting the JSON Logger Service...")
 
     servicer = JsonFileLoggerServicer()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -410,7 +411,7 @@ def start_server() -> None:
     )
     registration_id = discovery_client.register_service(service_info, service_location)
 
-    logger.info(f"File Logger Service started on port {port}")
+    logger.info(f"JSON Logger Service started on port {port}")
     input("Press Enter to stop the server.")
 
     servicer.clean_up()
