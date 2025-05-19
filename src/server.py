@@ -15,6 +15,7 @@ import grpc
 from google.protobuf.json_format import MessageToDict
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
+
 from stubs.json_logger_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -26,10 +27,7 @@ from stubs.json_logger_pb2 import (
     LogDataRequest,
     LogDataResponse,
 )
-from stubs.json_logger_pb2_grpc import (
-    JsonLoggerServicer,
-    add_JsonLoggerServicer_to_server,
-)
+from stubs.json_logger_pb2_grpc import JsonLoggerServicer, add_JsonLoggerServicer_to_server
 
 F = TypeVar("F", bound=Callable[..., Any])
 
@@ -60,7 +58,7 @@ class Session:
 
 
 class JsonFileLoggerServicer(JsonLoggerServicer):
-    """A JSON file logger service that logs data to a JSON file.
+    """A JSON file logging service that logs data to a file in JSON format.
 
     Args:
         JsonLoggerServicer: gRPC service class generated from the .proto file.
