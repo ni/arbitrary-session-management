@@ -7,6 +7,7 @@ import builtins
 import google.protobuf.descriptor
 import google.protobuf.internal.enum_type_wrapper
 import google.protobuf.message
+import google.protobuf.timestamp_pb2
 import sys
 import typing
 
@@ -140,16 +141,21 @@ class Measurement(google.protobuf.message.Message):
     MEASUREMENT_NAME_FIELD_NUMBER: builtins.int
     MEASUREMENT_CONFIGURATION_FIELD_NUMBER: builtins.int
     MEASUREMENT_OUTPUT_FIELD_NUMBER: builtins.int
+    TIMESTAMP_FIELD_NUMBER: builtins.int
     measurement_name: builtins.str
     measurement_configuration: builtins.str
     measurement_output: builtins.str
+    @property
+    def timestamp(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
     def __init__(
         self,
         *,
         measurement_name: builtins.str = ...,
         measurement_configuration: builtins.str = ...,
         measurement_output: builtins.str = ...,
+        timestamp: google.protobuf.timestamp_pb2.Timestamp | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["measurement_configuration", b"measurement_configuration", "measurement_name", b"measurement_name", "measurement_output", b"measurement_output"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["timestamp", b"timestamp"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["measurement_configuration", b"measurement_configuration", "measurement_name", b"measurement_name", "measurement_output", b"measurement_output", "timestamp", b"timestamp"]) -> None: ...
 
 global___Measurement = Measurement

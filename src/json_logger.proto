@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package json_logger;
 
+import "google/protobuf/timestamp.proto";
+
 service JsonLogger {
   // Initializes the given JSON file for logging.
   // Status Codes for errors:
@@ -59,6 +61,7 @@ message Measurement {
   string measurement_name = 1;
   string measurement_configuration = 2;
   string measurement_output = 3;
+  google.protobuf.Timestamp timestamp = 4;
 }
 
 enum SessionInitializationBehavior {

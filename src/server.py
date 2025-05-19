@@ -7,14 +7,14 @@ import uuid
 from collections.abc import Callable
 from concurrent import futures
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional, TextIO, TypeVar
 
 import grpc
-from google.protobuf.json_format import MessageToJson
+from google.protobuf.json_format import MessageToDict
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
-
 from stubs.json_logger_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -26,7 +26,10 @@ from stubs.json_logger_pb2 import (
     LogDataRequest,
     LogDataResponse,
 )
-from stubs.json_logger_pb2_grpc import JsonLoggerServicer, add_JsonLoggerServicer_to_server
+from stubs.json_logger_pb2_grpc import (
+    JsonLoggerServicer,
+    add_JsonLoggerServicer_to_server,
+)
 
 F = TypeVar("F", bound=Callable[..., Any])
 
@@ -91,12 +94,18 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
             SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING: self._attach_existing_session,
         }
 
+        if not self._valid_ndjson_file(Path(request.file_path)):
+            context.abort(
+                grpc.StatusCode.INVALID_ARGUMENT,
+                f"Invalid NDJSON file. Accepted formats are .ndjson, .log, or .txt.",
+            )
+
         handler = initialization_behaviour.get(request.initialization_behavior)
 
-        if handler:
-            return handler(Path(request.file_path), context)
+        if handler is None:
+            context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
-        context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
+        return handler(Path(request.file_path), context)  # type: ignore[misc]
 
     def LogData(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
@@ -126,11 +135,21 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
             )
 
         try:
-            # index=None is used to avoid adding an index which ensure it is a valid NDJSON.
             # NDJSON is a format where each line is a valid JSON object better suited for streaming.
             # https://github.com/ndjson/ndjson-spec
-            data = MessageToJson(request.data, indent=None)
-            session.file_handle.write(data + "\n")  # type: ignore[union-attr]
+            data = MessageToDict(request.data, preserving_proto_field_name=True)
+
+            if hasattr(request.data, "timestamp") and request.data.timestamp is not None:
+                ts = (
+                    request.data.timestamp.ToDatetime()
+                    .replace(tzinfo=timezone.utc)
+                    .strftime("%Y-%m-%d %H:%M:%S")
+                )
+            else:
+                ts = datetime.now(timezone.utc)  # fallback
+
+            data["timestamp"] = ts
+            session.file_handle.write(json.dumps(data) + "\n")  # type: ignore[union-attr]
             session.file_handle.flush()  # type: ignore[union-attr]
             return LogDataResponse()
 
@@ -201,6 +220,23 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
                 if not session.file_handle.closed:
                     session.file_handle.close()
             self.sessions.clear()
+
+    def _valid_ndjson_file(self, file_path: Path) -> bool:
+        """Check if the file is a valid NDJSON file."""
+        if file_path.suffix not in (".ndjson", ".log", ".txt"):
+            return False
+
+        if not file_path.exists() or file_path.stat().st_size == 0:
+            return True
+
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():  # Ignore blank lines
+                        json.loads(line)
+            return True
+        except json.JSONDecodeError:
+            return False
 
     def _auto_initialize_session(
         self,

@@ -22,31 +22,32 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11json_logger.proto\x12\x0bjson_logger\"w\n\x15InitializeFileRequest\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12K\n\x17initialization_behavior\x18\x02 \x01(\x0e\x32*.json_logger.SessionInitializationBehavior\"C\n\x16InitializeFileResponse\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x13\n\x0bnew_session\x18\x02 \x01(\x08\"N\n\x0eLogDataRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12&\n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x18.json_logger.Measurement\"\x11\n\x0fLogDataResponse\"(\n\x10\x43loseFileRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"\x13\n\x11\x43loseFileResponse\"f\n\x0bMeasurement\x12\x18\n\x10measurement_name\x18\x01 \x01(\t\x12!\n\x19measurement_configuration\x18\x02 \x01(\t\x12\x1a\n\x12measurement_output\x18\x03 \x01(\t*\xbc\x01\n\x1dSessionInitializationBehavior\x12/\n+SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED\x10\x00\x12\x32\n.SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW\x10\x01\x12\x36\n2SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING\x10\x02\x32\xf9\x01\n\nJsonLogger\x12Y\n\x0eInitializeFile\x12\".json_logger.InitializeFileRequest\x1a#.json_logger.InitializeFileResponse\x12\x44\n\x07LogData\x12\x1b.json_logger.LogDataRequest\x1a\x1c.json_logger.LogDataResponse\x12J\n\tCloseFile\x12\x1d.json_logger.CloseFileRequest\x1a\x1e.json_logger.CloseFileResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11json_logger.proto\x12\x0bjson_logger\x1a\x1fgoogle/protobuf/timestamp.proto\"w\n\x15InitializeFileRequest\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12K\n\x17initialization_behavior\x18\x02 \x01(\x0e\x32*.json_logger.SessionInitializationBehavior\"C\n\x16InitializeFileResponse\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x13\n\x0bnew_session\x18\x02 \x01(\x08\"N\n\x0eLogDataRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12&\n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x18.json_logger.Measurement\"\x11\n\x0fLogDataResponse\"(\n\x10\x43loseFileRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"\x13\n\x11\x43loseFileResponse\"\x95\x01\n\x0bMeasurement\x12\x18\n\x10measurement_name\x18\x01 \x01(\t\x12!\n\x19measurement_configuration\x18\x02 \x01(\t\x12\x1a\n\x12measurement_output\x18\x03 \x01(\t\x12-\n\ttimestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp*\xbc\x01\n\x1dSessionInitializationBehavior\x12/\n+SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED\x10\x00\x12\x32\n.SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW\x10\x01\x12\x36\n2SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING\x10\x02\x32\xf9\x01\n\nJsonLogger\x12Y\n\x0eInitializeFile\x12\".json_logger.InitializeFileRequest\x1a#.json_logger.InitializeFileResponse\x12\x44\n\x07LogData\x12\x1b.json_logger.LogDataRequest\x1a\x1c.json_logger.LogDataResponse\x12J\n\tCloseFile\x12\x1d.json_logger.CloseFileRequest\x1a\x1e.json_logger.CloseFileResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'json_logger_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_start=491
-  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_end=679
-  _globals['_INITIALIZEFILEREQUEST']._serialized_start=34
-  _globals['_INITIALIZEFILEREQUEST']._serialized_end=153
-  _globals['_INITIALIZEFILERESPONSE']._serialized_start=155
-  _globals['_INITIALIZEFILERESPONSE']._serialized_end=222
-  _globals['_LOGDATAREQUEST']._serialized_start=224
-  _globals['_LOGDATAREQUEST']._serialized_end=302
-  _globals['_LOGDATARESPONSE']._serialized_start=304
-  _globals['_LOGDATARESPONSE']._serialized_end=321
-  _globals['_CLOSEFILEREQUEST']._serialized_start=323
-  _globals['_CLOSEFILEREQUEST']._serialized_end=363
-  _globals['_CLOSEFILERESPONSE']._serialized_start=365
-  _globals['_CLOSEFILERESPONSE']._serialized_end=384
-  _globals['_MEASUREMENT']._serialized_start=386
-  _globals['_MEASUREMENT']._serialized_end=488
-  _globals['_JSONLOGGER']._serialized_start=682
-  _globals['_JSONLOGGER']._serialized_end=931
+  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_start=572
+  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_end=760
+  _globals['_INITIALIZEFILEREQUEST']._serialized_start=67
+  _globals['_INITIALIZEFILEREQUEST']._serialized_end=186
+  _globals['_INITIALIZEFILERESPONSE']._serialized_start=188
+  _globals['_INITIALIZEFILERESPONSE']._serialized_end=255
+  _globals['_LOGDATAREQUEST']._serialized_start=257
+  _globals['_LOGDATAREQUEST']._serialized_end=335
+  _globals['_LOGDATARESPONSE']._serialized_start=337
+  _globals['_LOGDATARESPONSE']._serialized_end=354
+  _globals['_CLOSEFILEREQUEST']._serialized_start=356
+  _globals['_CLOSEFILEREQUEST']._serialized_end=396
+  _globals['_CLOSEFILERESPONSE']._serialized_start=398
+  _globals['_CLOSEFILERESPONSE']._serialized_end=417
+  _globals['_MEASUREMENT']._serialized_start=420
+  _globals['_MEASUREMENT']._serialized_end=569
+  _globals['_JSONLOGGER']._serialized_start=763
+  _globals['_JSONLOGGER']._serialized_end=1012
 # @@protoc_insertion_point(module_scope)
