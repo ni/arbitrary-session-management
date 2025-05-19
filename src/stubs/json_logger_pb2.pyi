@@ -4,7 +4,9 @@ isort:skip_file
 """
 
 import builtins
+import collections.abc
 import google.protobuf.descriptor
+import google.protobuf.internal.containers
 import google.protobuf.internal.enum_type_wrapper
 import google.protobuf.message
 import google.protobuf.timestamp_pb2
@@ -76,27 +78,70 @@ class InitializeFileResponse(google.protobuf.message.Message):
 global___InitializeFileResponse = InitializeFileResponse
 
 @typing.final
-class LogDataRequest(google.protobuf.message.Message):
+class LogMeasurementDataRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    @typing.final
+    class MeasurementConfigurationsEntry(google.protobuf.message.Message):
+        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: builtins.int
+        VALUE_FIELD_NUMBER: builtins.int
+        key: builtins.str
+        value: builtins.str
+        def __init__(
+            self,
+            *,
+            key: builtins.str = ...,
+            value: builtins.str = ...,
+        ) -> None: ...
+        def ClearField(self, field_name: typing.Literal["key", b"key", "value", b"value"]) -> None: ...
+
+    @typing.final
+    class MeasurementOutputsEntry(google.protobuf.message.Message):
+        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: builtins.int
+        VALUE_FIELD_NUMBER: builtins.int
+        key: builtins.str
+        value: builtins.str
+        def __init__(
+            self,
+            *,
+            key: builtins.str = ...,
+            value: builtins.str = ...,
+        ) -> None: ...
+        def ClearField(self, field_name: typing.Literal["key", b"key", "value", b"value"]) -> None: ...
+
     SESSION_NAME_FIELD_NUMBER: builtins.int
-    DATA_FIELD_NUMBER: builtins.int
+    MEASUREMENT_NAME_FIELD_NUMBER: builtins.int
+    TIMESTAMP_FIELD_NUMBER: builtins.int
+    MEASUREMENT_CONFIGURATIONS_FIELD_NUMBER: builtins.int
+    MEASUREMENT_OUTPUTS_FIELD_NUMBER: builtins.int
     session_name: builtins.str
+    measurement_name: builtins.str
     @property
-    def data(self) -> global___Measurement: ...
+    def timestamp(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    @property
+    def measurement_configurations(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]: ...
+    @property
+    def measurement_outputs(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]: ...
     def __init__(
         self,
         *,
         session_name: builtins.str = ...,
-        data: global___Measurement | None = ...,
+        measurement_name: builtins.str = ...,
+        timestamp: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        measurement_configurations: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
+        measurement_outputs: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing.Literal["data", b"data"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["data", b"data", "session_name", b"session_name"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["timestamp", b"timestamp"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["measurement_configurations", b"measurement_configurations", "measurement_name", b"measurement_name", "measurement_outputs", b"measurement_outputs", "session_name", b"session_name", "timestamp", b"timestamp"]) -> None: ...
 
-global___LogDataRequest = LogDataRequest
+global___LogMeasurementDataRequest = LogMeasurementDataRequest
 
 @typing.final
-class LogDataResponse(google.protobuf.message.Message):
+class LogMeasurementDataResponse(google.protobuf.message.Message):
     """Empty response message; success is indicated by the gRPC status code."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
@@ -105,7 +150,7 @@ class LogDataResponse(google.protobuf.message.Message):
         self,
     ) -> None: ...
 
-global___LogDataResponse = LogDataResponse
+global___LogMeasurementDataResponse = LogMeasurementDataResponse
 
 @typing.final
 class CloseFileRequest(google.protobuf.message.Message):
@@ -131,31 +176,3 @@ class CloseFileResponse(google.protobuf.message.Message):
     ) -> None: ...
 
 global___CloseFileResponse = CloseFileResponse
-
-@typing.final
-class Measurement(google.protobuf.message.Message):
-    """Represents the Measurement data to be logged."""
-
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    MEASUREMENT_NAME_FIELD_NUMBER: builtins.int
-    MEASUREMENT_CONFIGURATION_FIELD_NUMBER: builtins.int
-    MEASUREMENT_OUTPUT_FIELD_NUMBER: builtins.int
-    TIMESTAMP_FIELD_NUMBER: builtins.int
-    measurement_name: builtins.str
-    measurement_configuration: builtins.str
-    measurement_output: builtins.str
-    @property
-    def timestamp(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    def __init__(
-        self,
-        *,
-        measurement_name: builtins.str = ...,
-        measurement_configuration: builtins.str = ...,
-        measurement_output: builtins.str = ...,
-        timestamp: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-    ) -> None: ...
-    def HasField(self, field_name: typing.Literal["timestamp", b"timestamp"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["measurement_configuration", b"measurement_configuration", "measurement_name", b"measurement_name", "measurement_output", b"measurement_output", "timestamp", b"timestamp"]) -> None: ...
-
-global___Measurement = Measurement

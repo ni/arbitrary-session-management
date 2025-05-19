@@ -12,10 +12,8 @@ from pathlib import Path
 from typing import Any, Optional, TextIO, TypeVar
 
 import grpc
-from google.protobuf.json_format import MessageToDict
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
-
 from stubs.json_logger_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -24,10 +22,13 @@ from stubs.json_logger_pb2 import (
     CloseFileResponse,
     InitializeFileRequest,
     InitializeFileResponse,
-    LogDataRequest,
-    LogDataResponse,
+    LogMeasurementDataRequest,
+    LogMeasurementDataResponse,
 )
-from stubs.json_logger_pb2_grpc import JsonLoggerServicer, add_JsonLoggerServicer_to_server
+from stubs.json_logger_pb2_grpc import (
+    JsonLoggerServicer,
+    add_JsonLoggerServicer_to_server,
+)
 
 F = TypeVar("F", bound=Callable[..., Any])
 
@@ -105,23 +106,23 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
 
         return handler(Path(request.file_path), context)  # type: ignore[misc]
 
-    def LogData(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
+    def LogMeasurementData(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
-        request: LogDataRequest,
+        request: LogMeasurementDataRequest,
         context: grpc.ServicerContext,
-    ) -> LogDataResponse:
-        """Log data to the file associated with the session.
+    ) -> LogMeasurementDataResponse:
+        """Log measurement data to the file associated with the session.
 
         If the session does not exist or is closed, it returns NOT_FOUND error.
         If the file is not accessible, it returns PERMISSION_DENIED error.
         If the file is not writable or for any other errors, it returns INTERNAL error.
 
         Args:
-            request: LogDataRequest containing the session name and content to log.
+            request: LogMeasurementDataRequest containing the session name and data to log.
             context: gRPC context object for the request.
 
         Returns:
-            LogDataResponse indicating the success of the operation.
+            LogMeasurementDataResponse indicating the success of the operation.
         """
         with self.lock:
             session = self._get_session_by_name(request.session_name)
@@ -133,23 +134,33 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
             )
 
         try:
-            # NDJSON is a format where each line is a valid JSON object better suited for streaming.
-            # https://github.com/ndjson/ndjson-spec
-            data = MessageToDict(request.data, preserving_proto_field_name=True)
-
-            if hasattr(request.data, "timestamp") and request.data.timestamp is not None:
-                ts = (
-                    request.data.timestamp.ToDatetime()
+            if hasattr(request.timestamp, "timestamp") and request.timestamp is not None:
+                timestamp = (
+                    request.timestamp.ToDatetime()
                     .replace(tzinfo=timezone.utc)
                     .strftime("%Y-%m-%d %H:%M:%S")
                 )
             else:
-                ts = datetime.now(timezone.utc)  # fallback
+                timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")  # fallback
 
-            data["timestamp"] = ts
+            data = {
+                "timestamp": timestamp,
+                "measurement_name": request.measurement_name,
+                "measurement_configurations": (
+                    dict(request.measurement_configurations)
+                    if request.measurement_configurations
+                    else {}
+                ),
+                "measurement_outputs": (
+                    dict(request.measurement_outputs) if request.measurement_outputs else {}
+                ),
+            }
+
+            # NDJSON is a format where each line is a valid JSON object better suited for streaming.
+            # https://github.com/ndjson/ndjson-spec
             session.file_handle.write(json.dumps(data) + "\n")  # type: ignore[union-attr]
             session.file_handle.flush()  # type: ignore[union-attr]
-            return LogDataResponse()
+            return LogMeasurementDataResponse()
 
         except OSError as e:
             context.abort(

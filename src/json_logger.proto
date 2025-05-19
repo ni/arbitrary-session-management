@@ -14,12 +14,12 @@ service JsonLogger {
   // - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
   rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
 
-  // Logs data to the file of the session.
+  // Logs measurement data to the file of the session.
   // Status Codes for errors:
   // - PERMISSION_DENIED: Permission denied for the File.
   // - NOT_FOUND: Session does not exist.
   // - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
-  rpc LogData(LogDataRequest) returns (LogDataResponse);
+  rpc LogMeasurementData(LogMeasurementDataRequest) returns (LogMeasurementDataResponse);
 
   // Closes the file handle of the session.
   // Status Codes for errors:
@@ -40,13 +40,16 @@ message InitializeFileResponse {
   bool new_session = 2;
 }
 
-message LogDataRequest {
+message LogMeasurementDataRequest{
   string session_name = 1;
-  Measurement data = 2;
+  string measurement_name = 2;
+  google.protobuf.Timestamp timestamp = 3;
+  map<string, string> measurement_configurations = 4;
+  map<string, string> measurement_outputs=5;
 }
 
 // Empty response message; success is indicated by the gRPC status code.
-message LogDataResponse {
+message LogMeasurementDataResponse {
 }
 
 message CloseFileRequest {
@@ -54,14 +57,6 @@ message CloseFileRequest {
 }
 
 message CloseFileResponse {
-}
-
-// Represents the Measurement data to be logged.
-message Measurement {
-  string measurement_name = 1;
-  string measurement_configuration = 2;
-  string measurement_output = 3;
-  google.protobuf.Timestamp timestamp = 4;
 }
 
 enum SessionInitializationBehavior {

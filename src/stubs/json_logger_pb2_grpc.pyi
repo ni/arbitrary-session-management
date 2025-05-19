@@ -32,11 +32,11 @@ class JsonLoggerStub:
     - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
     """
 
-    LogData: grpc.UnaryUnaryMultiCallable[
-        json_logger_pb2.LogDataRequest,
-        json_logger_pb2.LogDataResponse,
+    LogMeasurementData: grpc.UnaryUnaryMultiCallable[
+        json_logger_pb2.LogMeasurementDataRequest,
+        json_logger_pb2.LogMeasurementDataResponse,
     ]
-    """Logs data to the file of the session.
+    """Logs measurement data to the file of the session.
     Status Codes for errors:
     - PERMISSION_DENIED: Permission denied for the File.
     - NOT_FOUND: Session does not exist.
@@ -67,11 +67,11 @@ class JsonLoggerAsyncStub:
     - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
     """
 
-    LogData: grpc.aio.UnaryUnaryMultiCallable[
-        json_logger_pb2.LogDataRequest,
-        json_logger_pb2.LogDataResponse,
+    LogMeasurementData: grpc.aio.UnaryUnaryMultiCallable[
+        json_logger_pb2.LogMeasurementDataRequest,
+        json_logger_pb2.LogMeasurementDataResponse,
     ]
-    """Logs data to the file of the session.
+    """Logs measurement data to the file of the session.
     Status Codes for errors:
     - PERMISSION_DENIED: Permission denied for the File.
     - NOT_FOUND: Session does not exist.
@@ -105,12 +105,12 @@ class JsonLoggerServicer(metaclass=abc.ABCMeta):
         """
 
     @abc.abstractmethod
-    def LogData(
+    def LogMeasurementData(
         self,
-        request: json_logger_pb2.LogDataRequest,
+        request: json_logger_pb2.LogMeasurementDataRequest,
         context: _ServicerContext,
-    ) -> typing.Union[json_logger_pb2.LogDataResponse, collections.abc.Awaitable[json_logger_pb2.LogDataResponse]]:
-        """Logs data to the file of the session.
+    ) -> typing.Union[json_logger_pb2.LogMeasurementDataResponse, collections.abc.Awaitable[json_logger_pb2.LogMeasurementDataResponse]]:
+        """Logs measurement data to the file of the session.
         Status Codes for errors:
         - PERMISSION_DENIED: Permission denied for the File.
         - NOT_FOUND: Session does not exist.

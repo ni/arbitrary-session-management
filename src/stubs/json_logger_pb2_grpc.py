@@ -39,10 +39,10 @@ class JsonLoggerStub(object):
                 request_serializer=json__logger__pb2.InitializeFileRequest.SerializeToString,
                 response_deserializer=json__logger__pb2.InitializeFileResponse.FromString,
                 _registered_method=True)
-        self.LogData = channel.unary_unary(
-                '/json_logger.JsonLogger/LogData',
-                request_serializer=json__logger__pb2.LogDataRequest.SerializeToString,
-                response_deserializer=json__logger__pb2.LogDataResponse.FromString,
+        self.LogMeasurementData = channel.unary_unary(
+                '/json_logger.JsonLogger/LogMeasurementData',
+                request_serializer=json__logger__pb2.LogMeasurementDataRequest.SerializeToString,
+                response_deserializer=json__logger__pb2.LogMeasurementDataResponse.FromString,
                 _registered_method=True)
         self.CloseFile = channel.unary_unary(
                 '/json_logger.JsonLogger/CloseFile',
@@ -67,8 +67,8 @@ class JsonLoggerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def LogData(self, request, context):
-        """Logs data to the file of the session.
+    def LogMeasurementData(self, request, context):
+        """Logs measurement data to the file of the session.
         Status Codes for errors:
         - PERMISSION_DENIED: Permission denied for the File.
         - NOT_FOUND: Session does not exist.
@@ -96,10 +96,10 @@ def add_JsonLoggerServicer_to_server(servicer, server):
                     request_deserializer=json__logger__pb2.InitializeFileRequest.FromString,
                     response_serializer=json__logger__pb2.InitializeFileResponse.SerializeToString,
             ),
-            'LogData': grpc.unary_unary_rpc_method_handler(
-                    servicer.LogData,
-                    request_deserializer=json__logger__pb2.LogDataRequest.FromString,
-                    response_serializer=json__logger__pb2.LogDataResponse.SerializeToString,
+            'LogMeasurementData': grpc.unary_unary_rpc_method_handler(
+                    servicer.LogMeasurementData,
+                    request_deserializer=json__logger__pb2.LogMeasurementDataRequest.FromString,
+                    response_serializer=json__logger__pb2.LogMeasurementDataResponse.SerializeToString,
             ),
             'CloseFile': grpc.unary_unary_rpc_method_handler(
                     servicer.CloseFile,
@@ -145,7 +145,7 @@ class JsonLogger(object):
             _registered_method=True)
 
     @staticmethod
-    def LogData(request,
+    def LogMeasurementData(request,
             target,
             options=(),
             channel_credentials=None,
@@ -158,9 +158,9 @@ class JsonLogger(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/json_logger.JsonLogger/LogData',
-            json__logger__pb2.LogDataRequest.SerializeToString,
-            json__logger__pb2.LogDataResponse.FromString,
+            '/json_logger.JsonLogger/LogMeasurementData',
+            json__logger__pb2.LogMeasurementDataRequest.SerializeToString,
+            json__logger__pb2.LogMeasurementDataResponse.FromString,
             options,
             channel_credentials,
             insecure,

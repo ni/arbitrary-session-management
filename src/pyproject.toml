@@ -2,7 +2,7 @@
 [project]
 name = "json-logger"
 version = "1.0.0"
-description = "A user-defined service to log data to JSON files while managing sessions efficiently."
+description = "A user-defined service to log data to JSON file while managing sessions efficiently."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
 license = { text = "MIT" }
 
