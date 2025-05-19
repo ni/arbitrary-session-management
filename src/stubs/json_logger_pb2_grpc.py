@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import file_logger_service.stubs.file_logger_service_pb2 as file__logger__service__pb2
+import stubs.json_logger_pb2 as json__logger__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -18,14 +18,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in file_logger_service_pb2_grpc.py depends on'
+        + f' but the generated code in json_logger_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class FileLoggerServiceStub(object):
+class JsonLoggerStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -35,70 +35,86 @@ class FileLoggerServiceStub(object):
             channel: A grpc.Channel.
         """
         self.InitializeFile = channel.unary_unary(
-                '/file_logger_service.FileLoggerService/InitializeFile',
-                request_serializer=file__logger__service__pb2.InitializeFileRequest.SerializeToString,
-                response_deserializer=file__logger__service__pb2.InitializeFileResponse.FromString,
+                '/json_logger.JsonLogger/InitializeFile',
+                request_serializer=json__logger__pb2.InitializeFileRequest.SerializeToString,
+                response_deserializer=json__logger__pb2.InitializeFileResponse.FromString,
                 _registered_method=True)
         self.LogData = channel.unary_unary(
-                '/file_logger_service.FileLoggerService/LogData',
-                request_serializer=file__logger__service__pb2.LogDataRequest.SerializeToString,
-                response_deserializer=file__logger__service__pb2.LogDataResponse.FromString,
+                '/json_logger.JsonLogger/LogData',
+                request_serializer=json__logger__pb2.LogDataRequest.SerializeToString,
+                response_deserializer=json__logger__pb2.LogDataResponse.FromString,
                 _registered_method=True)
         self.CloseFile = channel.unary_unary(
-                '/file_logger_service.FileLoggerService/CloseFile',
-                request_serializer=file__logger__service__pb2.CloseFileRequest.SerializeToString,
-                response_deserializer=file__logger__service__pb2.CloseFileResponse.FromString,
+                '/json_logger.JsonLogger/CloseFile',
+                request_serializer=json__logger__pb2.CloseFileRequest.SerializeToString,
+                response_deserializer=json__logger__pb2.CloseFileResponse.FromString,
                 _registered_method=True)
 
 
-class FileLoggerServiceServicer(object):
+class JsonLoggerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def InitializeFile(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Initializes the given JSON file for logging.
+        Status Codes for errors:
+        - INVALID_ARGUMENT: Invalid JSON File or Invalid Session Initialization Behavior.
+        - PERMISSION_DENIED: Permission denied for the File.
+        - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+        - ALREADY_EXISTS: File has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
+        - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def LogData(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Logs data to the file of the session.
+        Status Codes for errors:
+        - PERMISSION_DENIED: Permission denied for the File.
+        - NOT_FOUND: Session does not exist.
+        - INTERNAL: File path is invalid or inaccessible or any other unexpected behavior.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CloseFile(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Closes the file handle of the session.
+        Status Codes for errors:
+        - NOT_FOUND: Session does not exist.
+        - INTERNAL: Any unexpected behavior.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_FileLoggerServiceServicer_to_server(servicer, server):
+def add_JsonLoggerServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'InitializeFile': grpc.unary_unary_rpc_method_handler(
                     servicer.InitializeFile,
-                    request_deserializer=file__logger__service__pb2.InitializeFileRequest.FromString,
-                    response_serializer=file__logger__service__pb2.InitializeFileResponse.SerializeToString,
+                    request_deserializer=json__logger__pb2.InitializeFileRequest.FromString,
+                    response_serializer=json__logger__pb2.InitializeFileResponse.SerializeToString,
             ),
             'LogData': grpc.unary_unary_rpc_method_handler(
                     servicer.LogData,
-                    request_deserializer=file__logger__service__pb2.LogDataRequest.FromString,
-                    response_serializer=file__logger__service__pb2.LogDataResponse.SerializeToString,
+                    request_deserializer=json__logger__pb2.LogDataRequest.FromString,
+                    response_serializer=json__logger__pb2.LogDataResponse.SerializeToString,
             ),
             'CloseFile': grpc.unary_unary_rpc_method_handler(
                     servicer.CloseFile,
-                    request_deserializer=file__logger__service__pb2.CloseFileRequest.FromString,
-                    response_serializer=file__logger__service__pb2.CloseFileResponse.SerializeToString,
+                    request_deserializer=json__logger__pb2.CloseFileRequest.FromString,
+                    response_serializer=json__logger__pb2.CloseFileResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'file_logger_service.FileLoggerService', rpc_method_handlers)
+            'json_logger.JsonLogger', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('file_logger_service.FileLoggerService', rpc_method_handlers)
+    server.add_registered_method_handlers('json_logger.JsonLogger', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class FileLoggerService(object):
+class JsonLogger(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -115,9 +131,9 @@ class FileLoggerService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/file_logger_service.FileLoggerService/InitializeFile',
-            file__logger__service__pb2.InitializeFileRequest.SerializeToString,
-            file__logger__service__pb2.InitializeFileResponse.FromString,
+            '/json_logger.JsonLogger/InitializeFile',
+            json__logger__pb2.InitializeFileRequest.SerializeToString,
+            json__logger__pb2.InitializeFileResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -142,9 +158,9 @@ class FileLoggerService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/file_logger_service.FileLoggerService/LogData',
-            file__logger__service__pb2.LogDataRequest.SerializeToString,
-            file__logger__service__pb2.LogDataResponse.FromString,
+            '/json_logger.JsonLogger/LogData',
+            json__logger__pb2.LogDataRequest.SerializeToString,
+            json__logger__pb2.LogDataResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -169,9 +185,9 @@ class FileLoggerService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/file_logger_service.FileLoggerService/CloseFile',
-            file__logger__service__pb2.CloseFileRequest.SerializeToString,
-            file__logger__service__pb2.CloseFileResponse.FromString,
+            '/json_logger.JsonLogger/CloseFile',
+            json__logger__pb2.CloseFileRequest.SerializeToString,
+            json__logger__pb2.CloseFileResponse.FromString,
             options,
             channel_credentials,
             insecure,

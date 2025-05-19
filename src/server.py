@@ -1,4 +1,4 @@
-"""A user-defined service to log data to files while managing sessions efficiently."""
+"""A user-defined service to log data to JSON file while managing sessions efficiently."""
 
 import json
 import logging
@@ -11,7 +11,11 @@ from pathlib import Path
 from typing import Any, Optional, TextIO, TypeVar
 
 import grpc
-from file_logger_service.stubs.file_logger_service_pb2 import (
+from google.protobuf.json_format import MessageToJson
+from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
+from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
+
+from stubs.json_logger_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -22,17 +26,12 @@ from file_logger_service.stubs.file_logger_service_pb2 import (
     LogDataRequest,
     LogDataResponse,
 )
-from file_logger_service.stubs.file_logger_service_pb2_grpc import (
-    FileLoggerServiceServicer,
-    add_FileLoggerServiceServicer_to_server,
-)
-from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
-from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
+from stubs.json_logger_pb2_grpc import JsonLoggerServicer, add_JsonLoggerServicer_to_server
 
 F = TypeVar("F", bound=Callable[..., Any])
 
 
-def get_service_config(file_name: str = "FileLogger.serviceconfig") -> dict[str, Any]:
+def get_service_config(file_name: str = "JsonLogger.serviceconfig") -> dict[str, Any]:
     """Get the service configurations from a .serviceconfig file.
 
     Args:
@@ -57,11 +56,11 @@ class Session:
     file_handle: TextIO
 
 
-class FileLoggerServicer(FileLoggerServiceServicer):
-    """A file logger service that logs data to a file.
+class JsonFileLoggerServicer(JsonLoggerServicer):
+    """A JSON file logger service that logs data to a JSON file.
 
     Args:
-        FileLoggerServiceServicer: gRPC service class generated from the .proto file.
+        JsonLoggerServicer: gRPC service class generated from the .proto file.
     """
 
     def __init__(self) -> None:
@@ -127,7 +126,11 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
         try:
-            session.file_handle.write(request.content)  # type: ignore[union-attr]
+            # index=None is used to avoid adding an index which ensure it is a valid NDJSON.
+            # NDJSON is a format where each line is a valid JSON object better suited for streaming.
+            # https://github.com/ndjson/ndjson-spec
+            data = MessageToJson(request.data, indent=None)
+            session.file_handle.write(data + "\n")  # type: ignore[union-attr]
             session.file_handle.flush()  # type: ignore[union-attr]
             return LogDataResponse()
 
@@ -256,7 +259,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         try:
             file_handle: TextIO = open(file_path, "a+")
             session_name: str = str(uuid.uuid4())
-            
+
             with self.lock:
                 self.sessions[file_path] = Session(
                     session_name=session_name,
@@ -353,9 +356,9 @@ def start_server() -> None:
     logger = logging.getLogger(__name__)
     logger.info("Starting the File Logger Service...")
 
-    servicer = FileLoggerServicer()
+    servicer = JsonFileLoggerServicer()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    add_FileLoggerServiceServicer_to_server(servicer, server)
+    add_JsonLoggerServicer_to_server(servicer, server)
     host = "localhost"
     port = str(server.add_insecure_port(f"{host}:0"))
     server.start()

@@ -9,4 +9,4 @@ if not exist .venv (
     poetry install --only main
 )
 REM Run the server.
-.venv\Scripts\python.exe file_logger_service/server.py
+.venv\Scripts\python.exe server.py
