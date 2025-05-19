@@ -79,7 +79,7 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
         """Initialize a file session based on the initialization behavior.
 
         Calls the appropriate handler based on the initialization behavior specified in the request.
-        Returns an INVALID_ARGUMENT error if the file path or initialization behavior is invalid .
+        Returns an INVALID_ARGUMENT error if the file path or initialization behavior is invalid.
 
         Args:
             request: InitializeFileRequest containing the file path and initialization behavior.
