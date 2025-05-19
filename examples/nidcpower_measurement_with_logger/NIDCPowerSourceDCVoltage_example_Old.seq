@@ -1,0 +1,4414 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<teststandfileheader type='SequenceFile' fileversion='962' productname='TestStand' productversion='2021 SP1 (21.1.0.49154)' compatibleversion='21.0.0.0' buildversion='21.0.0.49156' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ni.com/TestStand/21.0.0/SequenceFile">
+	<typelist>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='1'>
+			<Expression classname='ExprValue' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436'>
+				<value/>
+			</Expression>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='2'>
+			<StepTypeMenu classname='Obj' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='24'>
+				<subprops>
+					<CanBeSubstepType classname='Bool'>
+						<value>false</value>
+					</CanBeSubstepType>
+					<CanOnlyBeSubstepType classname='Bool'>
+						<value>false</value>
+					</CanOnlyBeSubstepType>
+					<Category classname='Str'>
+						<value>""</value>
+					</Category>
+					<ItemName typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value>""</value>
+					</ItemName>
+					<SingularItemName classname='Str'>
+						<value>""</value>
+					</SingularItemName>
+					<SeparatorBeforeCategory classname='Bool'>
+						<value>false</value>
+					</SeparatorBeforeCategory>
+					<SeparatorBeforeItemName classname='Bool'>
+						<value>false</value>
+					</SeparatorBeforeItemName>
+					<Group classname='Str'>
+						<value/>
+					</Group>
+				</subprops>
+			</StepTypeMenu>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='3'>
+			<StepTypeSubstepsArray classname='Objs' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' flagsforinstances='4718616' instanceoverrideflags='4849688' valueflags='24'>
+				<value lbound='[0]' ubound='[]'/>
+			</StepTypeSubstepsArray>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='4'>
+			<NI_ArrayDimensions classname='ArrayDimensions' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<LowerBounds classname='Nums'>
+						<value lbound='[0]' ubound='[]'/>
+					</LowerBounds>
+					<UpperBounds classname='Nums'>
+						<value lbound='[0]' ubound='[]'/>
+					</UpperBounds>
+				</subprops>
+			</NI_ArrayDimensions>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='5'>
+			<NI_PropertyObjectType classname='PropertyObjectType' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<ValueType classname='Num'>
+						<value>3</value>
+					</ValueType>
+					<IsObject classname='Bool'>
+						<value>true</value>
+					</IsObject>
+					<TypeName classname='Str'>
+						<value/>
+					</TypeName>
+					<ElementType classname='Objs'>
+						<value lbound='[0]' ubound='[]'/>
+					</ElementType>
+					<ArrayDimensions typename='NI_ArrayDimensions' xsi:type='NI_ArrayDimensions' classname='ArrayDimensions'>
+						<subprops>
+							<LowerBounds classname='Nums'>
+								<value lbound='[0]' ubound='[]'/>
+							</LowerBounds>
+							<UpperBounds classname='Nums'>
+								<value lbound='[0]' ubound='[]'/>
+							</UpperBounds>
+						</subprops>
+					</ArrayDimensions>
+					<Representation classname='Num'>
+						<value>1</value>
+					</Representation>
+					<ClassName classname='Str'>
+						<value/>
+					</ClassName>
+				</subprops>
+			</NI_PropertyObjectType>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='6'>
+			<NI_CustomResult classname='CustomResult' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<Name typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</Name>
+					<ValueToLog typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</ValueToLog>
+					<Condition typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</Condition>
+					<Flags classname='Num'>
+						<value>8192</value>
+						<numericfmt>%#x</numericfmt>
+					</Flags>
+					<CheckedState classname='Num'>
+						<value>2</value>
+					</CheckedState>
+					<Type typename='NI_PropertyObjectType' xsi:type='NI_PropertyObjectType' classname='PropertyObjectType'>
+						<subprops>
+							<ValueType classname='Num'>
+								<value>3</value>
+							</ValueType>
+							<IsObject classname='Bool'>
+								<value>true</value>
+							</IsObject>
+							<TypeName classname='Str'>
+								<value/>
+							</TypeName>
+							<ElementType classname='Objs'>
+								<value lbound='[0]' ubound='[]'/>
+							</ElementType>
+							<ArrayDimensions classname='ArrayDimensions'>
+								<subprops>
+									<LowerBounds classname='Nums'>
+										<value lbound='[0]' ubound='[]'/>
+									</LowerBounds>
+									<UpperBounds classname='Nums'>
+										<value lbound='[0]' ubound='[]'/>
+									</UpperBounds>
+								</subprops>
+							</ArrayDimensions>
+							<Representation classname='Num'>
+								<value>1</value>
+							</Representation>
+							<ClassName classname='Str'>
+								<value/>
+							</ClassName>
+						</subprops>
+					</Type>
+					<Elements classname='Objs'>
+						<value lbound='[0]' ubound='[]'/>
+					</Elements>
+					<IsAnyType classname='Bool'>
+						<value>true</value>
+					</IsAnyType>
+				</subprops>
+			</NI_CustomResult>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='7'>
+			<TEInf classname='Obj' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' flagsforinstances='4456472' instanceoverrideflags='4456472' valueflags='24'>
+				<subprops>
+					<Id classname='Str' flagsforinstances='1' instanceoverrideflags='5046297'>
+						<value/>
+					</Id>
+					<Icon classname='Str' instanceoverrideflags='5046296'>
+						<value/>
+					</Icon>
+					<SData classname='Obj' flagsforinstances='2097152' instanceoverrideflags='7143448' structureflags='2097152'/>
+					<PreCond typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</PreCond>
+					<LoadOpt classname='Str' instanceoverrideflags='5046296'>
+						<value>PreloadWhenExecuted</value>
+					</LoadOpt>
+					<UnloadOpt classname='Str' instanceoverrideflags='5046296'>
+						<value>UnloadWithFile</value>
+					</UnloadOpt>
+					<Mode classname='Str' instanceoverrideflags='5046296'>
+						<value>Normal</value>
+					</Mode>
+					<WindowActivation classname='Str' instanceoverrideflags='5046296'>
+						<value>None</value>
+					</WindowActivation>
+					<ResultOption classname='Num' instanceoverrideflags='5046296'>
+						<value>1</value>
+					</ResultOption>
+					<StepFCSeqF classname='Bool' instanceoverrideflags='5046296'>
+						<value>true</value>
+					</StepFCSeqF>
+					<IgnoreRTE classname='Bool' instanceoverrideflags='5046296'>
+						<value>false</value>
+					</IgnoreRTE>
+					<UseMutex classname='Bool' instanceoverrideflags='5046296'>
+						<value>false</value>
+					</UseMutex>
+					<MutexNameOrRef typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</MutexNameOrRef>
+					<BatchSyncOpt classname='Num' instanceoverrideflags='5046296'>
+						<value>0</value>
+					</BatchSyncOpt>
+					<SwitchEnabled classname='Bool' instanceoverrideflags='5046296'>
+						<value>false</value>
+					</SwitchEnabled>
+					<VirtualDeviceName typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</VirtualDeviceName>
+					<SwitchOperation classname='Num' instanceoverrideflags='5046296'>
+						<value>1</value>
+					</SwitchOperation>
+					<RouteGroupConnect typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</RouteGroupConnect>
+					<RouteGroupDisconnect typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</RouteGroupDisconnect>
+					<MulticonnectMode classname='Num' instanceoverrideflags='5046296'>
+						<value>1</value>
+					</MulticonnectMode>
+					<OperationOrder classname='Num' instanceoverrideflags='5046296'>
+						<value>2</value>
+					</OperationOrder>
+					<ConnectionLifetime classname='Num' instanceoverrideflags='5046296'>
+						<value>4</value>
+					</ConnectionLifetime>
+					<WaitForDebounce classname='Bool' instanceoverrideflags='5046296'>
+						<value>true</value>
+					</WaitForDebounce>
+					<PassAct classname='Str' instanceoverrideflags='5046296'>
+						<value>Next</value>
+					</PassAct>
+					<FailAct classname='Str' instanceoverrideflags='5046296'>
+						<value>Next</value>
+					</FailAct>
+					<PassActTarget typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</PassActTarget>
+					<FailActTarget typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</FailActTarget>
+					<CustExpr typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</CustExpr>
+					<CustTrueAct classname='Str' instanceoverrideflags='5046296'>
+						<value>Next</value>
+					</CustTrueAct>
+					<CustFalseAct classname='Str' instanceoverrideflags='5046296'>
+						<value>Next</value>
+					</CustFalseAct>
+					<CustTrueActTarget typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</CustTrueActTarget>
+					<CustFalseActTarget typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</CustFalseActTarget>
+					<LoopType classname='Str' instanceoverrideflags='5046296'>
+						<value>NoLooping</value>
+					</LoopType>
+					<LoopWhile typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</LoopWhile>
+					<LoopStatus typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</LoopStatus>
+					<LoopIncrement typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value>RunState.LoopIndex += 1</value>
+					</LoopIncrement>
+					<LoopInitialize typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value>RunState.LoopIndex = 0</value>
+					</LoopInitialize>
+					<LoopOpt classname='Num' instanceoverrideflags='5046296'>
+						<value>0</value>
+					</LoopOpt>
+					<PreExpr typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</PreExpr>
+					<PostExpr typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</PostExpr>
+					<StatusExpr typename='Expression' xsi:type='Expression' classname='ExprValue' instanceoverrideflags='5046296'>
+						<value/>
+					</StatusExpr>
+					<CanSpecifyModule classname='Bool' instanceoverrideflags='5046296'>
+						<value>true</value>
+					</CanSpecifyModule>
+					<CanEditCode classname='Bool' instanceoverrideflags='5046296'>
+						<value>true</value>
+					</CanEditCode>
+					<CanEditModulePrototype classname='Bool' instanceoverrideflags='5046296'>
+						<value>true</value>
+					</CanEditModulePrototype>
+					<CanEditParameterAdditionalResults classname='Bool' instanceoverrideflags='5046296'>
+						<value>true</value>
+					</CanEditParameterAdditionalResults>
+					<PrecondIntExe classname='Num' instanceoverrideflags='5046296'>
+						<value>0</value>
+					</PrecondIntExe>
+					<Requirements classname='Obj' flagsforinstances='2097153' instanceoverrideflags='7143449' valueflags='1' structureflags='2097152'>
+						<subprops>
+							<Links classname='Strs' flagsforinstances='71303168' instanceoverrideflags='72286233' valueflags='71303168'>
+								<value lbound='[0]' ubound='[]'/>
+							</Links>
+						</subprops>
+					</Requirements>
+					<CustomResults classname='Objs' instanceoverrideflags='5046296'>
+						<value lbound='[0]' ubound='[]'>
+							<elemproto>
+								<_NAME_IN_ATTRIBUTE_ typename='NI_CustomResult' xsi:type='NI_CustomResult' name='' classname='CustomResult'>
+									<subprops>
+										<Name classname='ExprValue'>
+											<value/>
+										</Name>
+										<ValueToLog classname='ExprValue'>
+											<value/>
+										</ValueToLog>
+										<Condition classname='ExprValue'>
+											<value/>
+										</Condition>
+										<Flags classname='Num'>
+											<value>8192</value>
+										</Flags>
+										<CheckedState classname='Num'>
+											<value>2</value>
+										</CheckedState>
+										<Type classname='PropertyObjectType'>
+											<subprops>
+												<ValueType classname='Num'>
+													<value>3</value>
+												</ValueType>
+												<IsObject classname='Bool'>
+													<value>true</value>
+												</IsObject>
+												<TypeName classname='Str'>
+													<value/>
+												</TypeName>
+												<ElementType classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</ElementType>
+												<ArrayDimensions classname='ArrayDimensions'>
+													<subprops>
+														<LowerBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</LowerBounds>
+														<UpperBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</UpperBounds>
+													</subprops>
+												</ArrayDimensions>
+												<Representation classname='Num'>
+													<value>1</value>
+												</Representation>
+												<ClassName classname='Str'>
+													<value/>
+												</ClassName>
+											</subprops>
+										</Type>
+										<Elements classname='Objs'>
+											<value lbound='[0]' ubound='[]'/>
+										</Elements>
+										<IsAnyType classname='Bool'>
+											<value>true</value>
+										</IsAnyType>
+									</subprops>
+								</_NAME_IN_ATTRIBUTE_>
+							</elemproto>
+						</value>
+					</CustomResults>
+					<AdditionalResultsHints classname='Objs' instanceoverrideflags='5046296'>
+						<value lbound='[0]' ubound='[]'>
+							<elemproto>
+								<_NAME_IN_ATTRIBUTE_ typename='NI_CustomResult' xsi:type='NI_CustomResult' name='' classname='CustomResult'>
+									<subprops>
+										<Name classname='ExprValue'>
+											<value/>
+										</Name>
+										<ValueToLog classname='ExprValue'>
+											<value/>
+										</ValueToLog>
+										<Condition classname='ExprValue'>
+											<value/>
+										</Condition>
+										<Flags classname='Num'>
+											<value>8192</value>
+										</Flags>
+										<CheckedState classname='Num'>
+											<value>2</value>
+										</CheckedState>
+										<Type classname='PropertyObjectType'>
+											<subprops>
+												<ValueType classname='Num'>
+													<value>3</value>
+												</ValueType>
+												<IsObject classname='Bool'>
+													<value>true</value>
+												</IsObject>
+												<TypeName classname='Str'>
+													<value/>
+												</TypeName>
+												<ElementType classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</ElementType>
+												<ArrayDimensions classname='ArrayDimensions'>
+													<subprops>
+														<LowerBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</LowerBounds>
+														<UpperBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</UpperBounds>
+													</subprops>
+												</ArrayDimensions>
+												<Representation classname='Num'>
+													<value>1</value>
+												</Representation>
+												<ClassName classname='Str'>
+													<value/>
+												</ClassName>
+											</subprops>
+										</Type>
+										<Elements classname='Objs'>
+											<value lbound='[0]' ubound='[]'/>
+										</Elements>
+										<IsAnyType classname='Bool'>
+											<value>true</value>
+										</IsAnyType>
+									</subprops>
+								</_NAME_IN_ATTRIBUTE_>
+							</elemproto>
+						</value>
+					</AdditionalResultsHints>
+				</subprops>
+			</TEInf>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='8'>
+			<StepTypeNIData classname='Obj' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='24'>
+				<subprops>
+					<EditPanels classname='Strs'>
+						<value lbound='[0]' ubound='[]'/>
+					</EditPanels>
+				</subprops>
+			</StepTypeNIData>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='9'>
+			<Error classname='Obj' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436'>
+				<extdata controllername='STRUCT' allowstructpassing='true' packingoption='8' exclude='false' type='0' arraystorage='0' strbuffersize='256' strstorage='0'/>
+				<extdata controllername='CLUST' allowclusterpassing='true' exclude='false' memberlabel=''/>
+				<extdata controllername='DNSTRUCT' allowstructpassing='true' exclude='false' membername=''/>
+				<extdata controllername='BLVCLUSTER' allowclusterpassing='true' exclude='false' memberlabel=''/>
+				<subprops>
+					<Code classname='Num' flagsforinstances='4194304' valueflags='4194304'>
+						<value>0</value>
+						<extdata controllername='STRUCT' allowstructpassing='false' packingoption='0' exclude='false' type='6' arraystorage='0' strbuffersize='256' strstorage='0'/>
+						<extdata controllername='CLUST' allowclusterpassing='false' exclude='false' memberlabel='code'/>
+						<extdata controllername='DNSTRUCT' allowstructpassing='false' exclude='false' membername='code'/>
+						<extdata controllername='BLVCLUSTER' allowclusterpassing='false' exclude='false' memberlabel='code'/>
+					</Code>
+					<Msg classname='Str' flagsforinstances='4194304' valueflags='4194304'>
+						<value/>
+						<extdata controllername='STRUCT' allowstructpassing='false' packingoption='0' exclude='false' type='2' arraystorage='0' strbuffersize='1024' strstorage='1'/>
+						<extdata controllername='CLUST' allowclusterpassing='false' exclude='false' memberlabel='source'/>
+						<extdata controllername='DNSTRUCT' allowstructpassing='false' exclude='false' membername='msg'/>
+						<extdata controllername='BLVCLUSTER' allowclusterpassing='false' exclude='false' memberlabel='source'/>
+					</Msg>
+					<Occurred classname='Bool' flagsforinstances='4194304' valueflags='4194304'>
+						<value>false</value>
+						<extdata controllername='STRUCT' allowstructpassing='false' packingoption='0' exclude='false' type='6' arraystorage='0' strbuffersize='256' strstorage='0'/>
+						<extdata controllername='CLUST' allowclusterpassing='false' exclude='false' memberlabel='status'/>
+						<extdata controllername='DNSTRUCT' allowstructpassing='false' exclude='false' membername='occurred'/>
+						<extdata controllername='BLVCLUSTER' allowclusterpassing='false' exclude='false' memberlabel='status'/>
+					</Occurred>
+				</subprops>
+			</Error>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='10'>
+			<CommonResults classname='Obj' isroottypedef='true' typecategory='3' timestamp='1465572565' typeversion='3.1.0.100' typelastmodversion='21.1.0.49154' typeminprodversion='3.1.0.0' typeflags='33554432' flagsforinstances='4194304' valueflags='4194304'/>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='11'>
+			<Substep classname='StepType' isroottypedef='true' typecategory='1' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554438' flagsforinstances='4194304' instanceoverrideflags='4194304'>
+				<subprops>
+					<DescriptionFormat typename='Expression' xsi:type='Expression' classname='ExprValue' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='4194328' structureflags='524288'>
+						<value>"%ModuleDescription"</value>
+					</DescriptionFormat>
+					<DefaultNameFormat typename='Expression' xsi:type='Expression' classname='ExprValue' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='4194328' structureflags='524288'>
+						<value>ResStr("NI_STEPTYPES", "GENERIC_DEF_SUBSTEP_NAME")</value>
+					</DefaultNameFormat>
+					<BlockStartTypes classname='Str' valueflags='4194328' structureflags='524288'>
+						<value/>
+					</BlockStartTypes>
+					<BlockEndTypes classname='Str' valueflags='4194328' structureflags='524288'>
+						<value/>
+					</BlockEndTypes>
+					<AppliesToBlockStructure classname='Bool' valueflags='4194328' structureflags='524288'>
+						<value>false</value>
+					</AppliesToBlockStructure>
+					<Menu typename='StepTypeMenu' xsi:type='StepTypeMenu' classname='Obj'>
+						<subprops>
+							<CanBeSubstepType classname='Bool'>
+								<value>true</value>
+							</CanBeSubstepType>
+							<CanOnlyBeSubstepType classname='Bool'>
+								<value>true</value>
+							</CanOnlyBeSubstepType>
+							<Category classname='Str'>
+								<value>""</value>
+							</Category>
+							<ItemName classname='ExprValue'>
+								<value>ResStr("NI_STEPTYPES", "GENERIC_SUBSTEP_MENU_ITEM_NAME")</value>
+							</ItemName>
+							<SingularItemName classname='Str'>
+								<value>""</value>
+							</SingularItemName>
+							<SeparatorBeforeCategory classname='Bool'>
+								<value>false</value>
+							</SeparatorBeforeCategory>
+							<SeparatorBeforeItemName classname='Bool'>
+								<value>false</value>
+							</SeparatorBeforeItemName>
+							<Group classname='Str'>
+								<value>GenericSubsteps</value>
+							</Group>
+						</subprops>
+					</Menu>
+					<Substeps typename='StepTypeSubstepsArray' xsi:type='StepTypeSubstepsArray' classname='Objs'>
+						<value lbound='[0]' ubound='[]'/>
+					</Substeps>
+					<CodeTemplates classname='Str' valueflags='4194328' structureflags='524288'>
+						<value>DefaultLabVIEWNXG|DefaultLabVIEW|DefaultCVI|DefaultVB.NET|DefaultCSharp.NET|DefaultC++.NET|DefaultVC++_Template|DefaultHTB72_Template|DefaultHTB80_Template|Default_Template</value>
+					</CodeTemplates>
+					<AdditionalResultsHints classname='Objs' valueflags='4194328' structureflags='524288'>
+						<value lbound='[0]' ubound='[]'>
+							<elemproto>
+								<_NAME_IN_ATTRIBUTE_ typename='NI_CustomResult' xsi:type='NI_CustomResult' name='' classname='CustomResult'>
+									<subprops>
+										<Name classname='ExprValue'>
+											<value/>
+										</Name>
+										<ValueToLog classname='ExprValue'>
+											<value/>
+										</ValueToLog>
+										<Condition classname='ExprValue'>
+											<value/>
+										</Condition>
+										<Flags classname='Num'>
+											<value>8192</value>
+										</Flags>
+										<CheckedState classname='Num'>
+											<value>2</value>
+										</CheckedState>
+										<Type classname='PropertyObjectType'>
+											<subprops>
+												<ValueType classname='Num'>
+													<value>3</value>
+												</ValueType>
+												<IsObject classname='Bool'>
+													<value>true</value>
+												</IsObject>
+												<TypeName classname='Str'>
+													<value/>
+												</TypeName>
+												<ElementType classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</ElementType>
+												<ArrayDimensions classname='ArrayDimensions'>
+													<subprops>
+														<LowerBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</LowerBounds>
+														<UpperBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</UpperBounds>
+													</subprops>
+												</ArrayDimensions>
+												<Representation classname='Num'>
+													<value>1</value>
+												</Representation>
+												<ClassName classname='Str'>
+													<value/>
+												</ClassName>
+											</subprops>
+										</Type>
+										<Elements classname='Objs'>
+											<value lbound='[0]' ubound='[]'/>
+										</Elements>
+										<IsAnyType classname='Bool'>
+											<value>true</value>
+										</IsAnyType>
+									</subprops>
+								</_NAME_IN_ATTRIBUTE_>
+							</elemproto>
+						</value>
+					</AdditionalResultsHints>
+					<TS typename='TEInf' xsi:type='TEInf' classname='Obj' flagsforinstances='4456472'>
+						<subprops>
+							<Id classname='Str'>
+								<value/>
+							</Id>
+							<Icon classname='Str'>
+								<value/>
+							</Icon>
+							<SData classname='Obj' flagsforinstances='2097152' instanceoverrideflags='7274521' structureflags='2097152'/>
+							<PreCond classname='ExprValue'>
+								<value/>
+							</PreCond>
+							<LoadOpt classname='Str'>
+								<value>PreloadWhenExecuted</value>
+							</LoadOpt>
+							<UnloadOpt classname='Str'>
+								<value>UnloadWithFile</value>
+							</UnloadOpt>
+							<Mode classname='Str'>
+								<value>Normal</value>
+							</Mode>
+							<WindowActivation classname='Str'>
+								<value>None</value>
+							</WindowActivation>
+							<ResultOption classname='Num'>
+								<value>1</value>
+							</ResultOption>
+							<StepFCSeqF classname='Bool'>
+								<value>true</value>
+							</StepFCSeqF>
+							<IgnoreRTE classname='Bool'>
+								<value>false</value>
+							</IgnoreRTE>
+							<UseMutex classname='Bool'>
+								<value>false</value>
+							</UseMutex>
+							<MutexNameOrRef classname='ExprValue'>
+								<value/>
+							</MutexNameOrRef>
+							<BatchSyncOpt classname='Num'>
+								<value>0</value>
+							</BatchSyncOpt>
+							<SwitchEnabled classname='Bool'>
+								<value>false</value>
+							</SwitchEnabled>
+							<VirtualDeviceName classname='ExprValue'>
+								<value/>
+							</VirtualDeviceName>
+							<SwitchOperation classname='Num'>
+								<value>1</value>
+							</SwitchOperation>
+							<RouteGroupConnect classname='ExprValue'>
+								<value/>
+							</RouteGroupConnect>
+							<RouteGroupDisconnect classname='ExprValue'>
+								<value/>
+							</RouteGroupDisconnect>
+							<MulticonnectMode classname='Num'>
+								<value>1</value>
+							</MulticonnectMode>
+							<OperationOrder classname='Num'>
+								<value>2</value>
+							</OperationOrder>
+							<ConnectionLifetime classname='Num'>
+								<value>4</value>
+							</ConnectionLifetime>
+							<WaitForDebounce classname='Bool'>
+								<value>true</value>
+							</WaitForDebounce>
+							<PassAct classname='Str'>
+								<value>Next</value>
+							</PassAct>
+							<FailAct classname='Str'>
+								<value>Next</value>
+							</FailAct>
+							<PassActTarget classname='ExprValue'>
+								<value/>
+							</PassActTarget>
+							<FailActTarget classname='ExprValue'>
+								<value/>
+							</FailActTarget>
+							<CustExpr classname='ExprValue'>
+								<value/>
+							</CustExpr>
+							<CustTrueAct classname='Str'>
+								<value>Next</value>
+							</CustTrueAct>
+							<CustFalseAct classname='Str'>
+								<value>Next</value>
+							</CustFalseAct>
+							<CustTrueActTarget classname='ExprValue'>
+								<value/>
+							</CustTrueActTarget>
+							<CustFalseActTarget classname='ExprValue'>
+								<value/>
+							</CustFalseActTarget>
+							<LoopType classname='Str'>
+								<value>NoLooping</value>
+							</LoopType>
+							<LoopWhile classname='ExprValue'>
+								<value/>
+							</LoopWhile>
+							<LoopStatus classname='ExprValue'>
+								<value/>
+							</LoopStatus>
+							<LoopIncrement classname='ExprValue'>
+								<value>RunState.LoopIndex += 1</value>
+							</LoopIncrement>
+							<LoopInitialize classname='ExprValue'>
+								<value>RunState.LoopIndex = 0</value>
+							</LoopInitialize>
+							<LoopOpt classname='Num'>
+								<value>0</value>
+							</LoopOpt>
+							<PreExpr classname='ExprValue'>
+								<value/>
+							</PreExpr>
+							<PostExpr classname='ExprValue'>
+								<value/>
+							</PostExpr>
+							<StatusExpr classname='ExprValue'>
+								<value/>
+							</StatusExpr>
+							<CanSpecifyModule classname='Bool'>
+								<value>true</value>
+							</CanSpecifyModule>
+							<CanEditCode classname='Bool'>
+								<value>true</value>
+							</CanEditCode>
+							<CanEditModulePrototype classname='Bool'>
+								<value>true</value>
+							</CanEditModulePrototype>
+							<CanEditParameterAdditionalResults classname='Bool'>
+								<value>true</value>
+							</CanEditParameterAdditionalResults>
+							<PrecondIntExe classname='Num'>
+								<value>0</value>
+							</PrecondIntExe>
+							<Requirements classname='Obj' flagsforinstances='1' valueflags='1' structureflags='2097152'>
+								<subprops>
+									<Links classname='Strs' flagsforinstances='71303168' instanceoverrideflags='72286233' valueflags='71303168'>
+										<value lbound='[0]' ubound='[]'/>
+									</Links>
+								</subprops>
+							</Requirements>
+							<CustomResults classname='Objs'>
+								<value lbound='[0]' ubound='[]'>
+									<elemproto>
+										<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+											<subprops>
+												<Name classname='ExprValue'>
+													<value/>
+												</Name>
+												<ValueToLog classname='ExprValue'>
+													<value/>
+												</ValueToLog>
+												<Condition classname='ExprValue'>
+													<value/>
+												</Condition>
+												<Flags classname='Num'>
+													<value>8192</value>
+												</Flags>
+												<CheckedState classname='Num'>
+													<value>2</value>
+												</CheckedState>
+												<Type classname='PropertyObjectType'>
+													<subprops>
+														<ValueType classname='Num'>
+															<value>3</value>
+														</ValueType>
+														<IsObject classname='Bool'>
+															<value>true</value>
+														</IsObject>
+														<TypeName classname='Str'>
+															<value/>
+														</TypeName>
+														<ElementType classname='Objs'>
+															<value lbound='[0]' ubound='[]'/>
+														</ElementType>
+														<ArrayDimensions classname='ArrayDimensions'>
+															<subprops>
+																<LowerBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</LowerBounds>
+																<UpperBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</UpperBounds>
+															</subprops>
+														</ArrayDimensions>
+														<Representation classname='Num'>
+															<value>1</value>
+														</Representation>
+														<ClassName classname='Str'>
+															<value/>
+														</ClassName>
+													</subprops>
+												</Type>
+												<Elements classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</Elements>
+												<IsAnyType classname='Bool'>
+													<value>true</value>
+												</IsAnyType>
+											</subprops>
+										</_NAME_IN_ATTRIBUTE_>
+									</elemproto>
+								</value>
+							</CustomResults>
+							<AdditionalResultsHints classname='Objs'>
+								<value lbound='[0]' ubound='[]'>
+									<elemproto>
+										<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+											<subprops>
+												<Name classname='ExprValue'>
+													<value/>
+												</Name>
+												<ValueToLog classname='ExprValue'>
+													<value/>
+												</ValueToLog>
+												<Condition classname='ExprValue'>
+													<value/>
+												</Condition>
+												<Flags classname='Num'>
+													<value>8192</value>
+												</Flags>
+												<CheckedState classname='Num'>
+													<value>2</value>
+												</CheckedState>
+												<Type classname='PropertyObjectType'>
+													<subprops>
+														<ValueType classname='Num'>
+															<value>3</value>
+														</ValueType>
+														<IsObject classname='Bool'>
+															<value>true</value>
+														</IsObject>
+														<TypeName classname='Str'>
+															<value/>
+														</TypeName>
+														<ElementType classname='Objs'>
+															<value lbound='[0]' ubound='[]'/>
+														</ElementType>
+														<ArrayDimensions classname='ArrayDimensions'>
+															<subprops>
+																<LowerBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</LowerBounds>
+																<UpperBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</UpperBounds>
+															</subprops>
+														</ArrayDimensions>
+														<Representation classname='Num'>
+															<value>1</value>
+														</Representation>
+														<ClassName classname='Str'>
+															<value/>
+														</ClassName>
+													</subprops>
+												</Type>
+												<Elements classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</Elements>
+												<IsAnyType classname='Bool'>
+													<value>true</value>
+												</IsAnyType>
+											</subprops>
+										</_NAME_IN_ATTRIBUTE_>
+									</elemproto>
+								</value>
+							</AdditionalResultsHints>
+						</subprops>
+					</TS>
+					<NI_Data typename='StepTypeNIData' xsi:type='StepTypeNIData' classname='Obj'>
+						<subprops>
+							<EditPanels classname='Strs'>
+								<value lbound='[0]' ubound='[]'/>
+							</EditPanels>
+						</subprops>
+					</NI_Data>
+					<Result classname='Obj' flagsforinstances='4194304' valueflags='4194304'>
+						<subprops>
+							<Error typename='Error' xsi:type='Error' classname='Obj' flagsforinstances='4194304' valueflags='4194304'>
+								<subprops>
+									<Code classname='Num'>
+										<value>0</value>
+									</Code>
+									<Msg classname='Str'>
+										<value/>
+									</Msg>
+									<Occurred classname='Bool'>
+										<value>false</value>
+									</Occurred>
+								</subprops>
+							</Error>
+							<Status classname='Str' flagsforinstances='4194304' valueflags='4194304'>
+								<value/>
+							</Status>
+							<ReportText classname='Str' flagsforinstances='4194304' valueflags='4194304'>
+								<value/>
+							</ReportText>
+							<Common typename='CommonResults' xsi:type='CommonResults' classname='Obj'/>
+						</subprops>
+					</Result>
+					<CanEncapsulate classname='Bool' valueflags='4194328' structureflags='524288'>
+						<value>false</value>
+					</CanEncapsulate>
+				</subprops>
+			</Substep>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='12'>
+			<NI_DotNetParameterResult classname='DotNetParameterResult' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<Condition typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</Condition>
+					<Flags classname='Num'>
+						<value>8192</value>
+						<numericfmt>%#x</numericfmt>
+					</Flags>
+					<CheckedState classname='Num'>
+						<value>1</value>
+					</CheckedState>
+				</subprops>
+			</NI_DotNetParameterResult>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='13'>
+			<DotNetParameter classname='DotNetParameter' isroottypedef='true' typecategory='3' timestamp='1650061192' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<Name classname='Str'>
+						<value>_notNamed</value>
+					</Name>
+					<ArgVal typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</ArgVal>
+					<ArgDisplayVal typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</ArgDisplayVal>
+					<Type classname='Num'>
+						<value>0</value>
+					</Type>
+					<TypeName classname='Str'>
+						<value/>
+					</TypeName>
+					<Flags classname='Num'>
+						<value>0</value>
+					</Flags>
+					<IsOptional classname='Bool'>
+						<value>false</value>
+					</IsOptional>
+					<CallDispose classname='Bool'>
+						<value>false</value>
+					</CallDispose>
+					<NumDimensions classname='Nums'>
+						<value lbound='[0]' ubound='[]'/>
+					</NumDimensions>
+					<MultiElement classname='Objs'>
+						<value lbound='[0]' ubound='[]'/>
+					</MultiElement>
+					<AdditionalResults classname='Obj'>
+						<subprops>
+							<Input typename='NI_DotNetParameterResult' xsi:type='NI_DotNetParameterResult' classname='DotNetParameterResult'>
+								<subprops>
+									<Condition classname='ExprValue'>
+										<value/>
+									</Condition>
+									<Flags classname='Num'>
+										<value>8192</value>
+									</Flags>
+									<CheckedState classname='Num'>
+										<value>1</value>
+									</CheckedState>
+								</subprops>
+							</Input>
+							<Output typename='NI_DotNetParameterResult' xsi:type='NI_DotNetParameterResult' classname='DotNetParameterResult'>
+								<subprops>
+									<Condition classname='ExprValue'>
+										<value/>
+									</Condition>
+									<Flags classname='Num'>
+										<value>8192</value>
+									</Flags>
+									<CheckedState classname='Num'>
+										<value>1</value>
+									</CheckedState>
+								</subprops>
+							</Output>
+						</subprops>
+					</AdditionalResults>
+					<UserData classname='Obj' flagsforinstances='2097152' structureflags='2097152'/>
+				</subprops>
+			</DotNetParameter>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='14'>
+			<NI_DotNetCallResult classname='DotNetCallResult' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<Condition typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</Condition>
+					<Flags classname='Num'>
+						<value>8192</value>
+						<numericfmt>%#x</numericfmt>
+					</Flags>
+					<CheckedState classname='Num'>
+						<value>1</value>
+					</CheckedState>
+				</subprops>
+			</NI_DotNetCallResult>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='15'>
+			<DotNetCall classname='DotNetCall' isroottypedef='true' typecategory='3' timestamp='1650061192' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<ClassName classname='Str'>
+						<value/>
+					</ClassName>
+					<MemberType classname='Num'>
+						<value>0</value>
+					</MemberType>
+					<Static classname='Bool'>
+						<value>false</value>
+					</Static>
+					<MemberName classname='Str'>
+						<value/>
+					</MemberName>
+					<Params classname='Objs'>
+						<value lbound='[0]' ubound='[]'>
+							<elemproto>
+								<_NAME_IN_ATTRIBUTE_ typename='DotNetParameter' xsi:type='DotNetParameter' name='' classname='DotNetParameter' structureflags='131072'>
+									<subprops>
+										<Name classname='Str'>
+											<value>_notNamed</value>
+										</Name>
+										<ArgVal classname='ExprValue'>
+											<value/>
+										</ArgVal>
+										<ArgDisplayVal classname='ExprValue'>
+											<value/>
+										</ArgDisplayVal>
+										<Type classname='Num'>
+											<value>0</value>
+										</Type>
+										<TypeName classname='Str'>
+											<value/>
+										</TypeName>
+										<Flags classname='Num'>
+											<value>0</value>
+										</Flags>
+										<IsOptional classname='Bool'>
+											<value>false</value>
+										</IsOptional>
+										<CallDispose classname='Bool'>
+											<value>false</value>
+										</CallDispose>
+										<NumDimensions classname='Nums'>
+											<value lbound='[0]' ubound='[]'/>
+										</NumDimensions>
+										<MultiElement classname='Objs'>
+											<value lbound='[0]' ubound='[]'/>
+										</MultiElement>
+										<AdditionalResults classname='Obj'>
+											<subprops>
+												<Input classname='DotNetParameterResult'>
+													<subprops>
+														<Condition classname='ExprValue'>
+															<value/>
+														</Condition>
+														<Flags classname='Num'>
+															<value>8192</value>
+														</Flags>
+														<CheckedState classname='Num'>
+															<value>1</value>
+														</CheckedState>
+													</subprops>
+												</Input>
+												<Output classname='DotNetParameterResult'>
+													<subprops>
+														<Condition classname='ExprValue'>
+															<value/>
+														</Condition>
+														<Flags classname='Num'>
+															<value>8192</value>
+														</Flags>
+														<CheckedState classname='Num'>
+															<value>1</value>
+														</CheckedState>
+													</subprops>
+												</Output>
+											</subprops>
+										</AdditionalResults>
+									</subprops>
+								</_NAME_IN_ATTRIBUTE_>
+							</elemproto>
+						</value>
+					</Params>
+					<AdditionalResult typename='NI_DotNetCallResult' xsi:type='NI_DotNetCallResult' classname='DotNetCallResult'>
+						<subprops>
+							<Condition classname='ExprValue'>
+								<value/>
+							</Condition>
+							<Flags classname='Num'>
+								<value>8192</value>
+							</Flags>
+							<CheckedState classname='Num'>
+								<value>1</value>
+							</CheckedState>
+						</subprops>
+					</AdditionalResult>
+				</subprops>
+			</DotNetCall>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='0'>
+			<Path classname='PathValue' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436'>
+				<value/>
+			</Path>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='16'>
+			<DotNetStepAdditions classname='DotNetModule' isroottypedef='true' typecategory='3' timestamp='1650061192' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<Calls classname='Objs'>
+						<value lbound='[0]' ubound='[]'>
+							<elemproto>
+								<_NAME_IN_ATTRIBUTE_ typename='DotNetCall' xsi:type='DotNetCall' name='' classname='DotNetCall' structureflags='131072'>
+									<subprops>
+										<ClassName classname='Str'>
+											<value/>
+										</ClassName>
+										<MemberType classname='Num'>
+											<value>0</value>
+										</MemberType>
+										<Static classname='Bool'>
+											<value>false</value>
+										</Static>
+										<MemberName classname='Str'>
+											<value/>
+										</MemberName>
+										<Params classname='Objs'>
+											<value lbound='[0]' ubound='[]'>
+												<elemproto>
+													<_NAME_IN_ATTRIBUTE_ name='' classname='DotNetParameter' structureflags='0'/>
+												</elemproto>
+											</value>
+										</Params>
+										<AdditionalResult classname='DotNetCallResult'>
+											<subprops>
+												<Condition classname='ExprValue'>
+													<value/>
+												</Condition>
+												<Flags classname='Num'>
+													<value>8192</value>
+												</Flags>
+												<CheckedState classname='Num'>
+													<value>1</value>
+												</CheckedState>
+											</subprops>
+										</AdditionalResult>
+									</subprops>
+								</_NAME_IN_ATTRIBUTE_>
+							</elemproto>
+						</value>
+					</Calls>
+					<AssemblyPath typename='Path' xsi:type='Path' classname='PathValue'>
+						<value/>
+					</AssemblyPath>
+					<AssemblyStrongName classname='Str'>
+						<value/>
+					</AssemblyStrongName>
+					<AssemblyLocation classname='Num'>
+						<value>0</value>
+					</AssemblyLocation>
+					<ClassName classname='Str'>
+						<value/>
+					</ClassName>
+					<IsStruct classname='Bool'>
+						<value>false</value>
+					</IsStruct>
+					<StructDef typename='DotNetParameter' xsi:type='DotNetParameter' classname='DotNetParameter'>
+						<subprops>
+							<Name classname='Str'>
+								<value>_notNamed</value>
+							</Name>
+							<ArgVal classname='ExprValue'>
+								<value/>
+							</ArgVal>
+							<ArgDisplayVal classname='ExprValue'>
+								<value/>
+							</ArgDisplayVal>
+							<Type classname='Num'>
+								<value>0</value>
+							</Type>
+							<TypeName classname='Str'>
+								<value/>
+							</TypeName>
+							<Flags classname='Num'>
+								<value>0</value>
+							</Flags>
+							<IsOptional classname='Bool'>
+								<value>false</value>
+							</IsOptional>
+							<CallDispose classname='Bool'>
+								<value>false</value>
+							</CallDispose>
+							<NumDimensions classname='Nums'>
+								<value lbound='[0]' ubound='[]'/>
+							</NumDimensions>
+							<MultiElement classname='Objs'>
+								<value lbound='[0]' ubound='[]'/>
+							</MultiElement>
+							<AdditionalResults classname='Obj'>
+								<subprops>
+									<Input classname='DotNetParameterResult'>
+										<subprops>
+											<Condition classname='ExprValue'>
+												<value/>
+											</Condition>
+											<Flags classname='Num'>
+												<value>8192</value>
+											</Flags>
+											<CheckedState classname='Num'>
+												<value>1</value>
+											</CheckedState>
+										</subprops>
+									</Input>
+									<Output classname='DotNetParameterResult'>
+										<subprops>
+											<Condition classname='ExprValue'>
+												<value/>
+											</Condition>
+											<Flags classname='Num'>
+												<value>8192</value>
+											</Flags>
+											<CheckedState classname='Num'>
+												<value>1</value>
+											</CheckedState>
+										</subprops>
+									</Output>
+								</subprops>
+							</AdditionalResults>
+						</subprops>
+					</StructDef>
+					<RemoteSpecifiedByExpr classname='Bool'>
+						<value>false</value>
+					</RemoteSpecifiedByExpr>
+					<UseLoadSpec classname='Bool'>
+						<value>false</value>
+					</UseLoadSpec>
+					<ModuleSrcPath typename='Path' xsi:type='Path' classname='PathValue'>
+						<value/>
+					</ModuleSrcPath>
+					<ModulePrjPath typename='Path' xsi:type='Path' classname='PathValue'>
+						<value/>
+					</ModulePrjPath>
+					<ModuleSlnPath typename='Path' xsi:type='Path' classname='PathValue'>
+						<value/>
+					</ModuleSlnPath>
+					<FunctionName classname='Str'>
+						<value/>
+					</FunctionName>
+				</subprops>
+			</DotNetStepAdditions>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='17'>
+			<PostSubstep classname='StepType' isroottypedef='true' typecategory='1' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554438' flagsforinstances='4194304' instanceoverrideflags='4194304'>
+				<subprops>
+					<DescriptionFormat typename='Expression' xsi:type='Expression' classname='ExprValue' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='4194328' structureflags='524288'>
+						<value>"%ModuleDescription"</value>
+					</DescriptionFormat>
+					<DefaultNameFormat typename='Expression' xsi:type='Expression' classname='ExprValue' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='4194328' structureflags='524288'>
+						<value>ResStr("NI_STEPTYPES", "POST_DEF_SUBSTEP_NAME")</value>
+					</DefaultNameFormat>
+					<BlockStartTypes classname='Str' valueflags='4194328' structureflags='524288'>
+						<value/>
+					</BlockStartTypes>
+					<BlockEndTypes classname='Str' valueflags='4194328' structureflags='524288'>
+						<value/>
+					</BlockEndTypes>
+					<AppliesToBlockStructure classname='Bool' valueflags='4194328' structureflags='524288'>
+						<value>false</value>
+					</AppliesToBlockStructure>
+					<Menu typename='StepTypeMenu' xsi:type='StepTypeMenu' classname='Obj'>
+						<subprops>
+							<CanBeSubstepType classname='Bool'>
+								<value>true</value>
+							</CanBeSubstepType>
+							<CanOnlyBeSubstepType classname='Bool'>
+								<value>true</value>
+							</CanOnlyBeSubstepType>
+							<Category classname='Str'>
+								<value>""</value>
+							</Category>
+							<ItemName classname='ExprValue'>
+								<value>ResStr("NI_STEPTYPES", "POST_SUBSTEP_MENU_ITEM_NAME")</value>
+							</ItemName>
+							<SingularItemName classname='Str'>
+								<value>""</value>
+							</SingularItemName>
+							<SeparatorBeforeCategory classname='Bool'>
+								<value>false</value>
+							</SeparatorBeforeCategory>
+							<SeparatorBeforeItemName classname='Bool'>
+								<value>false</value>
+							</SeparatorBeforeItemName>
+							<Group classname='Str'>
+								<value>ExecSubsteps</value>
+							</Group>
+						</subprops>
+					</Menu>
+					<Substeps typename='StepTypeSubstepsArray' xsi:type='StepTypeSubstepsArray' classname='Objs'>
+						<value lbound='[0]' ubound='[]'/>
+					</Substeps>
+					<CodeTemplates classname='Str' valueflags='4194328' structureflags='524288'>
+						<value>DefaultLabVIEWNXG|DefaultLabVIEW|DefaultCVI|DefaultVB.NET|DefaultCSharp.NET|DefaultC++.NET|DefaultVC++_Template|DefaultHTB72_Template|DefaultHTB80_Template|Default_Template</value>
+					</CodeTemplates>
+					<AdditionalResultsHints classname='Objs' valueflags='4194328' structureflags='524288'>
+						<value lbound='[0]' ubound='[]'>
+							<elemproto>
+								<_NAME_IN_ATTRIBUTE_ typename='NI_CustomResult' xsi:type='NI_CustomResult' name='' classname='CustomResult'>
+									<subprops>
+										<Name classname='ExprValue'>
+											<value/>
+										</Name>
+										<ValueToLog classname='ExprValue'>
+											<value/>
+										</ValueToLog>
+										<Condition classname='ExprValue'>
+											<value/>
+										</Condition>
+										<Flags classname='Num'>
+											<value>8192</value>
+										</Flags>
+										<CheckedState classname='Num'>
+											<value>2</value>
+										</CheckedState>
+										<Type classname='PropertyObjectType'>
+											<subprops>
+												<ValueType classname='Num'>
+													<value>3</value>
+												</ValueType>
+												<IsObject classname='Bool'>
+													<value>true</value>
+												</IsObject>
+												<TypeName classname='Str'>
+													<value/>
+												</TypeName>
+												<ElementType classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</ElementType>
+												<ArrayDimensions classname='ArrayDimensions'>
+													<subprops>
+														<LowerBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</LowerBounds>
+														<UpperBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</UpperBounds>
+													</subprops>
+												</ArrayDimensions>
+												<Representation classname='Num'>
+													<value>1</value>
+												</Representation>
+												<ClassName classname='Str'>
+													<value/>
+												</ClassName>
+											</subprops>
+										</Type>
+										<Elements classname='Objs'>
+											<value lbound='[0]' ubound='[]'/>
+										</Elements>
+										<IsAnyType classname='Bool'>
+											<value>true</value>
+										</IsAnyType>
+									</subprops>
+								</_NAME_IN_ATTRIBUTE_>
+							</elemproto>
+						</value>
+					</AdditionalResultsHints>
+					<TS typename='TEInf' xsi:type='TEInf' classname='Obj' flagsforinstances='4456472'>
+						<subprops>
+							<Id classname='Str'>
+								<value/>
+							</Id>
+							<Icon classname='Str'>
+								<value/>
+							</Icon>
+							<SData classname='Obj' flagsforinstances='2097152' instanceoverrideflags='7274521' structureflags='2097152'/>
+							<PreCond classname='ExprValue'>
+								<value/>
+							</PreCond>
+							<LoadOpt classname='Str'>
+								<value>PreloadWhenExecuted</value>
+							</LoadOpt>
+							<UnloadOpt classname='Str'>
+								<value>UnloadWithFile</value>
+							</UnloadOpt>
+							<Mode classname='Str'>
+								<value>Normal</value>
+							</Mode>
+							<WindowActivation classname='Str'>
+								<value>None</value>
+							</WindowActivation>
+							<ResultOption classname='Num'>
+								<value>1</value>
+							</ResultOption>
+							<StepFCSeqF classname='Bool'>
+								<value>true</value>
+							</StepFCSeqF>
+							<IgnoreRTE classname='Bool'>
+								<value>false</value>
+							</IgnoreRTE>
+							<UseMutex classname='Bool'>
+								<value>false</value>
+							</UseMutex>
+							<MutexNameOrRef classname='ExprValue'>
+								<value/>
+							</MutexNameOrRef>
+							<BatchSyncOpt classname='Num'>
+								<value>0</value>
+							</BatchSyncOpt>
+							<SwitchEnabled classname='Bool'>
+								<value>false</value>
+							</SwitchEnabled>
+							<VirtualDeviceName classname='ExprValue'>
+								<value/>
+							</VirtualDeviceName>
+							<SwitchOperation classname='Num'>
+								<value>1</value>
+							</SwitchOperation>
+							<RouteGroupConnect classname='ExprValue'>
+								<value/>
+							</RouteGroupConnect>
+							<RouteGroupDisconnect classname='ExprValue'>
+								<value/>
+							</RouteGroupDisconnect>
+							<MulticonnectMode classname='Num'>
+								<value>1</value>
+							</MulticonnectMode>
+							<OperationOrder classname='Num'>
+								<value>2</value>
+							</OperationOrder>
+							<ConnectionLifetime classname='Num'>
+								<value>4</value>
+							</ConnectionLifetime>
+							<WaitForDebounce classname='Bool'>
+								<value>true</value>
+							</WaitForDebounce>
+							<PassAct classname='Str'>
+								<value>Next</value>
+							</PassAct>
+							<FailAct classname='Str'>
+								<value>Next</value>
+							</FailAct>
+							<PassActTarget classname='ExprValue'>
+								<value/>
+							</PassActTarget>
+							<FailActTarget classname='ExprValue'>
+								<value/>
+							</FailActTarget>
+							<CustExpr classname='ExprValue'>
+								<value/>
+							</CustExpr>
+							<CustTrueAct classname='Str'>
+								<value>Next</value>
+							</CustTrueAct>
+							<CustFalseAct classname='Str'>
+								<value>Next</value>
+							</CustFalseAct>
+							<CustTrueActTarget classname='ExprValue'>
+								<value/>
+							</CustTrueActTarget>
+							<CustFalseActTarget classname='ExprValue'>
+								<value/>
+							</CustFalseActTarget>
+							<LoopType classname='Str'>
+								<value>NoLooping</value>
+							</LoopType>
+							<LoopWhile classname='ExprValue'>
+								<value/>
+							</LoopWhile>
+							<LoopStatus classname='ExprValue'>
+								<value/>
+							</LoopStatus>
+							<LoopIncrement classname='ExprValue'>
+								<value>RunState.LoopIndex += 1</value>
+							</LoopIncrement>
+							<LoopInitialize classname='ExprValue'>
+								<value>RunState.LoopIndex = 0</value>
+							</LoopInitialize>
+							<LoopOpt classname='Num'>
+								<value>0</value>
+							</LoopOpt>
+							<PreExpr classname='ExprValue'>
+								<value/>
+							</PreExpr>
+							<PostExpr classname='ExprValue'>
+								<value/>
+							</PostExpr>
+							<StatusExpr classname='ExprValue'>
+								<value/>
+							</StatusExpr>
+							<CanSpecifyModule classname='Bool'>
+								<value>true</value>
+							</CanSpecifyModule>
+							<CanEditCode classname='Bool'>
+								<value>true</value>
+							</CanEditCode>
+							<CanEditModulePrototype classname='Bool'>
+								<value>true</value>
+							</CanEditModulePrototype>
+							<CanEditParameterAdditionalResults classname='Bool'>
+								<value>true</value>
+							</CanEditParameterAdditionalResults>
+							<PrecondIntExe classname='Num'>
+								<value>0</value>
+							</PrecondIntExe>
+							<Requirements classname='Obj' flagsforinstances='1' valueflags='1' structureflags='2097152'>
+								<subprops>
+									<Links classname='Strs' flagsforinstances='71303168' instanceoverrideflags='72286233' valueflags='71303168'>
+										<value lbound='[0]' ubound='[]'/>
+									</Links>
+								</subprops>
+							</Requirements>
+							<CustomResults classname='Objs'>
+								<value lbound='[0]' ubound='[]'>
+									<elemproto>
+										<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+											<subprops>
+												<Name classname='ExprValue'>
+													<value/>
+												</Name>
+												<ValueToLog classname='ExprValue'>
+													<value/>
+												</ValueToLog>
+												<Condition classname='ExprValue'>
+													<value/>
+												</Condition>
+												<Flags classname='Num'>
+													<value>8192</value>
+												</Flags>
+												<CheckedState classname='Num'>
+													<value>2</value>
+												</CheckedState>
+												<Type classname='PropertyObjectType'>
+													<subprops>
+														<ValueType classname='Num'>
+															<value>3</value>
+														</ValueType>
+														<IsObject classname='Bool'>
+															<value>true</value>
+														</IsObject>
+														<TypeName classname='Str'>
+															<value/>
+														</TypeName>
+														<ElementType classname='Objs'>
+															<value lbound='[0]' ubound='[]'/>
+														</ElementType>
+														<ArrayDimensions classname='ArrayDimensions'>
+															<subprops>
+																<LowerBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</LowerBounds>
+																<UpperBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</UpperBounds>
+															</subprops>
+														</ArrayDimensions>
+														<Representation classname='Num'>
+															<value>1</value>
+														</Representation>
+														<ClassName classname='Str'>
+															<value/>
+														</ClassName>
+													</subprops>
+												</Type>
+												<Elements classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</Elements>
+												<IsAnyType classname='Bool'>
+													<value>true</value>
+												</IsAnyType>
+											</subprops>
+										</_NAME_IN_ATTRIBUTE_>
+									</elemproto>
+								</value>
+							</CustomResults>
+							<AdditionalResultsHints classname='Objs'>
+								<value lbound='[0]' ubound='[]'>
+									<elemproto>
+										<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+											<subprops>
+												<Name classname='ExprValue'>
+													<value/>
+												</Name>
+												<ValueToLog classname='ExprValue'>
+													<value/>
+												</ValueToLog>
+												<Condition classname='ExprValue'>
+													<value/>
+												</Condition>
+												<Flags classname='Num'>
+													<value>8192</value>
+												</Flags>
+												<CheckedState classname='Num'>
+													<value>2</value>
+												</CheckedState>
+												<Type classname='PropertyObjectType'>
+													<subprops>
+														<ValueType classname='Num'>
+															<value>3</value>
+														</ValueType>
+														<IsObject classname='Bool'>
+															<value>true</value>
+														</IsObject>
+														<TypeName classname='Str'>
+															<value/>
+														</TypeName>
+														<ElementType classname='Objs'>
+															<value lbound='[0]' ubound='[]'/>
+														</ElementType>
+														<ArrayDimensions classname='ArrayDimensions'>
+															<subprops>
+																<LowerBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</LowerBounds>
+																<UpperBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</UpperBounds>
+															</subprops>
+														</ArrayDimensions>
+														<Representation classname='Num'>
+															<value>1</value>
+														</Representation>
+														<ClassName classname='Str'>
+															<value/>
+														</ClassName>
+													</subprops>
+												</Type>
+												<Elements classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</Elements>
+												<IsAnyType classname='Bool'>
+													<value>true</value>
+												</IsAnyType>
+											</subprops>
+										</_NAME_IN_ATTRIBUTE_>
+									</elemproto>
+								</value>
+							</AdditionalResultsHints>
+						</subprops>
+					</TS>
+					<NI_Data typename='StepTypeNIData' xsi:type='StepTypeNIData' classname='Obj'>
+						<subprops>
+							<EditPanels classname='Strs'>
+								<value lbound='[0]' ubound='[]'/>
+							</EditPanels>
+						</subprops>
+					</NI_Data>
+					<Result classname='Obj' flagsforinstances='4194304' valueflags='4194304'>
+						<subprops>
+							<Error typename='Error' xsi:type='Error' classname='Obj' flagsforinstances='4194304' valueflags='4194304'>
+								<subprops>
+									<Code classname='Num'>
+										<value>0</value>
+									</Code>
+									<Msg classname='Str'>
+										<value/>
+									</Msg>
+									<Occurred classname='Bool'>
+										<value>false</value>
+									</Occurred>
+								</subprops>
+							</Error>
+							<Status classname='Str' flagsforinstances='4194304' valueflags='4194304'>
+								<value/>
+							</Status>
+							<ReportText classname='Str' flagsforinstances='4194304' valueflags='4194304'>
+								<value/>
+							</ReportText>
+							<Common typename='CommonResults' xsi:type='CommonResults' classname='Obj'/>
+						</subprops>
+					</Result>
+					<CanEncapsulate classname='Bool' valueflags='4194328' structureflags='524288'>
+						<value>false</value>
+					</CanEncapsulate>
+				</subprops>
+			</PostSubstep>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='18'>
+			<NoneStepAdditions classname='NoneModule' isroottypedef='true' typecategory='3' timestamp='1650060850' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'/>
+		</typedef>
+		<protected>E@=3HJG5100hYLEDg1^J@0@mWkBoj1gmEQ39939=QC6JBAUD1:BETZ@k]f7VZ[e=LfGdld[k&gt;6S\YQ]0&gt;n=KGi_NGjW7RblmFIQ4Sa=R6G\DR2eF]8?R2@:I7=A4&lt;e?c0@UL6;8De?LV[GAPL:WbH2IE_Y?JAmfhnm:b4\_bnnn0RP:95YVj1:BBcDX]I@0B0I5nckLlATfG=b?eMU0WBJFh1C&gt;1KSB;\=?j&lt;4`DYE6d@5]^YkM^WWcIoY_Z`FXEJiSbMf;]HMdZ_HJX;d?&lt;K\I_lfKGeMM5j:cEF\FhfUGMl0bXS[aD1H=6&gt;gnKUK?c^g]jo;7koIl3OdjS?;6Q=b\M8_CX`hH7b9R4@`4@ld`:UOj1nO_o[Kj4ehjmBgimheLGUe:N1E1Q7[E5^Fg0ld[CXLCgccg=]dLKXRReR82M\JSHRTJL=@_dZ5bj^&gt;^FT@UXd&gt;C`A8eh[[eTI1Qa8LM^IT@NU4TBSDSdMDF^6_^W5djN@9jkBMMcROEofJ=\Q9J]D;h[k`oVHVSJ5Nb9Ug6jZWOR_VD@JmNHmdgi3^&gt;i]3]KicLeYSk3L&lt;3:dIC7AFV5AjXUA;\o02M5fdfb&gt;O7IMnKU=3g8ZnF\^QcVQ_afnSQio6nYA[l\;HJA&lt;jPPdh_hb_V&gt;Uie^M4kZS8a?hhQTQ]UedTL4IiA5?nkV9^HMh\358cJe&gt;Eg_dLYnEcj^FoO&lt;kKdWJD;@PRo_X&lt;I5</protected>
+		<protected>E@=3LJY8110h\L]MD[_K&gt;gbc;?ho&gt;PT0acMbS`UI]&gt;]Fi&gt;M]h9Y:WoZ9Ia;[fQK_6XiCjE^jWk:RSRone8mb@9&gt;O1[U]1BR0KPALPIQi&lt;L&gt;&lt;NW8=W=NbTd0C4d]ignkW:Y&gt;MJg8D5L]&gt;1Mo6QK]W&lt;baB0_&lt;LQOD?DmWF6O]f7gKT_G_5A9H=@@D\fW7KoMfVk;onEUSSTSgiYlo0J&gt;l&lt;`@L5O9;ePMh&gt;PLi67j:@JR&lt;oeL\iBaD6K9&gt;lBXc9PFX3`Zj9[J5AmCAV17Gh@cDWf&gt;l1Oo]_FfgkoMm^OQF^9M:RC&lt;G6mKIZM_]]Be;RRLhIR7CjSJdH?m\\d]V]fVN`\8Z]mJTOIFKgEaWWE__gDgWgm_C66?oB1Pg1ZCG3coL]olWkKakCC^oN[N?6Z_^_bogI=l&lt;nCb?o6n;njeV&gt;Lkb`FcoN;Qg_1h?3md=T@jhk1LNndk3KGodmo_cmj[PgCM1&lt;?a4;67Lf_8cO9KmQ=@Sa5QS8j6]?CRgb4FTbdZ3J3EdRL?NianB]RG@fA1@U;CZ\;\&lt;VJ&gt;B&gt;A26kd`QAZQH&lt;gBV[M3\mTCa6DM:AI2:O&gt;CdKT]d&lt;WWQTMQ\&gt;`PRl[NkkXM3GQMGhnRcb9@?ofT=:ca^[`CND[5M3kMM^f1V;Md2=7`3U6EkH0E&gt;&gt;fHnog4Sa??B?;]`Kmo\]GW=;?ARjK?=&lt;gDIjc9U^dMWo0bgX;V3ce\R`:ljm4IL&lt;?^7g_SaPgjnloCePiIoJ[e:nbP\[Rlln0HlC0=Ic7`UER9OjF_791CUT\E7\[O^B:5:Y1I\ei\3PmbAa3Gh:oRS5m2g@1l&gt;cfBbP0d=WNQX_:f7YL4VV530M9fh0i1BRdL22VCRJOe[U=DMG4?_XD:HIY5;&gt;\MP4X=F?Ba&gt;1g[dELFFC`BGFCDM;LEPoP]AC:7^6&gt;]K4E01K7Rhf@&lt;8mhkLZ1KVXB&gt;F&lt;CH^`@`E;TfFnPlL=O^6goh_KmkQhA`QN]gYfU@C1ZE=lKPfdUM84VP1G@I`d96d`1R7[0:W8@;nT7JK3`I3Pa2h5TMK=ZWPOY_R`Ti@&gt;`Of=&gt;dmTGJMKRL:`M=FSai[WfFH`ZN;ZaSXbTN4;UKY@LOQa5[\Jfn3h1&lt;V7]Ko]kobI@JFo9jo@&lt;MZaKS4Ya38XbJbD6eZ:QRLeK`9N[C_XAaB94IBj9N1bL9bIDIkCk9\@CMIfoof=[KmgB?ON_o]\hOl:g^VmcI?kkn[S&lt;n7@lid&lt;0WLbJGROI1L@D0c[h5\LjCnC&gt;hDPof3T9BUZf=a^_J7d20;[6Ybbij;`\bdA]ocdkK7kXMm^@?``ZdYXldmHBVWVa?jlFEm2@ldWDZbX_XLXTUR&gt;;;okoSahEVhb3kNLdW\U`XaQ]C__JkCMT4\RHT8iYf_Z7ZDLW4UhgIi:F:cR@5PU8SO?&gt;oYXD2^;YXod:bS^KBDS=]:V&gt;kg2WgKioBl&gt;09Vn\:4[RPLaRB&gt;Pb15J:oP8hMe_TGc5XQk:QlELSP5F3CC?QE9n71Fa7V@7RL1FKfg1ZlH&lt;Hi54FXa=Jg\in&gt;RTA80FFXKhK2c_\T;dF[RdFFCbHA2RbM5KZ?7B7&gt;hYLVE&lt;Dj^AJC4a:[IZSB]W9&lt;?lE=W]6&lt;h7l^K=h2SEVdBeLB:nkiH1hLCe9h&gt;V9HFBC[5801W[k5M1GFP_Oka2HgNn0VAE5:I;=3I57QoIhFI5EHnEPhKbh4JU6m5`W:e&gt;i8B]4`R_Ad88]1;J&gt;&lt;S[M5FcMMI?kCPN40bj2ZdbFVTO4WLFd6BC:4R6Eh7e[8Q@G85;ObNgl`TC@7EkO1P^L0A3B\Aoh0biZU^6OFFbLRYWoN0W^l7be=[efbX\IBIDNj4aZ=&gt;oMQgG8i5JSRoebl^FU9TSa&lt;`;?aYR&lt;RLI66IGa&lt;U\ijmBj:V]Tf;d[ZF6Z2SRmRU1jW`[@NZI@1ZIXBfjGm4^@KdQjJNAihWXlZXBM4SBc&lt;]W2Z0JXULTF_ceB&lt;\gFI^C_fETZf&lt;EQT2@37DFd:HQ&gt;[AVaE@kaK&lt;7b3f4L\XDeVHVB]1eK\743N:iD:C^]a6[J;aX6dFCcQbBBOo:]5C\d5X^8E]e\RRo[NI5P&gt;NYZH2389C85mF@:o\gC:dD=O;K6UWX=_&gt;KKEj_[]S:8jZ&lt;`mBafje932GQQMU18OBogNGeOblXc56DMH_EL14WffN=IALPAaF&lt;Yf6hQb`kA^MO9?g6oVld9aMHCJ3gBEiaZdYaCN\[c5b5LUm:IOdOf1ja8\g144I_ZFPQdeR9fkVmJHOW2G;Ze8d5G1@JBaLSki3oLd]T]?d`\BO@0CEFh7`b0`XOkCY_nQog8Vn?5C3SW5Y2TF?Ho&lt;d\:Q8S4[LE3dHSLiXjd\bB;cF:KhY`3F`i0V6nZnekfgTN5m\&lt;OUAa&gt;J6;]&gt;92h&lt;V&lt;6POE_EgALDVc:BPE1\N]5o;&gt;dkm@PVIJ9C9_&gt;HbX5HkBLP9[haCdhe?XW@9m=QJn8@eI&lt;?jm\&lt;lM]b&gt;8clCj9KE&gt;J7Pmo9DoWPWY&lt;[l=d6n6IM\bTo23Do23G3M]3o`g0KdRL3QWLXVOY@[f\[i3EDZSIC]AR^dZDe6cUEAKHSD[[&lt;=dA5meEA7KBDX;5bkmC5kMFb1]Uco^;^0]NXYWFJfc042io\&lt;E;_n^?6=384=Fn8eV:NJL3lANIHK6;X4&gt;Zgk=gAiXD&lt;8kNmDb?P@N2f5B__=BFm6AD[^?V9\?0Jh8gKedKVMHEb`PmOlPW]m;o0aeOW;0:ULi]Zi6f3Q[O1F6V&lt;=Bo1HBh[8LGj=d24NDHjF3LQ;9E?QMA=co3&gt;3aaa7gP?XHGl0^:b1\]?Nf8&gt;H]Qo=l9S&lt;I`kk_CilcElPimP5AE0U[d`\[XWa`FB9V7kPlWW\3=ENia1TlKo&lt;WaiMWDn;A55P7IH@\U3&lt;LFNaGH48f=4i6E0TI:5;];TVhlIY8fmjVUDO:gY54Be1=S]J&gt;Q2`2&gt;gS12^J9Ml6JB91=hSjHEMPVhm`F0\5`]&gt;G87QI_GGH5ZI^fNJ[`lHZC4WaOF7?1h;\S09G0eVQ_[K65Ma1k4?G&gt;?2W1J7CeT&lt;M=7RKkjJ;B_USgcAk?mU\[ccaTj09kIge0[AFgJ&lt;eN7H`LcB=a[LVidPH&gt;;7X^SVb_0M7&gt;i67]FRgm2X[8clR0EVWNc7:O;V3:d2SK]D3mL5^YlB46=XUHYQ]1KS[c_16ElWNDZA[;&lt;da1:i^YmE10lTfHg7;&gt;j2X?[8m_\ZmU&gt;JBH=19Y3KH1Za[k6oO2SQhTRTY5j4FO:iNo0N4i8TP7BSWJQQEIPn6:lX8jm`D0FalgS&lt;CFQ:a7DA0AA1OSGfI?WD@@K48&gt;n8V`4n&lt;56h9O`Fak1LhInGF5R`&gt;?mGK3h^:L]Y&gt;9&gt;n`2:I\^R7;1Skk5Ncg8OE_E6jD2&lt;A1W9^8URlj28&lt;&gt;8a3``kikZED8NbN\3bDkbZE1HOPmadiA;iLZZ]84DKh9WmhN_H63Y&gt;RSX=5ZcDe4R&gt;bFP=dVP;46ZdZbZ?721&lt;&gt;GQ04;XYlm3EHWe`hELD&gt;4hL1VfLj:l?@[Hf9IH:2L3Z9GL7bjH&lt;:X:B`0Vh2EC6VQR[ho;0@Y3=I0OjjHUPWK[PB2S8A\7Y\j&gt;S61V5iMM5ALc6ePR2=XLU;?bdh3Uh51BfKLJJGQKE@1C=XbMC;MonLIhl2Q_oaf3BI6m&lt;DPHj_DcJeQZ3P:[YKLUM8a9@?a&lt;S&gt;`d`&gt;_TS7GV1WGbkC\X_OR&lt;S2km`723WKd94CN6mH&gt;:H_VEDSG4D7UCHYL^ZfS8c5[122=6Fa6hJQnHbbj9hd4nS5&lt;D5KVdG8?GDDiH^mlDSJMNa6IRAP8mI_K215d9\_?C`79`OE=S?O?3`gXj&lt;QDJ`Ted`=JPfJJ95&gt;\dUkHlH:BXLd@X\ZSEl[C19dk1mT:N&gt;lWJ5AbDk7DIWNeHI0[V8YaP&lt;7;cGKEQSI@S5G[@6c5cn94GU;?&lt;`J`n9&gt;NDZGnb8DXT9MAc6iHA`:QI^\NfK0_Q0EShgCCVPfXe:efFbCXogcdVm4ZcJFOcgjL]K3[?nEZ]7nWe;i[?GIm&gt;gZc[oFW46ZKm4I0HYNnAYm0?Rjch45m@D5QTdoFVf&lt;j\YKhY;6A0:o&lt;;&gt;_RIMj18m2fRONUZKMi^8b:dE2C:SbEQQM50Onb1Y8mdmDIBgn4;iTFh`aiF5F&gt;Q[D&lt;A?7=3GC1lB691P]j=nWcj2`Ul[c]9f5ljYP`Y1F7F=E`_;``Ch2ngE0&gt;_44_&gt;jD:[YFeafi3O8LhHEeokNcFiaKoi[ehk5alcG`f`2nieC?&gt;H1W7Z1MABedUMgR6m&gt;VlD35AS__\S33&lt;VV?bMOK3AZggkoE73mN^VQOQXM24GKgAKHJToJ5j:^9\344UcckP1[6m:?]mJMNUV&lt;_G299bGUiI^jk\ig=NUIV_beCRImmeSW_b;NZ]3:4OE&lt;_[[HkJPWoo0Zj^\o[:@DCQO;V`nW\Vn&lt;\k`g1WYh&lt;b?5CH_\Fe_MHo2[]]eEV9KFI^cbN\Z]9eVDI_F_?n;ggVIQ790GLO;b34VC^nkE419VkmRa0nA\PKAek41=S?2;3CM7nA@fDFc_GCG?jkW[nLN5nAP\i0nFAPO9X`?1D0X`\C5hf929@AmZRPXTb?DV8G[JmR0?E0fX92j=fk4O1J05nAP;\=]3C5fP926VjmRA0idjf92AEjTROX`C?DX;KZfY92Z&lt;&gt;\C&gt;5f9Y2=lLMHW0:dManB_[omBLFSHO1_le2NYJ[_d_UaJ4[]c=@f:FKkUN]EZJIB\]mBF?^[d&gt;TMOe`:Kgk41_6EWMdaIOm&gt;ZFcFO]cjL]mCF[OcjELN[cei=i1b?&gt;D8oiN`?7D\H3W:Z^lc9QOXPOnSVhIc3:U&lt;DM37hMmjHMMT6YgEn_MOC\cKioLMY&lt;N`Gmh\eHgk7&gt;7E@gUlAD7C7ogQLDihm=LLMonhZegj9oacdke`hoce9mFUPFLF&lt;9NMXAA[iknLnciJoRn_82_:o;KO\Fg5U67]^Sd\Ph6Yf6\UaRV]ii:`YIHL2ECCXFSFG4MM&gt;g_[F7UeI5AGUHRI2g?DXjJRRBUU`3n==A&gt;aDl0@dSc`5\P5fXU&gt;aXY`RN5VS\1MX0cHUZFRiQ98^]PJ6\QLJ]4=0Mmk?`SdB^`hdA=mXRG0&lt;2kS[f&gt;@O]DIaQ[H`7BU7d&lt;TckF?UJ6JQLeF0\k4N\CXbCb;&lt;m@dBY7O;Q&lt;]m0[;&lt;SQBKHE`Zj&gt;bNQ^9U2dk0iAT]3]YT42PO&gt;1ZH`DRBVI2L`VQgLn83N@E^0nN&lt;R3Ym\GW5_&lt;BIB:e&gt;AYHiH1Lh[1;84[7_XjMG_df1Gg7nCVD7&gt;Te7UPD_N0USE&gt;MFc`cekgFW]6lcOK&lt;KN@Lc@@T;44lDE:@9Q_fL@Kl82UJ]fl=XDFAFUn3AdT=:FM^oZkokoG]0W?9AjSTK@kTHCQ^SC8SIc8P?I8@RYTEMYTGH&lt;T&lt;YHBUCb9c9`HTR\ClQNIZ@5\[84gQ8=DF@YJ@VY6@&lt;KN9c]2dB[2TVPl`A@8[7B81Fl?laL=jA0\CXdE7ga;7df80i=mjY;m:Q90Bi?JTa9865YBmSX@hSdQ[`IMW1ZV&gt;0En9nK&gt;cD0LY&gt;FA2&gt;B9^&gt;KTLP3&lt;LmcTK@Yf3CN^&lt;bM]046Ki&gt;U=9jV=LDT19e&lt;JidTbT7B1F=B62=2LRG6fSH3aSJm[5i8b6Y3b20F0R&lt;Fn&gt;&lt;20VO:9SI04SOGFQZW;^FP;Jd_O[B&lt;P=50H=PYiU9BN;0=1:VeA9TNAV`]8BG1&lt;bG04T;ebE&lt;DBE0Y8\S`O`g`5`]=5&lt;85a=6=a;3U1C@9db?&lt;T:&lt;VGcRTM^RTf=H:9PMBOR2f6UERHTD280:gB8D0ITeEGnW_WCNm_b6FNN^[ma12iVjaYU:ehlBI93l0B]\CPF9@Z9TIJhefB6d4c6Tc[48&gt;C1FiP_;2_BjYd4^S4&gt;3F?J?@?;mQ^mbaESk@NG;]A^gLfJkl4G32k_j27_j1kkeoR:?IXd6PNi\BO8ADdG4A&gt;cR6=GSf8\DLJig:6QJK0DV0J2d`1C@im`&lt;l8]Z0ji`2k@3BQ37CRK6Z1GP`?H8^gD;TdD6KI:S9[=2=[UA^EB0b:VaXDB3?D]3YbBX5`hB1FgY2BbY4A3T89DdZ8A4g3D0g883\P86B7nbO@8ERRPU^gFJ`6nf18eC@5lJ07kfTR1JbRXmT]&gt;EdHXLhCX:EWD6;bJOcV\R1h`dGAb43XjQiE&gt;EF\j\j&lt;AQ:OLX@e@_4&lt;94@?JE[18R7H403YP86TY@F4RE:B[DJHU4YYg:U9E:U\BRREB[TD\H2XU:@d8N8oM4hAkLaNcQ1bT49PEOE3B1n78`7e@RQ3XH?Xc7?58WVmBjCZAc7P]NbFQ[b:Snjal9nbMI`OKlZCBB2n&lt;VLlHA1oUHa&lt;V9`Tm\[I@iTZD[G6jH0`YUKooC5;Vb=0B]mm4g@n;SlBcA@:B&lt;7[k@5e@VI2D;C5d8nEOSCTiaj2]:@FJE6h9Bi_gZ70&gt;3`iR&lt;jH95cUTHHMn]oMXk1h&lt;^e2@oL@XH\fBk=M3dX9@IM8IZAhdUnBU`:^24H1&lt;E=OCRWXJPNBACj;KbI0Lo5UbDXWIBe]M1`j4^^D;N6d=[WB`YF_J`aU5[1S2HMJZl6_9Z;GOUWU&lt;`7B\IFLJGFV6G9RI;\H7ULfWceIK0mRF:BS?Md^AUG`ZGRJa;&gt;b0:jT_::Sc2NloV:iCY?0C5F4;]RNTFXNg5[^c0Z5&lt;5a9OUQJVc\9hR:k6[;`FUSD@D5:5F_\^GKH2ZW4bFNSMbX?XRP5F\^014g8Ebal?`mlDBXiX1bVOYI_XEHLPhFfVLVU_B6O01MP[d@&lt;@COGCYSSCPT]XEP`D8[f^L80UAg`BX0D8&gt;Ajd;KELD:IbJ8S[6[:]]DkAF^TGd0?U0[f6ab`enWjNPcQ[=@Wm?BI[Z=I07[Kg36Pi115:hfWS9Y0]I^5c5W9YmU6M@gePH:GANJ6D@bXP3Cgc49MY3kR&lt;hCPi_XSYGG`nH;eIb&gt;ehOnHD^I4ldkSUTG_N8Wf:eIPfII_K8da9J]AnoKQmdPg</protected>
+		<protected>E@=3NJfN100h]L]MGk_S3fBo3k7LCg8f\0V&gt;Ik8S&lt;WITBMWXQChK=Ob`FSWg\7[R^[8&lt;VSFFGL9NcMDmg`7ZGQAT2&lt;Ob]kG[P55F7a9=&lt;&lt;9Q2icLZOdafA=NeWT20NgMkoCc?L7&gt;M72:X&gt;gN0MoVKKK&gt;LTRU@NHh1n[nidMYJlle[ce9MniN[L4AW441FRfloEIO?ji[@Off;fjG^3kkmi49l8@;[^Li\V[k@aLh5c:e[D@iRHnj_eY5@AHV?igSQ]TJZ@&lt;ZB;OL_6AcfaFK4Fhc3BW&gt;E\&gt;o?M\^7LefOfgfTbfOA9DCc1XSlff&gt;omG9W5bRATF&gt;ehJFWogDlN?OWLi1:lZfOP?W^M:kZhkkYoo7]IUmoJXBC7BR5VTboBoVNhgKIo=g`JkkF?gG_Sa5M`hQmlQakZk7W_mGVIfVS??_cM?CTN3N^nbCnGT[OYbjo3dXoQXXo`[_MfXc9oln@c`li]f:RJiCMha0m;VafnkSEk&gt;R?gbV@\6^g2XV:TY&lt;gIHf&lt;o?S8BcnE\]nZ&gt;m_WciSJ;i1MW5_8MO=ObJ3c7`b22jbU1;XL_g&gt;jJ7_kJ_X]\TU2QMMh8KDZSa\mo88;D5][SmMo&gt;QFDV&lt;Wd?=FFAAaoOI[0LNF5S7kQAneGb;RCABmom5Mh`lg`^?7fGGmnQm8dneonng`noRO^KEJocnXd\f`1L?^^^__GkGm?GoXQfb2n5Pd_TAQo6]AOIh9?e]kWO]LaBJdi04QFIFMkjQkaCXaXR4]j?hjJVSE&lt;j@Zai;L_ZLkl1TggWM`CHFggVcO&lt;Sahg&lt;5;\9bbZL6Q\oJ&lt;VVkY0dI8f[U30[B\8he]Uf&gt;Fa&lt;[^ZeLCokVQD7&gt;BFa[QE5W&gt;E`:6X;7hQWPeVj\[cZ9[V;8Zl:UVk`OGd89RNGQFRMNR&lt;B9&lt;HNl0VYW?FcU3_4&lt;HY21g;5I^hJF[YCWPj&gt;E=VlPjh`M8^B;RPWRIRN3I9kA3]?fCH2gk22=YhUTQ6DaNM@WFcS9ddc=D?^VJgQ[aM4C7g:5ESB&gt;\6FK6f;Oi_&gt;602b^ZGjAT7l3[EIX@NMHa]h7\cj?Q8RHLM_mWoWmFkV2kh19_R&lt;AES?bPBTK6JaBcbUUZ8DG]jiQ2afGF2jNQ;kBR;afZ:V:9dQkc?hoKbGgMI?3OTnmi5lhjocaMJgmgeOogmQdjWB&gt;T2cdHO8&lt;L1``SjGBYgAW5n2AiSChLZhN7a9e9gHPgDbcjlV7G_\V4n9Z_o292&gt;WbIlCIi7jX_FgT1YAQ=7g9OV?a=&gt;Bj&lt;WXFk?m`4K6GhOT6\bJ@XnLXV?kMmnPjn3gNO7&gt;&gt;_o6mkJLS00NcaoUn^J\9CV@=4Z:aTeiU=f9:JZ`&lt;o5h?I@Y^dD4Baobi`Yc&gt;ZUf^0dj[WLc4621KB2I9BNhk:0haM?JfSaB;noJVm9^V@GB1o4caGR&lt;&gt;l:jFSXiDAEY`5@V?T?B?bm[5&lt;hC9m&gt;=OB&gt;^B2JJ?9kWZ&gt;850[El6D6iW4^EMeZOcjg3ObD3J&lt;lYIf7cI3PLdVKW4`TLbeFW=\TFdZ5f98JTj^oca@j:1_i`\JBP_]De&gt;`Ma1cIEZE]OaA&gt;_m\X=5Jfamk6Udd_2=Df^DZA?nV]hfT7=jA_DBBZJe8=hXTXUlccJJ^dWNlkgMWfOB8ZB5Z\U5f`6aobIaI45l[7[iGHD8_AhP`^MAYaE5Ka&gt;e6jcE910YaIE;1Clc?O65d]8PUh@OCPiLU4KEc@VZ`1=&lt;SRUS3M93RSRV2F`\DmK&gt;RMf^Ad5Pa6^a2j@C3PC7i?nNSdkfZJM5]_ZUEf2?l[nOZ_^Y1Yfjh7lGUHne&lt;T4C7POnSYNmZ29=&gt;:5Vlf1lA3X&gt;=Z&lt;cBPCY_YVMQW@e9Mng=_OG^f0Y[jFB=[^Uee6A:GabH?nZXTG:VT@^?F9KM3mAg1WbQK6QEoA09`DfE^8WUTIKYhP0dA;e9mMVVSAdJfFXKZb]QVfUZ\TL0E=8AW;=LBTEFYfNRQgUX=d^OYX6&gt;iSZUQNHB4[f86&gt;bXIGJf]9ENIKJ5JU`J:\GAoijA9\Lj=[6`RYH];AMnl9:&lt;j7:D@T:=DV:2:6m`@nd1]_O;f0;]F\ohT0GfcLjFF=h[1jN=Jh;Lo4TW159LN2?LU4l&gt;lngA[^CaQCGKO8C4Pl:QWn`&lt;G[&lt;RU4^Ve1TkB0W;]ZWfC_hH?NI[dC_I`NbJQhoEMh;HRJVnnE4gD\ie8A7oNd4QT9_ehJ68nD4gY06=Cl;\CKCOnjo&lt;D_QEXI]8KTlekRH&lt;?NlWXQCloa39EnS:DDhL_3B1iPR?IWn7noON`hn^&lt;&lt;?EYG9j4nQ`&gt;ec78`=^KiEDJ`&gt;G^Q[8a;9F;\McLBb]MX:=9\RoCOd`[W:iDA7[L;8gE`\&lt;cLIVDBU4jUZ\hlLl]ZR970K5b2b&gt;n1TbaO7Q2::I3XR:KHd5&gt;j:2n_::7H:MjH96QIbF@RLSkAkhGX&lt;42ZFRhZ&lt;REfQnY8Id24kgD\SCDVA0C=\21j6Qd:EMHcXAK[XQm4[S&lt;;faU5JRDXR8deR7IZc_VeH1j&gt;T\F[AZ6=:m5mYWA&gt;JKUCZSXbF]EYV:VJHB5J3BnU;_lX3gGJ@Ym\_K4;`ONKiXVA?]^P0^G1ccJ;^k8Uc`8QSiIam7U?&lt;&gt;YOI^\\=R;4Y;m]^R@bIj?CF&gt;XLeZKedKgR8:SeI&gt;BXDihfnBiTGDg8QL^6A?n[TFWC3kaV7[e]K6J&gt;^o@H4^mC&lt;EBMkNV&gt;H=QZfEI\626C;78Ak@YKH]ChHV0]WRRFcMZRfJ6Q`??BaY&gt;3_NH8@W3=PNJ7gE3CF;c_2OW:SFjnMG5lMh8nbllXRXXX:eJdfedCHhQ`&lt;LP?46JBeA=:Oic1TlkDScelAbj=E&lt;82dS6R9aI1fMNV6ee^0@1O4\1_[Y[9E&lt;8Ioh:KAO;_dkWGfgMRKeF1=\6J&lt;32`RghSnY?K5nJ&lt;]BZ2JTBeai_R:jAi]L6:RBY^a2]fN_[X9c]hJZ\]BBV[?Md4mJ2m7^X`&gt;DJJ0h\7MFG?;BT2?N\]\7i&gt;3?4V[IQk:5^af]0GU;`7oW1OmGkb_]d7@R77g_DV&gt;R^S8J@^m9jTTU&lt;KBiK=aX@dO&gt;A8e&lt;LUOkS9L&gt;_?j4e^jISFDUG50Mi&gt;l&gt;gLl[9&lt;Z8F?\`&lt;L^KdfBSF3^8DA&gt;=`J:ePajOEXJm`YmBhfJSD3n8S0fe2j4:cBISMh958HMCnV_kfjh9d1^\Z@D\&gt;=:PjWJNm?GXRJ&gt;kT5:Y\9UG^&gt;W_U71&gt;?9Y1jH9VFT5EY_@28jb&gt;1nEB\BN]gR4dMR\I4DDPfZSZ&gt;^[I8B&gt;Jn4X23M&gt;[fSD@MCdY8McSUACeD]M&lt;][dTRkmDnN:SSdiI43N`o5=eB`&gt;4TkCnj_NXiYmJY7FT&lt;Pj\:4a8FGW@hA1h0&lt;2g^BR]0jVWXg;PY=&gt;\@WTVeDnlJil94NEEH6`DLNRi^ng;eEP2ARL_]RfLPEATb6J&lt;h6L&lt;jPX^Wn?UC4TJ`Qjfj12:l\_`fEIMEn97bJRL0P;K4mWAV8eLaTR=U0WoaRUWR2Mf:2k2&gt;L2Y&gt;8U4I9HXANIVf9DP]&lt;`Oj6HEPgK[X:2c&lt;1F34eMW[30ZZLY]Z8^i3:aX10:Wf`=&gt;JlYTTi@BPK[a9GVP5;N26Xf]=&lt;l;NgSJX0oRhJ?S8@jY`1am;YW[EREB?4[[dLUXaiY_2a\^?`&lt;^2_DG&lt;Gfg7GZG^\XOmV&gt;2^jmW1K6eiYBWRj&lt;XZOEnc5FVV^9Lc:VB6J8f_[9CIKB53J&lt;RE&lt;`;;TIf3UDY5=m::IYgD4kXM_Gd9H=^Dn;]5&gt;_]bdHJMNO]Ja\@&gt;VY[lkPl:1QZGn^TNUh9I4W&lt;CJ;&lt;E3M4;1cF_F\@G6gchiGDV9S7X=RnXGaj6M8cOK2N7A&lt;WaL`k^&gt;[H1F7JZU=dRZ7TA5eHW=iEUU^RV:O\G13hJVM9@O^nIHd1bL;NNe_I3EU@e]d\_O;9B2V7JR`j&gt;]0^PA=S2L5Z4:K\2]eaHFbX]oe&lt;jVTaaWJk[^aW0Z?fffLU[naW6Jk^\aWJJk^amWF]l?1VHKeI2RHMVnAeC06TIIlnQmO5IQTnJFeILe5`EaMd0A@O]V5GfaDoAPDYIka\Ebe_DLgAB56Y6Y;a&gt;eYM551inbA&lt;WmdDg5BiO6;Voed`3mFM\L2X;IC?Z6GWO0n6YB2HCeF&gt;OVE=]DY&gt;f;@;@UXQcHd;03[;f4Y@9nfBEl=QLI2dG[&lt;GWW?=i5enLbVToo8&gt;_Uc`Mf@oOgmmVKO[?U5?Zcg3nR?g_WKGnmabORdTM4c:n9;Gnl?gmdgm5QlAoh]hhdP3SEN^K8U;62YL&gt;Z3b3\fd4UGI2f3?4CdeB1OcOlmAnePneRMbR_oBTZ\lMCTk:GVn:Xd\?0_CnB]4RYR&gt;ZVM7:9C6Dm:CGWBSG52^[S5OTXbH:ENRZm;8;NP6K&gt;QJ?K4MG0col?Pf?BahT&lt;Mmi\D0PLk[__&gt;BWNDiHa[hA`:Sm7&gt;UZcf?fE&gt;JUUgF[3k27OCH4bZ?o&lt;BejBWO8[L]@c_;J=Q2cmZL1DGEn?D5XbJMd4YbhfFdck2R3OQV\HBST2LQeichN:W7Fm9Z?lE7gm1`k8OUIi1PFd2ON\\liZdOlaF7d`QlnU7W2TUYEnA:bgaYdUKUh^;GhDalS@`jR1Id8SBTBN`=Bo8lblCZNG&gt;L]UJ]Dk^8BmN^lbaYiYkC2&lt;M2Dne:]XTG8Q]]Pnh5W=RncAY\h3G7ZM3mdm&gt;KdoJE6onVQHTP`TUTPB18a92o640?U&lt;@7HV0S6@[TR3IY4A6R\h86JGT2;DY@I4V0?RDKm7P3\68Q`En6kS5&lt;UP2:0gO418IQQ3dTFU4@0]H8@HVH&lt;48DjmSH3jHcCS&gt;g`A&lt;7&gt;2bY\1_1V651hZa0kdP6S926CC31&gt;38_o0]D\3\XEi002MK&lt;V&gt;RLF`T&gt;0iX7mei`8X&gt;M0:75jPXa2gf`=KeFY62]4&lt;`f0Z@4X0^a&gt;0FX5Y:`4J;T7=dFl3hIL;X&lt;@0H1i&lt;HSBU0J7b262@LS4NF@6BS:^6ACPFa`&lt;eP_d8XPXPGjBhG4936b2a1hHXa];@\5&lt;2A2S8&lt;PDH\P1\85=aP_V9IaZ4[PA8EKX@:M2n57RVHPCBD6Y&lt;45:a6Qj0n9P`3HdS&gt;PCZBJa46X22@4aPUFc8BeKQ5SF9&lt;Q7TJj:b0T76f4R8;:4HI=7\R4`K4RHR&lt;&gt;LAXnR29QoNM?0;_2e3GPIXPMQm6Ba40hYiP8JJGmfXAlYK;1SV7]iMMM?FG123BMf3GMnMMZO`;7IhfFBAhj@W`Qhi^031bVjQFS1XLnD6HKY;d&lt;1TSc&gt;=9HfX]7@i:V6FR5C^9\9^o`lJ85iH6ePBUJ5O6B&gt;[=b8Ze9TE`^TUEJRUj3HBIlAIW_EBaIDRlaPfDJI=DDgU8JTT7J`T;YPBR]cbQaPDDd&lt;;Bb;1b6he&gt;Zf]aeW&lt;7U5KZ]acL[[TEYRbK]1CK[i9P&lt;FWDnVI&gt;Gf4XMYoX;MMDV&gt;]Joc;IB1hd=FAaM?8MV&lt;JWUiFm2\F4`D?4dTjd7cC?AEK5=bBQLH_8haj0ZQT6PQTa::JST6a:4lj6XJY&lt;Ba6XY[&lt;B6&gt;XI`4`:db@7I1o?hdXN?k^5D7Gf]]O^O73F1jWm83eH841:&lt;m:Ra?1aUZXDYAITlQ&gt;f_i[`EiUahMgN4nkEIOOGbZADd;c3PDA&gt;^R2VYi\nbORbICHF0@8DX[&lt;GV_&lt;_\;19TTd@m1cYP[ULo`dgog]i1iJ40@&gt;Bmdb51KjAa6^JX:;`Q@90GF3\;&lt;6F27RJPJPW0DS1P2\[=6mfOk1EP8PGeJc6`0`5&lt;_VD8S\POgMh=1DZ@bP&lt;diDZ`\Idf6R`M0i]Dm\_dVjG2Ue0jUAMBRDLGlUI&gt;YCnUPmL1kfC_NhfK?gRUXg`;m3M][EDc5baHnBm7oOWBfR^;jaLTg9?o;5b8D\P</protected>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='21'>
+			<Action classname='StepType' isroottypedef='true' typecategory='1' timestamp='1618215606' typeversion='21.0.0.2' typelastmodversion='21.0.0.0' typeminprodversion='21.0.0.0' typeflags='33554446'>
+				<subprops>
+					<Substeps typename='StepTypeSubstepsArray' xsi:type='StepTypeSubstepsArray' classname='Objs' flagsforinstances='524312' instanceoverrideflags='655384'>
+						<value lbound='[0]' ubound='[]'/>
+					</Substeps>
+					<DescriptionFormat typename='Expression' xsi:type='Expression' classname='ExprValue' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='4194328' structureflags='524288'>
+						<value>ResStr("NI_STEPTYPES", "ACTION_DESCRIPTION_NAME") + (("%ModuleDescription" == "") ? "" : ",  %ModuleDescription")</value>
+					</DescriptionFormat>
+					<DefaultNameFormat typename='Expression' xsi:type='Expression' classname='ExprValue' flagsforinstances='4718616' instanceoverrideflags='4718616' valueflags='4194328' structureflags='524288'>
+						<value>ResStr("NI_STEPTYPES", "ACTION_DEF_STEP_NAME")</value>
+					</DefaultNameFormat>
+					<Menu typename='StepTypeMenu' xsi:type='StepTypeMenu' classname='Obj' flagsforinstances='524312' instanceoverrideflags='524312'>
+						<subprops>
+							<CanBeSubstepType classname='Bool'>
+								<value>false</value>
+							</CanBeSubstepType>
+							<CanOnlyBeSubstepType classname='Bool'>
+								<value>false</value>
+							</CanOnlyBeSubstepType>
+							<Category classname='Str'>
+								<value>""</value>
+							</Category>
+							<ItemName classname='ExprValue'>
+								<value>ResStr("NI_STEPTYPES", "ACTION_MENU_ITEM_NAME")</value>
+							</ItemName>
+							<SingularItemName classname='Str'>
+								<value>""</value>
+							</SingularItemName>
+							<SeparatorBeforeCategory classname='Bool'>
+								<value>false</value>
+							</SeparatorBeforeCategory>
+							<SeparatorBeforeItemName classname='Bool'>
+								<value>false</value>
+							</SeparatorBeforeItemName>
+							<Group classname='Str'>
+								<value>Action</value>
+							</Group>
+						</subprops>
+					</Menu>
+					<AdditionalResultsHints classname='Objs' valueflags='4194328' structureflags='524288'>
+						<value lbound='[0]' ubound='[]'>
+							<elemproto>
+								<_NAME_IN_ATTRIBUTE_ typename='NI_CustomResult' xsi:type='NI_CustomResult' name='' classname='CustomResult'>
+									<subprops>
+										<Name classname='ExprValue'>
+											<value/>
+										</Name>
+										<ValueToLog classname='ExprValue'>
+											<value/>
+										</ValueToLog>
+										<Condition classname='ExprValue'>
+											<value/>
+										</Condition>
+										<Flags classname='Num'>
+											<value>8192</value>
+										</Flags>
+										<CheckedState classname='Num'>
+											<value>2</value>
+										</CheckedState>
+										<Type classname='PropertyObjectType'>
+											<subprops>
+												<ValueType classname='Num'>
+													<value>3</value>
+												</ValueType>
+												<IsObject classname='Bool'>
+													<value>true</value>
+												</IsObject>
+												<TypeName classname='Str'>
+													<value/>
+												</TypeName>
+												<ElementType classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</ElementType>
+												<ArrayDimensions classname='ArrayDimensions'>
+													<subprops>
+														<LowerBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</LowerBounds>
+														<UpperBounds classname='Nums'>
+															<value lbound='[0]' ubound='[]'/>
+														</UpperBounds>
+													</subprops>
+												</ArrayDimensions>
+												<Representation classname='Num'>
+													<value>1</value>
+												</Representation>
+												<ClassName classname='Str'>
+													<value/>
+												</ClassName>
+											</subprops>
+										</Type>
+										<Elements classname='Objs'>
+											<value lbound='[0]' ubound='[]'/>
+										</Elements>
+										<IsAnyType classname='Bool'>
+											<value>true</value>
+										</IsAnyType>
+									</subprops>
+								</_NAME_IN_ATTRIBUTE_>
+							</elemproto>
+						</value>
+					</AdditionalResultsHints>
+					<TS typename='TEInf' xsi:type='TEInf' classname='Obj' flagsforinstances='262168' instanceoverrideflags='4456472'>
+						<subprops>
+							<Id classname='Str'>
+								<value/>
+							</Id>
+							<Icon classname='Str'>
+								<value/>
+							</Icon>
+							<SData classname='Obj' flagsforinstances='2097152' instanceoverrideflags='7143448' structureflags='2097152'/>
+							<PreCond classname='ExprValue'>
+								<value/>
+							</PreCond>
+							<LoadOpt classname='Str'>
+								<value>PreloadWhenExecuted</value>
+							</LoadOpt>
+							<UnloadOpt classname='Str'>
+								<value>UnloadWithFile</value>
+							</UnloadOpt>
+							<Mode classname='Str'>
+								<value>Normal</value>
+							</Mode>
+							<WindowActivation classname='Str'>
+								<value>None</value>
+							</WindowActivation>
+							<ResultOption classname='Num'>
+								<value>1</value>
+							</ResultOption>
+							<StepFCSeqF classname='Bool'>
+								<value>true</value>
+							</StepFCSeqF>
+							<IgnoreRTE classname='Bool'>
+								<value>false</value>
+							</IgnoreRTE>
+							<UseMutex classname='Bool'>
+								<value>false</value>
+							</UseMutex>
+							<MutexNameOrRef classname='ExprValue'>
+								<value/>
+							</MutexNameOrRef>
+							<BatchSyncOpt classname='Num'>
+								<value>0</value>
+							</BatchSyncOpt>
+							<SwitchEnabled classname='Bool'>
+								<value>false</value>
+							</SwitchEnabled>
+							<VirtualDeviceName classname='ExprValue'>
+								<value/>
+							</VirtualDeviceName>
+							<SwitchOperation classname='Num'>
+								<value>1</value>
+							</SwitchOperation>
+							<RouteGroupConnect classname='ExprValue'>
+								<value/>
+							</RouteGroupConnect>
+							<RouteGroupDisconnect classname='ExprValue'>
+								<value/>
+							</RouteGroupDisconnect>
+							<MulticonnectMode classname='Num'>
+								<value>1</value>
+							</MulticonnectMode>
+							<OperationOrder classname='Num'>
+								<value>2</value>
+							</OperationOrder>
+							<ConnectionLifetime classname='Num'>
+								<value>0</value>
+							</ConnectionLifetime>
+							<WaitForDebounce classname='Bool'>
+								<value>true</value>
+							</WaitForDebounce>
+							<PassAct classname='Str' flagsforinstances='1' instanceoverrideflags='5046297'>
+								<value>Next</value>
+							</PassAct>
+							<FailAct classname='Str' flagsforinstances='1' instanceoverrideflags='5046297'>
+								<value>Next</value>
+							</FailAct>
+							<PassActTarget classname='ExprValue' flagsforinstances='1' instanceoverrideflags='5046297'>
+								<value/>
+							</PassActTarget>
+							<FailActTarget classname='ExprValue' flagsforinstances='1' instanceoverrideflags='5046297'>
+								<value/>
+							</FailActTarget>
+							<CustExpr classname='ExprValue'>
+								<value/>
+							</CustExpr>
+							<CustTrueAct classname='Str'>
+								<value>Next</value>
+							</CustTrueAct>
+							<CustFalseAct classname='Str'>
+								<value>Next</value>
+							</CustFalseAct>
+							<CustTrueActTarget classname='ExprValue'>
+								<value/>
+							</CustTrueActTarget>
+							<CustFalseActTarget classname='ExprValue'>
+								<value/>
+							</CustFalseActTarget>
+							<LoopType classname='Str'>
+								<value>NoLooping</value>
+							</LoopType>
+							<LoopWhile classname='ExprValue'>
+								<value/>
+							</LoopWhile>
+							<LoopStatus classname='ExprValue'>
+								<value/>
+							</LoopStatus>
+							<LoopIncrement classname='ExprValue'>
+								<value>RunState.LoopIndex += 1</value>
+							</LoopIncrement>
+							<LoopInitialize classname='ExprValue'>
+								<value>RunState.LoopIndex = 0</value>
+							</LoopInitialize>
+							<LoopOpt classname='Num'>
+								<value>0</value>
+							</LoopOpt>
+							<PreExpr classname='ExprValue'>
+								<value/>
+							</PreExpr>
+							<PostExpr classname='ExprValue'>
+								<value/>
+							</PostExpr>
+							<StatusExpr classname='ExprValue'>
+								<value/>
+							</StatusExpr>
+							<CanSpecifyModule classname='Bool'>
+								<value>true</value>
+							</CanSpecifyModule>
+							<CanEditCode classname='Bool'>
+								<value>true</value>
+							</CanEditCode>
+							<CanEditModulePrototype classname='Bool'>
+								<value>true</value>
+							</CanEditModulePrototype>
+							<CanEditParameterAdditionalResults classname='Bool'>
+								<value>true</value>
+							</CanEditParameterAdditionalResults>
+							<PrecondIntExe classname='Num'>
+								<value>0</value>
+							</PrecondIntExe>
+							<Requirements classname='Obj' flagsforinstances='1' valueflags='1' structureflags='2097152'>
+								<subprops>
+									<Links classname='Strs' flagsforinstances='71303168' instanceoverrideflags='72286233' valueflags='71303168'>
+										<value lbound='[0]' ubound='[]'/>
+									</Links>
+								</subprops>
+							</Requirements>
+							<CustomResults classname='Objs'>
+								<value lbound='[0]' ubound='[]'>
+									<elemproto>
+										<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+											<subprops>
+												<Name classname='ExprValue'>
+													<value/>
+												</Name>
+												<ValueToLog classname='ExprValue'>
+													<value/>
+												</ValueToLog>
+												<Condition classname='ExprValue'>
+													<value/>
+												</Condition>
+												<Flags classname='Num'>
+													<value>8192</value>
+												</Flags>
+												<CheckedState classname='Num'>
+													<value>2</value>
+												</CheckedState>
+												<Type classname='PropertyObjectType'>
+													<subprops>
+														<ValueType classname='Num'>
+															<value>3</value>
+														</ValueType>
+														<IsObject classname='Bool'>
+															<value>true</value>
+														</IsObject>
+														<TypeName classname='Str'>
+															<value/>
+														</TypeName>
+														<ElementType classname='Objs'>
+															<value lbound='[0]' ubound='[]'/>
+														</ElementType>
+														<ArrayDimensions classname='ArrayDimensions'>
+															<subprops>
+																<LowerBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</LowerBounds>
+																<UpperBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</UpperBounds>
+															</subprops>
+														</ArrayDimensions>
+														<Representation classname='Num'>
+															<value>1</value>
+														</Representation>
+														<ClassName classname='Str'>
+															<value/>
+														</ClassName>
+													</subprops>
+												</Type>
+												<Elements classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</Elements>
+												<IsAnyType classname='Bool'>
+													<value>true</value>
+												</IsAnyType>
+											</subprops>
+										</_NAME_IN_ATTRIBUTE_>
+									</elemproto>
+								</value>
+							</CustomResults>
+							<AdditionalResultsHints classname='Objs'>
+								<value lbound='[0]' ubound='[]'>
+									<elemproto>
+										<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+											<subprops>
+												<Name classname='ExprValue'>
+													<value/>
+												</Name>
+												<ValueToLog classname='ExprValue'>
+													<value/>
+												</ValueToLog>
+												<Condition classname='ExprValue'>
+													<value/>
+												</Condition>
+												<Flags classname='Num'>
+													<value>8192</value>
+												</Flags>
+												<CheckedState classname='Num'>
+													<value>2</value>
+												</CheckedState>
+												<Type classname='PropertyObjectType'>
+													<subprops>
+														<ValueType classname='Num'>
+															<value>3</value>
+														</ValueType>
+														<IsObject classname='Bool'>
+															<value>true</value>
+														</IsObject>
+														<TypeName classname='Str'>
+															<value/>
+														</TypeName>
+														<ElementType classname='Objs'>
+															<value lbound='[0]' ubound='[]'/>
+														</ElementType>
+														<ArrayDimensions classname='ArrayDimensions'>
+															<subprops>
+																<LowerBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</LowerBounds>
+																<UpperBounds classname='Nums'>
+																	<value lbound='[0]' ubound='[]'/>
+																</UpperBounds>
+															</subprops>
+														</ArrayDimensions>
+														<Representation classname='Num'>
+															<value>1</value>
+														</Representation>
+														<ClassName classname='Str'>
+															<value/>
+														</ClassName>
+													</subprops>
+												</Type>
+												<Elements classname='Objs'>
+													<value lbound='[0]' ubound='[]'/>
+												</Elements>
+												<IsAnyType classname='Bool'>
+													<value>true</value>
+												</IsAnyType>
+											</subprops>
+										</_NAME_IN_ATTRIBUTE_>
+									</elemproto>
+								</value>
+							</AdditionalResultsHints>
+						</subprops>
+					</TS>
+					<NI_Data typename='StepTypeNIData' xsi:type='StepTypeNIData' classname='Obj'>
+						<subprops>
+							<EditPanels classname='Strs'>
+								<value lbound='[0]' ubound='[]'/>
+							</EditPanels>
+						</subprops>
+					</NI_Data>
+					<Result classname='Obj' flagsforinstances='4194304' valueflags='4194304'>
+						<subprops>
+							<Error typename='Error' xsi:type='Error' classname='Obj' flagsforinstances='4194304' instanceoverrideflags='4194304' valueflags='4194304'>
+								<subprops>
+									<Code classname='Num'>
+										<value>0</value>
+									</Code>
+									<Msg classname='Str'>
+										<value/>
+									</Msg>
+									<Occurred classname='Bool'>
+										<value>false</value>
+									</Occurred>
+								</subprops>
+							</Error>
+							<Status classname='Str' flagsforinstances='4194304' valueflags='4194304'>
+								<value/>
+							</Status>
+							<ReportText classname='Str' flagsforinstances='4194304' valueflags='4194304'>
+								<value/>
+							</ReportText>
+							<Common typename='CommonResults' xsi:type='CommonResults' classname='Obj' instanceoverrideflags='4194304'/>
+						</subprops>
+					</Result>
+					<CodeTemplates classname='Str' valueflags='4194328' structureflags='524288'>
+						<value>DefaultLabVIEW|DefaultLabVIEWNXG|DefaultCVI|DefaultVB.NET|DefaultCSharp.NET|DefaultC++.NET|DefaultVC++_Template|DefaultHTB72_Template|DefaultHTB80_Template|Default_Template</value>
+					</CodeTemplates>
+					<BlockStartTypes classname='Str' valueflags='4194328' structureflags='524288'>
+						<value/>
+					</BlockStartTypes>
+					<BlockEndTypes classname='Str' valueflags='4194328' structureflags='524288'>
+						<value/>
+					</BlockEndTypes>
+					<AppliesToBlockStructure classname='Bool' valueflags='4194328' structureflags='524288'>
+						<value>false</value>
+					</AppliesToBlockStructure>
+					<CanEncapsulate classname='Bool' valueflags='4194328' structureflags='524288'>
+						<value>false</value>
+					</CanEncapsulate>
+					<Category classname='Str' valueflags='24' structureflags='524288'>
+						<value>Action</value>
+					</Category>
+				</subprops>
+			</Action>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='24'>
+			<NI_PythonParameterResult classname='PythonParameterResult' isroottypedef='true' typecategory='3' timestamp='1650060499' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<Condition typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</Condition>
+					<Flags classname='Num'>
+						<value>8192</value>
+						<numericfmt>%#x</numericfmt>
+					</Flags>
+					<CheckedState classname='Num'>
+						<value>1</value>
+					</CheckedState>
+				</subprops>
+			</NI_PythonParameterResult>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='23'>
+			<NI_PythonParameter classname='CPythonParameter' isroottypedef='true' typecategory='3' timestamp='1650060872' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<Name classname='Str'>
+						<value>_notNamed</value>
+					</Name>
+					<Type classname='Num'>
+						<value>7</value>
+					</Type>
+					<ArgumentValue typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</ArgumentValue>
+					<ArgumentDisplayValue typename='Expression' xsi:type='Expression' classname='ExprValue'>
+						<value/>
+					</ArgumentDisplayValue>
+					<AdditionalResults classname='Obj'>
+						<subprops>
+							<Input typename='NI_PythonParameterResult' xsi:type='NI_PythonParameterResult' classname='PythonParameterResult'>
+								<subprops>
+									<Condition classname='ExprValue'>
+										<value/>
+									</Condition>
+									<Flags classname='Num'>
+										<value>8192</value>
+									</Flags>
+									<CheckedState classname='Num'>
+										<value>1</value>
+									</CheckedState>
+								</subprops>
+							</Input>
+							<Output typename='NI_PythonParameterResult' xsi:type='NI_PythonParameterResult' classname='PythonParameterResult'>
+								<subprops>
+									<Condition classname='ExprValue'>
+										<value/>
+									</Condition>
+									<Flags classname='Num'>
+										<value>8192</value>
+									</Flags>
+									<CheckedState classname='Num'>
+										<value>1</value>
+									</CheckedState>
+								</subprops>
+							</Output>
+						</subprops>
+					</AdditionalResults>
+				</subprops>
+			</NI_PythonParameter>
+		</typedef>
+		<typedef alwayssavetype='false' additionaltypeflags='0' typelistordernum='22'>
+			<PythonStepAdditions classname='CPythonModule' isroottypedef='true' typecategory='3' timestamp='1650060872' typeversion='21.0.0.49156' typelastmodversion='21.1.0.49154' typeminprodversion='21.0.0.0' typeflags='33554436' valueflags='24'>
+				<subprops>
+					<PythonCall classname='CPythonCall'>
+						<subprops>
+							<UseAdapterSettingsForInterpreterSession classname='Bool'>
+								<value>true</value>
+							</UseAdapterSettingsForInterpreterSession>
+							<InterpreterSessionScope classname='Num'>
+								<value>3</value>
+							</InterpreterSessionScope>
+							<PythonVersion classname='Str'>
+								<value/>
+							</PythonVersion>
+							<PythonVirtualEnvironmentPath classname='Str'>
+								<value/>
+							</PythonVirtualEnvironmentPath>
+							<InterpreterLocation typename='Expression' xsi:type='Expression' classname='ExprValue'>
+								<value/>
+							</InterpreterLocation>
+							<CreateIfInterpreterDoesNotExist classname='Bool'>
+								<value>true</value>
+							</CreateIfInterpreterDoesNotExist>
+							<ModulePath typename='Path' xsi:type='Path' classname='PathValue'>
+								<value/>
+							</ModulePath>
+							<OperationType classname='Num'>
+								<value>1</value>
+							</OperationType>
+							<OperationScope classname='Num'>
+								<value>0</value>
+							</OperationScope>
+							<ClassName classname='Str'>
+								<value/>
+							</ClassName>
+							<ClassInstanceLocation typename='Expression' xsi:type='Expression' classname='ExprValue'>
+								<value/>
+							</ClassInstanceLocation>
+							<FunctionOrAttributeName classname='Str'>
+								<value/>
+							</FunctionOrAttributeName>
+							<Parameters classname='Objs'>
+								<value lbound='[0]' ubound='[0]'>
+									<elemproto>
+										<_NAME_IN_ATTRIBUTE_ typename='NI_PythonParameter' xsi:type='NI_PythonParameter' name='' classname='CPythonParameter' structureflags='131072'>
+											<subprops>
+												<Name classname='Str'>
+													<value>_notNamed</value>
+												</Name>
+												<Type classname='Num'>
+													<value>7</value>
+												</Type>
+												<ArgumentValue classname='ExprValue'>
+													<value/>
+												</ArgumentValue>
+												<ArgumentDisplayValue classname='ExprValue'>
+													<value/>
+												</ArgumentDisplayValue>
+												<AdditionalResults classname='Obj'>
+													<subprops>
+														<Input classname='PythonParameterResult'>
+															<subprops>
+																<Condition classname='ExprValue'>
+																	<value/>
+																</Condition>
+																<Flags classname='Num'>
+																	<value>8192</value>
+																</Flags>
+																<CheckedState classname='Num'>
+																	<value>1</value>
+																</CheckedState>
+															</subprops>
+														</Input>
+														<Output classname='PythonParameterResult'>
+															<subprops>
+																<Condition classname='ExprValue'>
+																	<value/>
+																</Condition>
+																<Flags classname='Num'>
+																	<value>8192</value>
+																</Flags>
+																<CheckedState classname='Num'>
+																	<value>1</value>
+																</CheckedState>
+															</subprops>
+														</Output>
+													</subprops>
+												</AdditionalResults>
+											</subprops>
+										</_NAME_IN_ATTRIBUTE_>
+									</elemproto>
+									<value>
+										<CPythonParameter typename='NI_PythonParameter' xsi:type='NI_PythonParameter' name=''>
+											<subprops>
+												<Name classname='Str'>
+													<value>Return Value</value>
+												</Name>
+												<Type classname='Num'>
+													<value>7</value>
+												</Type>
+												<ArgumentValue classname='ExprValue'>
+													<value/>
+												</ArgumentValue>
+												<ArgumentDisplayValue classname='ExprValue'>
+													<value/>
+												</ArgumentDisplayValue>
+												<AdditionalResults classname='Obj'>
+													<subprops>
+														<Input classname='PythonParameterResult'>
+															<subprops>
+																<Condition classname='ExprValue'>
+																	<value/>
+																</Condition>
+																<Flags classname='Num'>
+																	<value>8192</value>
+																</Flags>
+																<CheckedState classname='Num'>
+																	<value>1</value>
+																</CheckedState>
+															</subprops>
+														</Input>
+														<Output classname='PythonParameterResult'>
+															<subprops>
+																<Condition classname='ExprValue'>
+																	<value/>
+																</Condition>
+																<Flags classname='Num'>
+																	<value>8192</value>
+																</Flags>
+																<CheckedState classname='Num'>
+																	<value>1</value>
+																</CheckedState>
+															</subprops>
+														</Output>
+													</subprops>
+												</AdditionalResults>
+											</subprops>
+										</CPythonParameter>
+									</value>
+								</value>
+							</Parameters>
+							<DefaultParamCategoryForArray classname='Num'>
+								<value>5</value>
+							</DefaultParamCategoryForArray>
+						</subprops>
+					</PythonCall>
+				</subprops>
+			</PythonStepAdditions>
+		</typedef>
+	</typelist>
+	<Data classname='SequenceFileData' valueflags='4194304'>
+		<subprops>
+			<Seq classname='Objs' valueflags='4194304'>
+				<value lbound='[0]' ubound='[0]'>
+					<value>
+						<Sequence name='MainSequence'>
+							<subprops>
+								<Parameters classname='Obj' valueflags='4456448'/>
+								<Locals classname='Obj' valueflags='4194304'>
+									<subprops>
+										<ResultList classname='Objs' valueflags='4194304'>
+											<value lbound='[0]' ubound='[]'>
+												<elemproto>
+													<_NAME_IN_ATTRIBUTE_ name='' classname='TEResult'/>
+												</elemproto>
+											</value>
+										</ResultList>
+										<PinMapId classname='Str'>
+											<value/>
+										</PinMapId>
+									</subprops>
+								</Locals>
+								<Main classname='Objs' valueflags='4194304'>
+									<value lbound='[0]' ubound='[0]'>
+										<value>
+											<Step typename='NI_Measurement' xsi:type='NI_Measurement' name='Source DC voltage and measure voltage/current'>
+												<subprops>
+													<InstrumentStepDescription classname='Str'>
+														<value/>
+													</InstrumentStepDescription>
+													<TS classname='Obj'>
+														<subprops>
+															<Id classname='Str'>
+																<value>ID#:1m8fotxw7RGuNrjdh1OqZD</value>
+															</Id>
+															<Icon classname='Str'>
+																<value>Measurement\Measurement.ico</value>
+															</Icon>
+															<PreCond classname='ExprValue'>
+																<value/>
+															</PreCond>
+															<LoadOpt classname='Str'>
+																<value>PreloadWhenExecuted</value>
+															</LoadOpt>
+															<UnloadOpt classname='Str'>
+																<value>UnloadWithFile</value>
+															</UnloadOpt>
+															<Mode classname='Str'>
+																<value>Normal</value>
+															</Mode>
+															<WindowActivation classname='Str'>
+																<value>None</value>
+															</WindowActivation>
+															<ResultOption classname='Num'>
+																<value>1</value>
+															</ResultOption>
+															<StepFCSeqF classname='Bool'>
+																<value>true</value>
+															</StepFCSeqF>
+															<IgnoreRTE classname='Bool'>
+																<value>false</value>
+															</IgnoreRTE>
+															<UseMutex classname='Bool'>
+																<value>false</value>
+															</UseMutex>
+															<MutexNameOrRef classname='ExprValue'>
+																<value/>
+															</MutexNameOrRef>
+															<BatchSyncOpt classname='Num'>
+																<value>0</value>
+															</BatchSyncOpt>
+															<SwitchEnabled classname='Bool'>
+																<value>false</value>
+															</SwitchEnabled>
+															<VirtualDeviceName classname='ExprValue'>
+																<value/>
+															</VirtualDeviceName>
+															<SwitchOperation classname='Num'>
+																<value>1</value>
+															</SwitchOperation>
+															<RouteGroupConnect classname='ExprValue'>
+																<value/>
+															</RouteGroupConnect>
+															<RouteGroupDisconnect classname='ExprValue'>
+																<value/>
+															</RouteGroupDisconnect>
+															<MulticonnectMode classname='Num'>
+																<value>1</value>
+															</MulticonnectMode>
+															<OperationOrder classname='Num'>
+																<value>2</value>
+															</OperationOrder>
+															<ConnectionLifetime classname='Num'>
+																<value>4</value>
+															</ConnectionLifetime>
+															<WaitForDebounce classname='Bool'>
+																<value>true</value>
+															</WaitForDebounce>
+															<PassAct classname='Str'>
+																<value>Next</value>
+															</PassAct>
+															<FailAct classname='Str'>
+																<value>Next</value>
+															</FailAct>
+															<PassActTarget classname='ExprValue'>
+																<value/>
+															</PassActTarget>
+															<FailActTarget classname='ExprValue'>
+																<value/>
+															</FailActTarget>
+															<CustExpr classname='ExprValue'>
+																<value/>
+															</CustExpr>
+															<CustTrueAct classname='Str'>
+																<value>Next</value>
+															</CustTrueAct>
+															<CustFalseAct classname='Str'>
+																<value>Next</value>
+															</CustFalseAct>
+															<CustTrueActTarget classname='ExprValue'>
+																<value/>
+															</CustTrueActTarget>
+															<CustFalseActTarget classname='ExprValue'>
+																<value/>
+															</CustFalseActTarget>
+															<LoopType classname='Str'>
+																<value>NoLooping</value>
+															</LoopType>
+															<LoopWhile classname='ExprValue'>
+																<value/>
+															</LoopWhile>
+															<LoopStatus classname='ExprValue'>
+																<value/>
+															</LoopStatus>
+															<LoopIncrement classname='ExprValue'>
+																<value>RunState.LoopIndex += 1</value>
+															</LoopIncrement>
+															<LoopInitialize classname='ExprValue'>
+																<value>RunState.LoopIndex = 0</value>
+															</LoopInitialize>
+															<LoopOpt classname='Num'>
+																<value>0</value>
+															</LoopOpt>
+															<PreExpr classname='ExprValue'>
+																<value/>
+															</PreExpr>
+															<PostExpr classname='ExprValue'>
+																<value/>
+															</PostExpr>
+															<StatusExpr classname='ExprValue'>
+																<value/>
+															</StatusExpr>
+															<CanEditCode classname='Bool'>
+																<value>true</value>
+															</CanEditCode>
+															<CanEditModulePrototype classname='Bool'>
+																<value>true</value>
+															</CanEditModulePrototype>
+															<CanEditParameterAdditionalResults classname='Bool'>
+																<value>true</value>
+															</CanEditParameterAdditionalResults>
+															<PrecondIntExe classname='Num'>
+																<value>0</value>
+															</PrecondIntExe>
+															<CustomResults classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</CustomResults>
+															<AdditionalResultsHints classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</AdditionalResultsHints>
+														</subprops>
+													</TS>
+													<Result classname='Obj'>
+														<subprops>
+															<Error classname='Obj'>
+																<subprops>
+																	<Code classname='Num'>
+																		<value>0</value>
+																	</Code>
+																	<Msg classname='Str'>
+																		<value/>
+																	</Msg>
+																	<Occurred classname='Bool'>
+																		<value>false</value>
+																	</Occurred>
+																</subprops>
+															</Error>
+															<Status classname='Str'>
+																<value/>
+															</Status>
+															<ReportText classname='Str'>
+																<value/>
+															</ReportText>
+															<Common classname='Obj'/>
+														</subprops>
+													</Result>
+													<Measurement classname='Obj'>
+														<subprops>
+															<Version classname='Str'>
+																<value/>
+															</Version>
+															<Name classname='Str'>
+																<value>ni.examples.NIDCPowerSourceDCVoltage_Python</value>
+															</Name>
+															<Parameters classname='Objs'>
+																<value lbound='[0]' ubound='[10]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='Obj'>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value/>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value/>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value/>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>false</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>0</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value/>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>0</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value/>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>pin_names</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value>{"Pin1"}</value>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>In</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>1</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeString</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>1</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>IOResource</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>voltage_level</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value>6</value>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>In</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>0</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeDouble</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>2</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>voltage_level_range</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value>6</value>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>In</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>0</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeDouble</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>3</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>current_limit</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value>0.01</value>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>In</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>0</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeDouble</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>4</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>current_limit_range</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value>0.01</value>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>In</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>0</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeDouble</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>5</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>source_delay</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value>0</value>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>In</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>0</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeDouble</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>6</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>measurement_sites</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value/>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>Out</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>1</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeInt32</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>1</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>measurement_pin_names</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value/>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>Out</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>1</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeString</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>2</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>voltage_measurements</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value/>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>Out</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>1</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeDouble</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>3</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>current_measurements</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value/>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>Out</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>1</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeDouble</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>4</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																	<value>
+																		<Obj typename='NI_MeasurementParameter' name=''>
+																			<subprops>
+																				<MessageType classname='Str'>
+																					<value/>
+																				</MessageType>
+																				<Name classname='Str'>
+																					<value>in_compliance</value>
+																				</Name>
+																				<ChannelName classname='Str'>
+																					<value/>
+																				</ChannelName>
+																				<AttributeId classname='Str'>
+																					<value/>
+																				</AttributeId>
+																				<ArgumentValue classname='ExprValue'>
+																					<value/>
+																				</ArgumentValue>
+																				<Direction classname='Str'>
+																					<value>Out</value>
+																				</Direction>
+																				<Log classname='Bool'>
+																					<value>true</value>
+																				</Log>
+																				<Dimension classname='Num'>
+																					<value representation='UInt64'>1</value>
+																				</Dimension>
+																				<Type classname='Str'>
+																					<value>TypeBool</value>
+																				</Type>
+																				<ID classname='Num'>
+																					<value representation='Int64'>5</value>
+																				</ID>
+																				<TypeSpecialization classname='Str'>
+																					<value>None</value>
+																				</TypeSpecialization>
+																				<EnumDefinition classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</EnumDefinition>
+																			</subprops>
+																		</Obj>
+																	</value>
+																</value>
+															</Parameters>
+														</subprops>
+													</Measurement>
+												</subprops>
+											</Step>
+										</value>
+									</value>
+								</Main>
+								<Setup classname='Objs' valueflags='4194304'>
+									<value lbound='[0]' ubound='[1]'>
+										<value>
+											<Step typename='NI_UpdatePinMap' xsi:type='NI_UpdatePinMap' name='Update pin map'>
+												<subprops>
+													<TS classname='Obj'>
+														<subprops>
+															<Id classname='Str'>
+																<value>ID#:v3cHTx+U7hGhw2DjK76h1B</value>
+															</Id>
+															<Icon classname='Str'>
+																<value>NI_SequenceEditor\StepSettings\ni_UpdateMapping.ico</value>
+															</Icon>
+															<PreCond classname='ExprValue'>
+																<value/>
+															</PreCond>
+															<LoadOpt classname='Str'>
+																<value>PreloadWhenExecuted</value>
+															</LoadOpt>
+															<UnloadOpt classname='Str'>
+																<value>UnloadWithFile</value>
+															</UnloadOpt>
+															<Mode classname='Str'>
+																<value>Normal</value>
+															</Mode>
+															<WindowActivation classname='Str'>
+																<value>None</value>
+															</WindowActivation>
+															<ResultOption classname='Num'>
+																<value>0</value>
+															</ResultOption>
+															<StepFCSeqF classname='Bool'>
+																<value>true</value>
+															</StepFCSeqF>
+															<IgnoreRTE classname='Bool'>
+																<value>false</value>
+															</IgnoreRTE>
+															<UseMutex classname='Bool'>
+																<value>false</value>
+															</UseMutex>
+															<MutexNameOrRef classname='ExprValue'>
+																<value/>
+															</MutexNameOrRef>
+															<BatchSyncOpt classname='Num'>
+																<value>0</value>
+															</BatchSyncOpt>
+															<SwitchEnabled classname='Bool'>
+																<value>false</value>
+															</SwitchEnabled>
+															<VirtualDeviceName classname='ExprValue'>
+																<value/>
+															</VirtualDeviceName>
+															<SwitchOperation classname='Num'>
+																<value>1</value>
+															</SwitchOperation>
+															<RouteGroupConnect classname='ExprValue'>
+																<value/>
+															</RouteGroupConnect>
+															<RouteGroupDisconnect classname='ExprValue'>
+																<value/>
+															</RouteGroupDisconnect>
+															<MulticonnectMode classname='Num'>
+																<value>1</value>
+															</MulticonnectMode>
+															<OperationOrder classname='Num'>
+																<value>2</value>
+															</OperationOrder>
+															<ConnectionLifetime classname='Num'>
+																<value>4</value>
+															</ConnectionLifetime>
+															<WaitForDebounce classname='Bool'>
+																<value>true</value>
+															</WaitForDebounce>
+															<PassAct classname='Str'>
+																<value>Next</value>
+															</PassAct>
+															<FailAct classname='Str'>
+																<value>Next</value>
+															</FailAct>
+															<PassActTarget classname='ExprValue'>
+																<value/>
+															</PassActTarget>
+															<FailActTarget classname='ExprValue'>
+																<value/>
+															</FailActTarget>
+															<CustExpr classname='ExprValue'>
+																<value/>
+															</CustExpr>
+															<CustTrueAct classname='Str'>
+																<value>Next</value>
+															</CustTrueAct>
+															<CustFalseAct classname='Str'>
+																<value>Next</value>
+															</CustFalseAct>
+															<CustTrueActTarget classname='ExprValue'>
+																<value/>
+															</CustTrueActTarget>
+															<CustFalseActTarget classname='ExprValue'>
+																<value/>
+															</CustFalseActTarget>
+															<LoopType classname='Str'>
+																<value>NoLooping</value>
+															</LoopType>
+															<LoopWhile classname='ExprValue'>
+																<value/>
+															</LoopWhile>
+															<LoopStatus classname='ExprValue'>
+																<value/>
+															</LoopStatus>
+															<LoopIncrement classname='ExprValue'>
+																<value>RunState.LoopIndex += 1</value>
+															</LoopIncrement>
+															<LoopInitialize classname='ExprValue'>
+																<value>RunState.LoopIndex = 0</value>
+															</LoopInitialize>
+															<LoopOpt classname='Num'>
+																<value>0</value>
+															</LoopOpt>
+															<PreExpr classname='ExprValue'>
+																<value/>
+															</PreExpr>
+															<PostExpr classname='ExprValue'>
+																<value/>
+															</PostExpr>
+															<StatusExpr classname='ExprValue'>
+																<value/>
+															</StatusExpr>
+															<CanSpecifyModule classname='Bool'>
+																<value>true</value>
+															</CanSpecifyModule>
+															<CanEditCode classname='Bool'>
+																<value>true</value>
+															</CanEditCode>
+															<CanEditModulePrototype classname='Bool'>
+																<value>true</value>
+															</CanEditModulePrototype>
+															<CanEditParameterAdditionalResults classname='Bool'>
+																<value>true</value>
+															</CanEditParameterAdditionalResults>
+															<PrecondIntExe classname='Num'>
+																<value>0</value>
+															</PrecondIntExe>
+															<CustomResults classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</CustomResults>
+															<AdditionalResultsHints classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</AdditionalResultsHints>
+														</subprops>
+													</TS>
+													<Result classname='Obj'>
+														<subprops>
+															<Error classname='Obj'>
+																<subprops>
+																	<Code classname='Num'>
+																		<value>0</value>
+																	</Code>
+																	<Msg classname='Str'>
+																		<value/>
+																	</Msg>
+																	<Occurred classname='Bool'>
+																		<value>false</value>
+																	</Occurred>
+																</subprops>
+															</Error>
+															<Status classname='Str'>
+																<value/>
+															</Status>
+															<ReportText classname='Str'>
+																<value/>
+															</ReportText>
+															<Common classname='Obj'/>
+														</subprops>
+													</Result>
+													<PinMapPath classname='PathValue'>
+														<value>"NIDCPowerSourceDCVoltage.pinmap"</value>
+													</PinMapPath>
+												</subprops>
+											</Step>
+										</value>
+										<value>
+											<Step typename='Action' xsi:type='Action' name='Create and register NI-DCPower Sessions'>
+												<subprops>
+													<TS classname='Obj'>
+														<subprops>
+															<Id classname='Str'>
+																<value>ID#:c5USoqlx7RGuNrjdh1OqZD</value>
+															</Id>
+															<Icon classname='Str'>
+																<value/>
+															</Icon>
+															<SData typename='PythonStepAdditions' xsi:type='PythonStepAdditions' classname='CPythonModule'>
+																<subprops>
+																	<PythonCall classname='CPythonCall'>
+																		<subprops>
+																			<UseAdapterSettingsForInterpreterSession classname='Bool'>
+																				<value>false</value>
+																			</UseAdapterSettingsForInterpreterSession>
+																			<InterpreterSessionScope classname='Num'>
+																				<value>2</value>
+																			</InterpreterSessionScope>
+																			<PythonVersion classname='Str'>
+																				<value>3.9</value>
+																			</PythonVersion>
+																			<PythonVirtualEnvironmentPath classname='Str'>
+																				<value>.venv</value>
+																			</PythonVirtualEnvironmentPath>
+																			<InterpreterLocation classname='ExprValue'>
+																				<value/>
+																			</InterpreterLocation>
+																			<CreateIfInterpreterDoesNotExist classname='Bool'>
+																				<value>true</value>
+																			</CreateIfInterpreterDoesNotExist>
+																			<ModulePath classname='PathValue'>
+																				<value>teststand_nidcpower.py</value>
+																			</ModulePath>
+																			<OperationType classname='Num'>
+																				<value>1</value>
+																			</OperationType>
+																			<OperationScope classname='Num'>
+																				<value>0</value>
+																			</OperationScope>
+																			<ClassName classname='Str'>
+																				<value/>
+																			</ClassName>
+																			<ClassInstanceLocation classname='ExprValue'>
+																				<value/>
+																			</ClassInstanceLocation>
+																			<FunctionOrAttributeName classname='Str'>
+																				<value>create_nidcpower_sessions</value>
+																			</FunctionOrAttributeName>
+																			<Parameters classname='Objs'>
+																				<value lbound='[0]' ubound='[1]'>
+																					<elemproto>
+																						<_NAME_IN_ATTRIBUTE_ name='' classname='CPythonParameter' structureflags='0'/>
+																					</elemproto>
+																					<value>
+																						<CPythonParameter typename='NI_PythonParameter' xsi:type='NI_PythonParameter' name=''>
+																							<subprops>
+																								<Name classname='Str'>
+																									<value>Return Value</value>
+																								</Name>
+																								<Type classname='Num'>
+																									<value>7</value>
+																								</Type>
+																								<ArgumentValue classname='ExprValue'>
+																									<value/>
+																								</ArgumentValue>
+																								<ArgumentDisplayValue classname='ExprValue'>
+																									<value/>
+																								</ArgumentDisplayValue>
+																								<AdditionalResults classname='Obj'>
+																									<subprops>
+																										<Input classname='PythonParameterResult'>
+																											<subprops>
+																												<Condition classname='ExprValue'>
+																													<value/>
+																												</Condition>
+																												<Flags classname='Num'>
+																													<value>8192</value>
+																												</Flags>
+																												<CheckedState classname='Num'>
+																													<value>1</value>
+																												</CheckedState>
+																											</subprops>
+																										</Input>
+																										<Output classname='PythonParameterResult'>
+																											<subprops>
+																												<Condition classname='ExprValue'>
+																													<value/>
+																												</Condition>
+																												<Flags classname='Num'>
+																													<value>8192</value>
+																												</Flags>
+																												<CheckedState classname='Num'>
+																													<value>1</value>
+																												</CheckedState>
+																											</subprops>
+																										</Output>
+																									</subprops>
+																								</AdditionalResults>
+																							</subprops>
+																						</CPythonParameter>
+																					</value>
+																					<value>
+																						<CPythonParameter typename='NI_PythonParameter' xsi:type='NI_PythonParameter' name=''>
+																							<subprops>
+																								<Name classname='Str'>
+																									<value>sequence_context</value>
+																								</Name>
+																								<Type classname='Num'>
+																									<value>7</value>
+																								</Type>
+																								<ArgumentValue classname='ExprValue'>
+																									<value>ThisContext</value>
+																								</ArgumentValue>
+																								<ArgumentDisplayValue classname='ExprValue'>
+																									<value/>
+																								</ArgumentDisplayValue>
+																								<AdditionalResults classname='Obj'>
+																									<subprops>
+																										<Input classname='PythonParameterResult'>
+																											<subprops>
+																												<Condition classname='ExprValue'>
+																													<value/>
+																												</Condition>
+																												<Flags classname='Num'>
+																													<value>8192</value>
+																												</Flags>
+																												<CheckedState classname='Num'>
+																													<value>1</value>
+																												</CheckedState>
+																											</subprops>
+																										</Input>
+																										<Output classname='PythonParameterResult'>
+																											<subprops>
+																												<Condition classname='ExprValue'>
+																													<value/>
+																												</Condition>
+																												<Flags classname='Num'>
+																													<value>8192</value>
+																												</Flags>
+																												<CheckedState classname='Num'>
+																													<value>1</value>
+																												</CheckedState>
+																											</subprops>
+																										</Output>
+																									</subprops>
+																								</AdditionalResults>
+																							</subprops>
+																						</CPythonParameter>
+																					</value>
+																				</value>
+																			</Parameters>
+																			<DefaultParamCategoryForArray classname='Num'>
+																				<value>5</value>
+																			</DefaultParamCategoryForArray>
+																		</subprops>
+																	</PythonCall>
+																</subprops>
+															</SData>
+															<PreCond classname='ExprValue'>
+																<value/>
+															</PreCond>
+															<LoadOpt classname='Str'>
+																<value>PreloadWhenExecuted</value>
+															</LoadOpt>
+															<UnloadOpt classname='Str'>
+																<value>UnloadWithFile</value>
+															</UnloadOpt>
+															<Mode classname='Str'>
+																<value>Normal</value>
+															</Mode>
+															<WindowActivation classname='Str'>
+																<value>None</value>
+															</WindowActivation>
+															<ResultOption classname='Num'>
+																<value>0</value>
+															</ResultOption>
+															<StepFCSeqF classname='Bool'>
+																<value>true</value>
+															</StepFCSeqF>
+															<IgnoreRTE classname='Bool'>
+																<value>false</value>
+															</IgnoreRTE>
+															<UseMutex classname='Bool'>
+																<value>false</value>
+															</UseMutex>
+															<MutexNameOrRef classname='ExprValue'>
+																<value/>
+															</MutexNameOrRef>
+															<BatchSyncOpt classname='Num'>
+																<value>0</value>
+															</BatchSyncOpt>
+															<SwitchEnabled classname='Bool'>
+																<value>false</value>
+															</SwitchEnabled>
+															<VirtualDeviceName classname='ExprValue'>
+																<value/>
+															</VirtualDeviceName>
+															<SwitchOperation classname='Num'>
+																<value>1</value>
+															</SwitchOperation>
+															<RouteGroupConnect classname='ExprValue'>
+																<value/>
+															</RouteGroupConnect>
+															<RouteGroupDisconnect classname='ExprValue'>
+																<value/>
+															</RouteGroupDisconnect>
+															<MulticonnectMode classname='Num'>
+																<value>1</value>
+															</MulticonnectMode>
+															<OperationOrder classname='Num'>
+																<value>2</value>
+															</OperationOrder>
+															<ConnectionLifetime classname='Num'>
+																<value>0</value>
+															</ConnectionLifetime>
+															<WaitForDebounce classname='Bool'>
+																<value>true</value>
+															</WaitForDebounce>
+															<PassAct classname='Str'>
+																<value>Next</value>
+															</PassAct>
+															<FailAct classname='Str'>
+																<value>Next</value>
+															</FailAct>
+															<PassActTarget classname='ExprValue'>
+																<value/>
+															</PassActTarget>
+															<FailActTarget classname='ExprValue'>
+																<value/>
+															</FailActTarget>
+															<CustExpr classname='ExprValue'>
+																<value/>
+															</CustExpr>
+															<CustTrueAct classname='Str'>
+																<value>Next</value>
+															</CustTrueAct>
+															<CustFalseAct classname='Str'>
+																<value>Next</value>
+															</CustFalseAct>
+															<CustTrueActTarget classname='ExprValue'>
+																<value/>
+															</CustTrueActTarget>
+															<CustFalseActTarget classname='ExprValue'>
+																<value/>
+															</CustFalseActTarget>
+															<LoopType classname='Str'>
+																<value>NoLooping</value>
+															</LoopType>
+															<LoopWhile classname='ExprValue'>
+																<value/>
+															</LoopWhile>
+															<LoopStatus classname='ExprValue'>
+																<value/>
+															</LoopStatus>
+															<LoopIncrement classname='ExprValue'>
+																<value>RunState.LoopIndex += 1</value>
+															</LoopIncrement>
+															<LoopInitialize classname='ExprValue'>
+																<value>RunState.LoopIndex = 0</value>
+															</LoopInitialize>
+															<LoopOpt classname='Num'>
+																<value>0</value>
+															</LoopOpt>
+															<PreExpr classname='ExprValue'>
+																<value/>
+															</PreExpr>
+															<PostExpr classname='ExprValue'>
+																<value/>
+															</PostExpr>
+															<StatusExpr classname='ExprValue'>
+																<value/>
+															</StatusExpr>
+															<CanSpecifyModule classname='Bool'>
+																<value>true</value>
+															</CanSpecifyModule>
+															<CanEditCode classname='Bool'>
+																<value>true</value>
+															</CanEditCode>
+															<CanEditModulePrototype classname='Bool'>
+																<value>true</value>
+															</CanEditModulePrototype>
+															<CanEditParameterAdditionalResults classname='Bool'>
+																<value>true</value>
+															</CanEditParameterAdditionalResults>
+															<PrecondIntExe classname='Num'>
+																<value>0</value>
+															</PrecondIntExe>
+															<CustomResults classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</CustomResults>
+															<AdditionalResultsHints classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</AdditionalResultsHints>
+														</subprops>
+													</TS>
+													<Result classname='Obj'>
+														<subprops>
+															<Error classname='Obj'>
+																<subprops>
+																	<Code classname='Num'>
+																		<value>0</value>
+																	</Code>
+																	<Msg classname='Str'>
+																		<value/>
+																	</Msg>
+																	<Occurred classname='Bool'>
+																		<value>false</value>
+																	</Occurred>
+																</subprops>
+															</Error>
+															<Status classname='Str'>
+																<value/>
+															</Status>
+															<ReportText classname='Str'>
+																<value/>
+															</ReportText>
+															<Common classname='Obj'/>
+														</subprops>
+													</Result>
+												</subprops>
+											</Step>
+										</value>
+									</value>
+								</Setup>
+								<Cleanup classname='Objs' valueflags='4194304'>
+									<value lbound='[0]' ubound='[0]'>
+										<value>
+											<Step typename='Action' xsi:type='Action' name='Destroy and unregister NI-DCPower sessions'>
+												<subprops>
+													<TS classname='Obj'>
+														<subprops>
+															<Id classname='Str'>
+																<value>ID#:syCDFOVw7RGuNrjdh1OqZD</value>
+															</Id>
+															<Icon classname='Str'>
+																<value/>
+															</Icon>
+															<SData typename='PythonStepAdditions' xsi:type='PythonStepAdditions' classname='CPythonModule'>
+																<subprops>
+																	<PythonCall classname='CPythonCall'>
+																		<subprops>
+																			<UseAdapterSettingsForInterpreterSession classname='Bool'>
+																				<value>false</value>
+																			</UseAdapterSettingsForInterpreterSession>
+																			<InterpreterSessionScope classname='Num'>
+																				<value>2</value>
+																			</InterpreterSessionScope>
+																			<PythonVersion classname='Str'>
+																				<value>3.9</value>
+																			</PythonVersion>
+																			<PythonVirtualEnvironmentPath classname='Str'>
+																				<value>.venv</value>
+																			</PythonVirtualEnvironmentPath>
+																			<InterpreterLocation classname='ExprValue'>
+																				<value/>
+																			</InterpreterLocation>
+																			<CreateIfInterpreterDoesNotExist classname='Bool'>
+																				<value>true</value>
+																			</CreateIfInterpreterDoesNotExist>
+																			<ModulePath classname='PathValue'>
+																				<value>teststand_nidcpower.py</value>
+																			</ModulePath>
+																			<OperationType classname='Num'>
+																				<value>1</value>
+																			</OperationType>
+																			<OperationScope classname='Num'>
+																				<value>0</value>
+																			</OperationScope>
+																			<ClassName classname='Str'>
+																				<value/>
+																			</ClassName>
+																			<ClassInstanceLocation classname='ExprValue'>
+																				<value/>
+																			</ClassInstanceLocation>
+																			<FunctionOrAttributeName classname='Str'>
+																				<value>destroy_nidcpower_sessions</value>
+																			</FunctionOrAttributeName>
+																			<Parameters classname='Objs'>
+																				<value lbound='[0]' ubound='[0]'>
+																					<elemproto>
+																						<_NAME_IN_ATTRIBUTE_ name='' classname='CPythonParameter' structureflags='0'/>
+																					</elemproto>
+																					<value>
+																						<CPythonParameter typename='NI_PythonParameter' xsi:type='NI_PythonParameter' name=''>
+																							<subprops>
+																								<Name classname='Str'>
+																									<value>Return Value</value>
+																								</Name>
+																								<Type classname='Num'>
+																									<value>7</value>
+																								</Type>
+																								<ArgumentValue classname='ExprValue'>
+																									<value/>
+																								</ArgumentValue>
+																								<ArgumentDisplayValue classname='ExprValue'>
+																									<value/>
+																								</ArgumentDisplayValue>
+																								<AdditionalResults classname='Obj'>
+																									<subprops>
+																										<Input classname='PythonParameterResult'>
+																											<subprops>
+																												<Condition classname='ExprValue'>
+																													<value/>
+																												</Condition>
+																												<Flags classname='Num'>
+																													<value>8192</value>
+																												</Flags>
+																												<CheckedState classname='Num'>
+																													<value>1</value>
+																												</CheckedState>
+																											</subprops>
+																										</Input>
+																										<Output classname='PythonParameterResult'>
+																											<subprops>
+																												<Condition classname='ExprValue'>
+																													<value/>
+																												</Condition>
+																												<Flags classname='Num'>
+																													<value>8192</value>
+																												</Flags>
+																												<CheckedState classname='Num'>
+																													<value>1</value>
+																												</CheckedState>
+																											</subprops>
+																										</Output>
+																									</subprops>
+																								</AdditionalResults>
+																							</subprops>
+																						</CPythonParameter>
+																					</value>
+																				</value>
+																			</Parameters>
+																			<DefaultParamCategoryForArray classname='Num'>
+																				<value>5</value>
+																			</DefaultParamCategoryForArray>
+																		</subprops>
+																	</PythonCall>
+																</subprops>
+															</SData>
+															<PreCond classname='ExprValue'>
+																<value/>
+															</PreCond>
+															<LoadOpt classname='Str'>
+																<value>PreloadWhenExecuted</value>
+															</LoadOpt>
+															<UnloadOpt classname='Str'>
+																<value>UnloadWithFile</value>
+															</UnloadOpt>
+															<Mode classname='Str'>
+																<value>Normal</value>
+															</Mode>
+															<WindowActivation classname='Str'>
+																<value>None</value>
+															</WindowActivation>
+															<ResultOption classname='Num'>
+																<value>0</value>
+															</ResultOption>
+															<StepFCSeqF classname='Bool'>
+																<value>true</value>
+															</StepFCSeqF>
+															<IgnoreRTE classname='Bool'>
+																<value>false</value>
+															</IgnoreRTE>
+															<UseMutex classname='Bool'>
+																<value>false</value>
+															</UseMutex>
+															<MutexNameOrRef classname='ExprValue'>
+																<value/>
+															</MutexNameOrRef>
+															<BatchSyncOpt classname='Num'>
+																<value>0</value>
+															</BatchSyncOpt>
+															<SwitchEnabled classname='Bool'>
+																<value>false</value>
+															</SwitchEnabled>
+															<VirtualDeviceName classname='ExprValue'>
+																<value/>
+															</VirtualDeviceName>
+															<SwitchOperation classname='Num'>
+																<value>1</value>
+															</SwitchOperation>
+															<RouteGroupConnect classname='ExprValue'>
+																<value/>
+															</RouteGroupConnect>
+															<RouteGroupDisconnect classname='ExprValue'>
+																<value/>
+															</RouteGroupDisconnect>
+															<MulticonnectMode classname='Num'>
+																<value>1</value>
+															</MulticonnectMode>
+															<OperationOrder classname='Num'>
+																<value>2</value>
+															</OperationOrder>
+															<ConnectionLifetime classname='Num'>
+																<value>0</value>
+															</ConnectionLifetime>
+															<WaitForDebounce classname='Bool'>
+																<value>true</value>
+															</WaitForDebounce>
+															<PassAct classname='Str'>
+																<value>Next</value>
+															</PassAct>
+															<FailAct classname='Str'>
+																<value>Next</value>
+															</FailAct>
+															<PassActTarget classname='ExprValue'>
+																<value/>
+															</PassActTarget>
+															<FailActTarget classname='ExprValue'>
+																<value/>
+															</FailActTarget>
+															<CustExpr classname='ExprValue'>
+																<value/>
+															</CustExpr>
+															<CustTrueAct classname='Str'>
+																<value>Next</value>
+															</CustTrueAct>
+															<CustFalseAct classname='Str'>
+																<value>Next</value>
+															</CustFalseAct>
+															<CustTrueActTarget classname='ExprValue'>
+																<value/>
+															</CustTrueActTarget>
+															<CustFalseActTarget classname='ExprValue'>
+																<value/>
+															</CustFalseActTarget>
+															<LoopType classname='Str'>
+																<value>NoLooping</value>
+															</LoopType>
+															<LoopWhile classname='ExprValue'>
+																<value/>
+															</LoopWhile>
+															<LoopStatus classname='ExprValue'>
+																<value/>
+															</LoopStatus>
+															<LoopIncrement classname='ExprValue'>
+																<value>RunState.LoopIndex += 1</value>
+															</LoopIncrement>
+															<LoopInitialize classname='ExprValue'>
+																<value>RunState.LoopIndex = 0</value>
+															</LoopInitialize>
+															<LoopOpt classname='Num'>
+																<value>0</value>
+															</LoopOpt>
+															<PreExpr classname='ExprValue'>
+																<value/>
+															</PreExpr>
+															<PostExpr classname='ExprValue'>
+																<value/>
+															</PostExpr>
+															<StatusExpr classname='ExprValue'>
+																<value/>
+															</StatusExpr>
+															<CanSpecifyModule classname='Bool'>
+																<value>true</value>
+															</CanSpecifyModule>
+															<CanEditCode classname='Bool'>
+																<value>true</value>
+															</CanEditCode>
+															<CanEditModulePrototype classname='Bool'>
+																<value>true</value>
+															</CanEditModulePrototype>
+															<CanEditParameterAdditionalResults classname='Bool'>
+																<value>true</value>
+															</CanEditParameterAdditionalResults>
+															<PrecondIntExe classname='Num'>
+																<value>0</value>
+															</PrecondIntExe>
+															<CustomResults classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</CustomResults>
+															<AdditionalResultsHints classname='Objs'>
+																<value lbound='[0]' ubound='[]'>
+																	<elemproto>
+																		<_NAME_IN_ATTRIBUTE_ name='' classname='CustomResult'>
+																			<subprops>
+																				<Name classname='ExprValue'>
+																					<value/>
+																				</Name>
+																				<ValueToLog classname='ExprValue'>
+																					<value/>
+																				</ValueToLog>
+																				<Condition classname='ExprValue'>
+																					<value/>
+																				</Condition>
+																				<Flags classname='Num'>
+																					<value>8192</value>
+																				</Flags>
+																				<CheckedState classname='Num'>
+																					<value>2</value>
+																				</CheckedState>
+																				<Type classname='PropertyObjectType'>
+																					<subprops>
+																						<ValueType classname='Num'>
+																							<value>3</value>
+																						</ValueType>
+																						<IsObject classname='Bool'>
+																							<value>true</value>
+																						</IsObject>
+																						<TypeName classname='Str'>
+																							<value/>
+																						</TypeName>
+																						<ElementType classname='Objs'>
+																							<value lbound='[0]' ubound='[]'/>
+																						</ElementType>
+																						<ArrayDimensions classname='ArrayDimensions'>
+																							<subprops>
+																								<LowerBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</LowerBounds>
+																								<UpperBounds classname='Nums'>
+																									<value lbound='[0]' ubound='[]'/>
+																								</UpperBounds>
+																							</subprops>
+																						</ArrayDimensions>
+																						<Representation classname='Num'>
+																							<value>1</value>
+																						</Representation>
+																						<ClassName classname='Str'>
+																							<value/>
+																						</ClassName>
+																					</subprops>
+																				</Type>
+																				<Elements classname='Objs'>
+																					<value lbound='[0]' ubound='[]'/>
+																				</Elements>
+																				<IsAnyType classname='Bool'>
+																					<value>true</value>
+																				</IsAnyType>
+																			</subprops>
+																		</_NAME_IN_ATTRIBUTE_>
+																	</elemproto>
+																</value>
+															</AdditionalResultsHints>
+														</subprops>
+													</TS>
+													<Result classname='Obj'>
+														<subprops>
+															<Error classname='Obj'>
+																<subprops>
+																	<Code classname='Num'>
+																		<value>0</value>
+																	</Code>
+																	<Msg classname='Str'>
+																		<value/>
+																	</Msg>
+																	<Occurred classname='Bool'>
+																		<value>false</value>
+																	</Occurred>
+																</subprops>
+															</Error>
+															<Status classname='Str'>
+																<value/>
+															</Status>
+															<ReportText classname='Str'>
+																<value/>
+															</ReportText>
+															<Common classname='Obj'/>
+														</subprops>
+													</Result>
+												</subprops>
+											</Step>
+										</value>
+									</value>
+								</Cleanup>
+								<RecordResults classname='Bool' valueflags='4194312'>
+									<value>true</value>
+								</RecordResults>
+								<RTS classname='Obj' valueflags='4456456'>
+									<subprops>
+										<Type classname='Num' valueflags='4194304'>
+											<value>0</value>
+										</Type>
+										<OptimizeNonReentrantCalls classname='Bool' valueflags='4194304'>
+											<value>true</value>
+										</OptimizeNonReentrantCalls>
+										<EPNameExpr classname='Str' valueflags='4194304'>
+											<value>"Unnamed Entry Point"</value>
+										</EPNameExpr>
+										<EPEnabledExpr classname='Str' valueflags='4194304'>
+											<value>True</value>
+										</EPEnabledExpr>
+										<EPMenuHint classname='Str' valueflags='4194304'>
+											<value/>
+										</EPMenuHint>
+										<EPIgnoreClient classname='Bool' valueflags='4194304'>
+											<value>false</value>
+										</EPIgnoreClient>
+										<EPInitiallyHidden classname='Bool' valueflags='4194304'>
+											<value>false</value>
+										</EPInitiallyHidden>
+										<EPCheckToSaveTitledFile classname='Bool' valueflags='4194304'>
+											<value>true</value>
+										</EPCheckToSaveTitledFile>
+										<ShowEPAlways classname='Bool' valueflags='4194304'>
+											<value>false</value>
+										</ShowEPAlways>
+										<ShowEPForFileWin classname='Bool' valueflags='4194304'>
+											<value>true</value>
+										</ShowEPForFileWin>
+										<ShowEPForExeWin classname='Bool' valueflags='4194304'>
+											<value>false</value>
+										</ShowEPForExeWin>
+										<ShowEPForEditorOnly classname='Bool' valueflags='4194304'>
+											<value>false</value>
+										</ShowEPForEditorOnly>
+										<AllowIntExeOfEP classname='Bool' valueflags='4194304'>
+											<value>false</value>
+										</AllowIntExeOfEP>
+										<CopyStepsOnOverriding classname='Bool' valueflags='4194304'>
+											<value>true</value>
+										</CopyStepsOnOverriding>
+										<Priority classname='Num' valueflags='4194304'>
+											<value>2953567917</value>
+										</Priority>
+									</subprops>
+								</RTS>
+								<Requirements classname='Obj' valueflags='4456456'>
+									<subprops>
+										<Links classname='Strs' valueflags='71303168'>
+											<value lbound='[0]' ubound='[]'/>
+										</Links>
+									</subprops>
+								</Requirements>
+								<FailureAction classname='Num' valueflags='4194312'>
+									<value>2</value>
+								</FailureAction>
+							</subprops>
+						</Sequence>
+					</value>
+				</value>
+			</Seq>
+			<FileGlobalDefaults classname='Obj' valueflags='4194304'>
+				<subprops>
+					<MeasurementPlugIns classname='Obj'>
+						<subprops>
+							<EnableMonitoring classname='Bool'>
+								<value>false</value>
+							</EnableMonitoring>
+						</subprops>
+					</MeasurementPlugIns>
+				</subprops>
+			</FileGlobalDefaults>
+			<ModelFile typename='Path' xsi:type='Path' classname='PathValue' valueflags='4194312'>
+				<value/>
+			</ModelFile>
+			<LoadOpt classname='Str' valueflags='4194312'>
+				<value>UseStepLoadOpt</value>
+			</LoadOpt>
+			<UnloadOpt classname='Str' valueflags='4194312'>
+				<value>UseStepUnloadOpt</value>
+			</UnloadOpt>
+			<Version classname='Str' valueflags='4194312'>
+				<value>0.0.0.0</value>
+			</Version>
+			<BatchSync classname='Num' valueflags='4194312'>
+				<value>1</value>
+			</BatchSync>
+			<SFGlobalsScope classname='Num' valueflags='4194312'>
+				<value>0</value>
+			</SFGlobalsScope>
+			<Type classname='Num' valueflags='4194312'>
+				<value>0</value>
+			</Type>
+			<ModelOption classname='Num' valueflags='4194312'>
+				<value>0</value>
+			</ModelOption>
+			<Requirements classname='Obj' valueflags='4194305'>
+				<subprops>
+					<Links classname='Strs' valueflags='71303168'>
+						<value lbound='[0]' ubound='[]'/>
+					</Links>
+				</subprops>
+			</Requirements>
+		</subprops>
+	</Data>
+</teststandfileheader>
