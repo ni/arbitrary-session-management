@@ -1,4 +1,4 @@
-"""A user-defined service to log data to files while managing sessions efficiently."""
+"""A user-defined service to log data to JSON file while managing sessions efficiently."""
 
 import json
 import logging
@@ -7,11 +7,14 @@ import uuid
 from collections.abc import Callable
 from concurrent import futures
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional, TextIO, TypeVar
 
 import grpc
-from file_logger_service.stubs.file_logger_service_pb2 import (
+from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
+from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
+from stubs.json_logger_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -19,20 +22,18 @@ from file_logger_service.stubs.file_logger_service_pb2 import (
     CloseFileResponse,
     InitializeFileRequest,
     InitializeFileResponse,
-    LogDataRequest,
-    LogDataResponse,
+    LogMeasurementDataRequest,
+    LogMeasurementDataResponse,
 )
-from file_logger_service.stubs.file_logger_service_pb2_grpc import (
-    FileLoggerServiceServicer,
-    add_FileLoggerServiceServicer_to_server,
+from stubs.json_logger_pb2_grpc import (
+    JsonLoggerServicer,
+    add_JsonLoggerServicer_to_server,
 )
-from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient, ServiceLocation
-from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 
 F = TypeVar("F", bound=Callable[..., Any])
 
 
-def get_service_config(file_name: str = "FileLogger.serviceconfig") -> dict[str, Any]:
+def get_service_config(file_name: str = "JsonLogger.serviceconfig") -> dict[str, Any]:
     """Get the service configurations from a .serviceconfig file.
 
     Args:
@@ -57,11 +58,11 @@ class Session:
     file_handle: TextIO
 
 
-class FileLoggerServicer(FileLoggerServiceServicer):
-    """A file logger service that logs data to a file.
+class JsonFileLoggerServicer(JsonLoggerServicer):
+    """A JSON file logging service that logs data to a file in JSON format.
 
     Args:
-        FileLoggerServiceServicer: gRPC service class generated from the .proto file.
+        JsonLoggerServicer: gRPC service class generated from the .proto file.
     """
 
     def __init__(self) -> None:
@@ -77,7 +78,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         """Initialize a file session based on the initialization behavior.
 
         Calls the appropriate handler based on the initialization behavior specified in the request.
-        Returns an INVALID_ARGUMENT error if the initialization behavior is invalid.
+        Returns an INVALID_ARGUMENT error if the file path or initialization behavior is invalid.
 
         Args:
             request: InitializeFileRequest containing the file path and initialization behavior.
@@ -92,30 +93,36 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING: self._attach_existing_session,
         }
 
+        if not self._valid_ndjson_file(Path(request.file_path)):
+            context.abort(
+                grpc.StatusCode.INVALID_ARGUMENT,
+                f"Invalid NDJSON file. Accepted formats are .ndjson, .log, or .txt.",
+            )
+
         handler = initialization_behaviour.get(request.initialization_behavior)
 
-        if handler:
-            return handler(Path(request.file_path), context)
+        if handler is None:
+            context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
-        context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
+        return handler(Path(request.file_path), context)  # type: ignore[misc]
 
-    def LogData(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
+    def LogMeasurementData(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
-        request: LogDataRequest,
+        request: LogMeasurementDataRequest,
         context: grpc.ServicerContext,
-    ) -> LogDataResponse:
-        """Log data to the file associated with the session.
+    ) -> LogMeasurementDataResponse:
+        """Log measurement data to the file associated with the session.
 
         If the session does not exist or is closed, it returns NOT_FOUND error.
         If the file is not accessible, it returns PERMISSION_DENIED error.
         If the file is not writable or for any other errors, it returns INTERNAL error.
 
         Args:
-            request: LogDataRequest containing the session name and content to log.
+            request: LogMeasurementDataRequest containing the session name and data to log.
             context: gRPC context object for the request.
 
         Returns:
-            LogDataResponse indicating the success of the operation.
+            LogMeasurementDataResponse indicating the success of the operation.
         """
         with self.lock:
             session = self._get_session_by_name(request.session_name)
@@ -127,9 +134,33 @@ class FileLoggerServicer(FileLoggerServiceServicer):
             )
 
         try:
-            session.file_handle.write(request.content)  # type: ignore[union-attr]
+            if hasattr(request.timestamp, "timestamp") and request.timestamp is not None:
+                timestamp = (
+                    request.timestamp.ToDatetime()
+                    .replace(tzinfo=timezone.utc)
+                    .strftime("%Y-%m-%d %H:%M:%S")
+                )
+            else:
+                timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")  # fallback
+
+            data = {
+                "timestamp": timestamp,
+                "measurement_name": request.measurement_name,
+                "measurement_configurations": (
+                    dict(request.measurement_configurations)
+                    if request.measurement_configurations
+                    else {}
+                ),
+                "measurement_outputs": (
+                    dict(request.measurement_outputs) if request.measurement_outputs else {}
+                ),
+            }
+
+            # NDJSON is a format where each line is a valid JSON object better suited for streaming.
+            # https://github.com/ndjson/ndjson-spec
+            session.file_handle.write(json.dumps(data) + "\n")  # type: ignore[union-attr]
             session.file_handle.flush()  # type: ignore[union-attr]
-            return LogDataResponse()
+            return LogMeasurementDataResponse()
 
         except OSError as e:
             context.abort(
@@ -199,6 +230,24 @@ class FileLoggerServicer(FileLoggerServiceServicer):
                     session.file_handle.close()
             self.sessions.clear()
 
+    def _valid_ndjson_file(self, file_path: Path) -> bool:
+        """Check if the file is a valid NDJSON file."""
+        if file_path.suffix not in (".ndjson", ".log", ".txt"):
+            return False
+
+        if not file_path.exists() or file_path.stat().st_size == 0:
+            return True
+
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():  # Ignore blank lines
+                        json.loads(line)
+            return True
+
+        except json.JSONDecodeError:
+            return False
+
     def _auto_initialize_session(
         self,
         file_path: Path,
@@ -256,7 +305,7 @@ class FileLoggerServicer(FileLoggerServiceServicer):
         try:
             file_handle: TextIO = open(file_path, "a+")
             session_name: str = str(uuid.uuid4())
-            
+
             with self.lock:
                 self.sessions[file_path] = Session(
                     session_name=session_name,
@@ -351,11 +400,11 @@ def start_server() -> None:
     """Start the gRPC server and register the service with the service registry."""
     logging.basicConfig(format="%(message)s", level=logging.INFO)
     logger = logging.getLogger(__name__)
-    logger.info("Starting the File Logger Service...")
+    logger.info("Starting the JSON Logger Service...")
 
-    servicer = FileLoggerServicer()
+    servicer = JsonFileLoggerServicer()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    add_FileLoggerServiceServicer_to_server(servicer, server)
+    add_JsonLoggerServicer_to_server(servicer, server)
     host = "localhost"
     port = str(server.add_insecure_port(f"{host}:0"))
     server.start()
@@ -371,7 +420,7 @@ def start_server() -> None:
     )
     registration_id = discovery_client.register_service(service_info, service_location)
 
-    logger.info(f"File Logger Service started on port {port}")
+    logger.info(f"JSON Logger Service started on port {port}")
     input("Press Enter to stop the server.")
 
     servicer.clean_up()
