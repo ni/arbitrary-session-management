@@ -1,50 +1,91 @@
 # TestStand Sequence: Session Sharing Demonstration
 
-This TestStand sequence demonstrates the session sharing capability of the JSON Logger Service. The service is responsible for session sharing, while the client (measurement plugins) continues to use the NI Session Management Service for session reservation.
+This TestStand sequence demonstrates how multiple measurement plug-ins can share a file session using the **JSON Logger Service**. While session reservation for instruments continues to rely on the NI Session Management Service, this example showcases shared access to a non-instrument session (file session) managed by the JSON Logger Service.
 
 ## Features
 
-- Shows how the same session for the JSON Logger Service is used between different measurement plugins.
-- Constructs NI-DCPower, NI-DMM and JSON Logger sessions in the set-up.
-- Calls the NI-DCPower With Logger, NI-DMM With Logger measurements.
-- Destroys the created sessions.
-- Uses two measurement plugins that share the same session provided by the JSON Logger Service.
-- Both plugins log their measurement data to the same file, showcasing session sharing
+- Demonstrates session sharing for the JSON Logger Service across multiple measurement plug-ins.
+- Initializes NI-DCPower, NI-DMM, and JSON Logger sessions in the setup step group.
+- Executes two measurement plug-ins: NI-DCPower with Logger and NI-DMM with Logger.
+- Both plug-ins write their results to the same JSON log file using a shared file session.
+- Cleans up all sessions after measurement execution.
 
 ## Required Software
 
 - TestStand 2021 SP1 or later
 - NI-DCPower
 - NI-DMM
-- JsonLoggerService (provided in this repository under the directory server)
+- JSON Logger Service (included in this repository under the `server/` directory)
 
 ## Required Hardware
 
-This example requires an NI SMU that is supported by NI-DCPower (e.g.
-PXIe-4141) and NI DMM (e.g. PXIe-4081).
+This example requires an NI SMU (e.g., PXIe-4141) and an NI DMM (e.g., PXIe-4081) supported by NI-DCPower and NI-DMM respectively.
 
-By default, this example uses a physical instrument or a simulated instrument
+If no physical instruments are available, simulation can be enabled without using NI MAX by setting environment variables:
 
-created in NI MAX. To automatically simulate an instrument without using NI MAX,
-follow the steps below:
+1. Create a `.env` file in the measurement plug-in directory or one of its parent directories (e.g., the repository root or `C:\ProgramData\National Instruments\Plug-Ins\Measurements`).
+2. Add the following environment variables to enable simulation:
 
-- Create a `.env` file in the measurement service's directory or one of its
-  parent directories (such as the root of your Git repository or
-  `C:\ProgramData\National Instruments\Plug-Ins\Measurements` for statically
-  registered measurement services).
-- Add the following options to the `.env` file to enable simulation via the
-  driver's option string:
+    ```env
+    MEASUREMENT_PLUGIN_NIDCPOWER_SIMULATE=1
+    MEASUREMENT_PLUGIN_NIDCPOWER_BOARD_TYPE=PXIe
+    MEASUREMENT_PLUGIN_NIDCPOWER_MODEL=4141
 
-  ```env
-  MEASUREMENT_PLUGIN_NIDCPOWER_SIMULATE=1
-  MEASUREMENT_PLUGIN_NIDCPOWER_BOARD_TYPE=PXIe
-  MEASUREMENT_PLUGIN_NIDCPOWER_MODEL=4141
+    MEASUREMENT_PLUGIN_NIDMM_SIMULATE=1
+    MEASUREMENT_PLUGIN_NIDMM_BOARD_TYPE=PXIe
+    MEASUREMENT_PLUGIN_NIDMM_MODEL=4081
+    ```
 
-  MEASUREMENT_PLUGIN_NIDMM_SIMULATE=1
-  MEASUREMENT_PLUGIN_NIDMM_BOARD_TYPE=PXIe
-  MEASUREMENT_PLUGIN_NIDMM_MODEL=4081
-  ```
+## Running the Sequence
 
-### Note
+1. **Set up the environment**
 
-Make sure to update the file path in the `PinMap.pinmap` file to use an **absolute path**.
+    In a terminal,
+
+    ```cmd
+    cd teststand_sequence
+    setup.bat
+    ```
+
+2. **Start the JSON Logger Service**
+
+    In a terminal window:
+
+    ```cmd
+    cd server
+    start.bat
+    ```
+
+    This sets up a virtual environment and launches the gRPC-based logging service.
+
+3. **Start the Measurement Plug-ins**
+
+    In separate terminals, navigate to each measurement plug-in's directory and run:
+
+    ```cmd
+    start.bat
+    ```
+
+    Example:
+
+    ```cmd
+    cd nidcpower_measurement_with_logger
+    start.bat
+    ```
+
+    ```cmd
+    cd nidmm_measurement_with_logger
+    start.bat
+    ```
+
+4. **Run the TestStand Sequence**
+
+    - Open **TestStand**.
+    - Load the provided sequence file `FileSessionSharing.seq`.
+    - Update the venv Path in TestStand by **Configure -> Adapters -> Python**. Then click `Configure...` and enter the venv path.
+    - Ensure the pin map file (`PinMap.pinmap`) uses an **absolute path**.
+    - Execute the sequence to observe shared logging behavior between plug-ins.
+
+## Note
+
+Ensure that the JSON Logger Service is running before running the sequence. The plug-ins rely on it for writing logs, and session sharing will throw an error if the service is unavailable.

@@ -1,43 +1,60 @@
-# NI-DCPower Source DC Voltage With JSON Logger
+# NI-DCPower Source DC Voltage with JSON Logger
 
-This is a measurement plug-in example that sources and measures a DC voltage using an NI SMU, logs the measurement data using a `JsonLoggerService`, and supports sharing both the instrument session (NI SMU) and non-instrument session (file session).
+This measurement plug-in example demonstrates how to source and measure a DC voltage using an NI SMU and log the resulting data using the **JSON Logger Service**.
 
 ## Features
 
-- Uses the `nidcpower` package to access NI-DCPower from Python
-- Pin-aware, individual pins for instrument and non-instrument sessions.
-- Logs measurement data via a custom `JsonLoggerService` and implementation
-- Includes InstrumentStudio and Measurement Plug-In UI Editor project files
+- Uses the `nidcpower` Python package to interact with NI SMUs.
+- Pin-aware implementation supporting both instrument and non-instrument sessions.
+- Logs measurement data (configuration and results) via a custom `JsonLoggerService`.
+- Includes InstrumentStudio and Measurement Plug-In UI Editor project files.
 
 ## Required Software
 
 - InstrumentStudio 2025 Q2 or later
 - NI-DCPower
-- JsonLoggerService (provided in this repository under the directory server)
+- JsonLoggerService (included in this repository under the `server/` directory)
 
 ## Required Hardware
 
-This example requires an NI SMU that is supported by NI-DCPower (e.g.
-PXIe-4141).
+This example requires an NI SMU that is supported by NI-DCPower (e.g., PXIe-4141).
 
-By default, this example uses a physical instrument or a simulated instrument
+By default, this example uses a physical instrument or a simulated instrument created in NI MAX. To simulate an instrument without using NI MAX:
 
-created in NI MAX. To automatically simulate an instrument without using NI MAX,
-follow the steps below:
+1. Create a `.env` file in the measurement plug-in directory or one of its parent directories (e.g., the repository root or `C:\ProgramData\National Instruments\Plug-Ins\Measurements`).
+2. Add the following environment variables:
 
-- Create a `.env` file in the measurement service's directory or one of its
-  parent directories (such as the root of your Git repository or
-  `C:\ProgramData\National Instruments\Plug-Ins\Measurements` for statically
-  registered measurement services).
-- Add the following options to the `.env` file to enable simulation via the
-  driver's option string:
+    ```env
+    MEASUREMENT_PLUGIN_NIDCPOWER_SIMULATE=1
+    MEASUREMENT_PLUGIN_NIDCPOWER_BOARD_TYPE=PXIe
+    MEASUREMENT_PLUGIN_NIDCPOWER_MODEL=4141
+    ```
 
-  ```env
-  MEASUREMENT_PLUGIN_NIDCPOWER_SIMULATE=1
-  MEASUREMENT_PLUGIN_NIDCPOWER_BOARD_TYPE=PXIe
-  MEASUREMENT_PLUGIN_NIDCPOWER_MODEL=4141
-  ```
+## Set Up and Usage
 
-### Note
+### Run the Measurement Plug-In
 
-Make sure to update the file path in the `NIDmmMeasurementWithLogger.pinmap` file to use an **absolute path**.
+Use the provided batch script to set up the virtual environment, install dependencies, and start the measurement service:
+
+```cmd
+cd nidcpower_measurement_with_logger
+start.bat
+```
+
+### Start the JSON Logger Service
+
+In a separate terminal window:
+
+```cmd
+cd server
+start.bat
+```
+
+This will set up a virtual environment and launch the JSON Logger Service as a gRPC server. Make sure this is running before executing the measurement.
+
+### Run the Measurement from InstrumentStudio
+
+1. Open **InstrumentStudio**.
+2. Go to **File -> Open Project -> Browse**, and select the measurement plug-in project.
+3. Update the custom instrument's name to an **absolute file path** in the pin map in the project.
+4. Run the measurement plug-in from the InstrumentStudio.

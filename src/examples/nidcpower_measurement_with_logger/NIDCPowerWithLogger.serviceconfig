@@ -10,7 +10,6 @@
         "ni.measurementlink.measurement.v2.MeasurementService"
       ],
       "path": "start.bat",
-      "installPath": "install.bat",
       "annotations": {
         "ni/service.description": "Measurement plug-in example that sources and measures a DC voltage with an NI SMU and logs measurement data to a file using JSON Logger.",
         "ni/service.collection": "NI.Examples",

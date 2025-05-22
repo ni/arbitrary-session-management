@@ -5,6 +5,7 @@ version = "1.0.0"
 description = "A user-defined service to log data to JSON file while managing sessions efficiently."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
 license = { text = "MIT" }
+readme = "README.md"
 
 requires-python = ">=3.9,<4.0"
 dependencies = [
