@@ -1,4 +1,4 @@
-"""Perform a measurement using an NI DCPower and log measurement data to a file using the JSON Logger."""
+"""Perform a measurement using NI DCPower and log measurement data to a file using JSON Logger."""
 
 from __future__ import annotations
 
@@ -81,7 +81,9 @@ def measure(
     source_delay: float,
 ) -> Tuple[List[int], List[str], List[float], List[float], List[bool]]:
     """Source and measure a DC voltage with an NI SMU."""
-    logging.info("Executing measurement: pin_names=%s voltage_level=%g", nidcpower_pins, voltage_level)
+    logging.info(
+        "Executing measurement: pin_names=%s voltage_level=%g", nidcpower_pins, voltage_level
+    )
 
     cancellation_event = threading.Event()
     measurement_service.context.add_cancel_callback(cancellation_event.set)
@@ -160,7 +162,9 @@ def measure(
                 measurement_outputs={
                     "measured_voltage": str([measurement.voltage for measurement in measurements]),
                     "measured_current": str([measurement.current for measurement in measurements]),
-                    "in_compliance": str([measurement.in_compliance for measurement in measurements]),
+                    "in_compliance": str(
+                        [measurement.in_compliance for measurement in measurements]
+                    ),
                 },
             )
 

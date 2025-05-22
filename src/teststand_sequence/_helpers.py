@@ -4,7 +4,6 @@ import pathlib
 from typing import Any
 
 
-
 class TestStandSupport(object):
     """Class that communicates with TestStand."""
 

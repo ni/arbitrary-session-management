@@ -1,5 +1,9 @@
+"""Functions to set up and tear down sessions of JSON Logger in NI TestStand."""
+
 from typing import Any
 
+from _helpers import TestStandSupport
+from client_session.session_constructor import JsonLoggerSessionConstructor
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
 from ni_measurement_plugin_sdk_service.grpc.channelpool import GrpcChannelPool
 from ni_measurement_plugin_sdk_service.session_management import (
@@ -7,8 +11,6 @@ from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
     SessionManagementClient,
 )
-from _helpers import TestStandSupport
-from client_session.session_constructor import JsonLoggerSessionConstructor
 
 JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
 

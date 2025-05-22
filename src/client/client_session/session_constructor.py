@@ -1,10 +1,10 @@
 """File containing class for constructing JSON logger session."""
 
+from client_session.session import JsonLoggerClient
 from ni_measurement_plugin_sdk_service.session_management import (
     SessionInformation,
     SessionInitializationBehavior,
 )
-from client_session.session import JsonLoggerClient
 
 
 class JsonLoggerSessionConstructor:

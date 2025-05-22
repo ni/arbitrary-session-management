@@ -1,4 +1,4 @@
-"""Perform a measurement using an NI DMM and log measurement data to a file using the JSON Logger."""
+"""Perform a measurement using an NI DMM and log measurement data to a file using JSON Logger."""
 
 import logging
 import math
@@ -10,9 +10,8 @@ from typing import Tuple
 import click
 import ni_measurement_plugin_sdk_service as nims
 import nidmm
-from client_session.session_constructor import JsonLoggerSessionConstructor
-
 from _helpers import configure_logging, verbosity_option
+from client_session.session_constructor import JsonLoggerSessionConstructor
 
 script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
 service_directory = pathlib.Path(script_or_exe).resolve().parent

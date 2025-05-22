@@ -13,6 +13,26 @@ dependencies = [
 ]
 
 
+[tool.poetry.group.dev.dependencies]
+ni-python-styleguide = "^0.4.6"
+mypy = "^1.15.0"
+bandit = "^1.8.3"
+
+[tool.mypy]
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["^stubs/.*"]
+
+[tool.bandit]
+exclude_dirs = [".venv"]
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ni-python-styleguide]
+extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
+
+[tool.black]
+extend_exclude = '\.tox/|_pb2(_grpc)?\.(py|pyi)$'
+line-length = 100

@@ -4,16 +4,11 @@ from __future__ import annotations
 
 import logging
 import threading
+from datetime import datetime, timezone
 from types import TracebackType
 from typing import Optional, Type
-from datetime import datetime, timezone
-from google.protobuf.timestamp_pb2 import Timestamp
 
 import grpc
-from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
-from ni_measurement_plugin_sdk_service.session_management import (
-    SessionInitializationBehavior,
-)
 from client_session.stubs.json_logger_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -26,6 +21,11 @@ from client_session.stubs.json_logger_pb2 import (
     LogMeasurementDataResponse,
 )
 from client_session.stubs.json_logger_pb2_grpc import JsonLoggerStub
+from google.protobuf.timestamp_pb2 import Timestamp
+from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
+from ni_measurement_plugin_sdk_service.session_management import (
+    SessionInitializationBehavior,
+)
 
 GRPC_SERVICE_INTERFACE_NAME = "ni.logger.v1.json"
 GRPC_SERVICE_CLASS = "ni.logger.JSONLogService"
