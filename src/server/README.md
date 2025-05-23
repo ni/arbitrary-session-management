@@ -26,12 +26,12 @@ start.bat
 
 ### Note
 
-The initial version of the JSON Logger Service is designed specifically for pin-centric workflows. In these workflows, non-instrument sessions (such as file-based logging sessions) can be reserved and managed without requiring explicit hardware configurations.
+The initial version of the JSON Logger Service is designed specifically for pin-centric workflows. In these workflows, non-instrument sessions (such as file-based logging sessions) can be shared and managed effectively.
 
-Extending support to non-pin-centric workflows via the IO Discovery Service is not planned at this time, due to the following limitations:
+Extending support to non-pin-centric (IO Resource) workflows via the IO Discovery Service is not planned at this time, due to the following limitations:
 
-- **Manual Configuration Overhead**: The IO Discovery Service relies on a JSON configuration file that describes available hardware and instruments—typically populated through **NI MAX**. Incorporating the logger service into this model would require users to manually update the JSON file with service metadata, increasing complexity.
+- **Manual Configuration Overhead**: The IO Discovery Service relies on a JSON configuration file that describes available hardware and instruments-typically populated through **NI MAX**. Incorporating the logger service into this model would require users to manually update the JSON file with resource data, increasing complexity.
 
-- **Incompatibility with Pin Map Context**: When a pin map is active and used by a measurement plug-in, the session management service bypasses the IO Discovery Service. This limits the ability to reserve sessions for services like the JSON Logger when operating within a pin-centric context.
+- **Incompatibility with Pin Map Context**: When a pin map is active and used by a measurement plug-in, the session management service bypasses the IO Discovery Service. This limits the ability to reserve sessions for services like the JSON Logger.
 
-As a result, pin-centric workflows remain the recommended approach for leveraging the JSON Logger Service.
+As a result, pin-centric workflows remain the recommended approach.
