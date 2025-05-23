@@ -1,14 +1,9 @@
 
-# Arbitrary Session Sharing via gRPC Service – Reference Guide and Examples
+# Arbitrary Session Sharing - Reference Guide and Example
 
 This repository provides a reference guide and implementation examples in **Python** for sharing and reserving arbitrary (non-instrument) sessions. It demonstrates how to define a gRPC service, handle session initialization behaviors, register services with NI Discovery Service, and integrate with measurement plugins.
 
-## Note
-
-The solution follows a **pin-centric workflow** for session reservation and initialization.
-
-- [Arbitrary Session Sharing via gRPC Service – Reference Guide and Examples](#arbitrary-session-sharing-via-grpc-service--reference-guide-and-examples)
-  - [Note](#note)
+- [Arbitrary Session Sharing - Reference Guide and Example](#arbitrary-session-sharing---reference-guide-and-example)
   - [Overview](#overview)
   - [Getting Started](#getting-started)
   - [Key Concepts](#key-concepts)
@@ -25,14 +20,10 @@ The solution follows a **pin-centric workflow** for session reservation and init
     - [7. Perform Operations](#7-perform-operations)
     - [8. Unreserve the Session](#8-unreserve-the-session)
   - [Session Initialization Behaviors](#session-initialization-behaviors)
-  - [Advantages and Limitations](#advantages-and-limitations)
-    - [Advantages](#advantages)
-    - [Limitations](#limitations)
-  - [References](#references)
 
 ## Overview
 
-This solution demonstrates a method for exposing **arbitrary functions** (e.g., file I/O, database operations) as gRPC services, managing sessions using **NI’s Session Management Service**, and enabling **session sharing** between measurement plugins.
+This repository demonstrates a method for exposing **arbitrary functions** (e.g., file I/O, database operations) as gRPC services, managing sessions using **NI's Session Management Service**, and enabling **session sharing** between measurement plugins.
 
 Python examples covers:
 
@@ -44,17 +35,23 @@ Python examples covers:
 
 ## Getting Started
 
-To begin:
+To begin with:
 
-1. Clone this repository.
-2. Follow the [User Reference Guide](#step-by-step-implementation) for detailed setup instructions.
+1. Clone this repository with the following command.
+
+```bash
+git clone https://github.com/ni/arbitrary-session-management.git
+```
+
+2. Follow the Step-by-Step for detailed setup instructions.
+
 3. Run the examples in Python.
 
 ## Key Concepts
 
 ### gRPC Service
 
-The user defines arbitrary functionality in `.proto` files and implements them as gRPC services. Each service supports:
+The user defines arbitrary functionality in `.proto` files and implements them as gRPC services. Each service should support:
 
 - `InitializeSession`
 - `DestroySession`
@@ -62,7 +59,7 @@ The user defines arbitrary functionality in `.proto` files and implements them a
 
 ### Session Management
 
-Sessions are managed using the **InitializationBehavior** enum (similar to NI gRPC Device Server) and registered with NI’s **Session Management Service**.
+Sessions are managed using the **InitializationBehavior** enum (similar to NI gRPC Device Server) and registered with **Session Management Service**.
 
 ### Pin Map Integration
 
@@ -75,11 +72,10 @@ Measurement plugins must define a **custom instrument** in the pin map to intera
 Create `.proto` definitions for your service APIs:
 
 ```proto
-service FileService {
+service JsonLogger {
   rpc InitializeFile(InitializeFileRequest) returns (InitializeFileResponse);
-  rpc ReadFile(ReadFileRequest) returns (ReadFileResponse);
-  rpc WriteFile(ReadFileRequest) returns (WriteFileResponse);
-  rpc DestroyFile(DestroyFileRequest) returns (DestroyFileResponse);
+  rpc LogMeasurementData(LogMeasurementDataRequest) returns (LogMeasurementDataResponse);
+  rpc CloseFile(CloseFileRequest) returns (CloseFileResponse);
 }
 ```
 
@@ -103,10 +99,10 @@ discovery_client.register_service(service_info, ServiceLocation("localhost", por
 
 ### 4. Generate Client Stubs
 
-Use `protoc` to generate client stubs for Python or LabVIEW.
+Use `protoc` to generate client stubs for Python.
 
 ```cmd
-poetry run python -m grpc_tools.protoc --proto_path=. --python_out=stubs --grpc_python_out=stubs --mypy_out=stubs --mypy_grpc_out=stubs json_logger.proto 
+poetry run python -m grpc_tools.protoc --proto_path=. --python_out=stubs --grpc_python_out=stubs --mypy_out=stubs --mypy_grpc_out=stubs json_logger.proto
 ```
 
 Use these to build session constructors and client interfaces.
@@ -154,24 +150,3 @@ reservation.unreserve()
 | `ATTACH_TO_SESSION_THEN_CLOSE` | Attach temporarily and auto-close on release |
 
 These behaviors must be implemented server-side by the gRPC service.
-
-## Advantages and Limitations
-
-### Advantages
-
-- Leverages existing **Session Management Service** – no modifications required.
-- Centralizes session logic within gRPC services.
-- Supports dynamic service discovery.
-- Lower latency via reduced gRPC overhead.
-
-### Limitations
-
-- Requires a **pin-centric** workflow.
-- Users must implement complex session sharing logic in the service.
-- Does **not support non-pin-centric** workflows due to pin map dependencies.
-
-## References
-
-- [NI Measurement Plugin SDK](https://github.com/ni/measurement-plugin-python)
-- [Discovery Service Example](https://github.com/ni/measurement-plugin-service-extension-example)
-- [Session Initialization Behavior Enum](https://github.com/ni/measurement-plugin-python/blob/001af74269501f874aa4f092ee2963bb9290348e/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L457)
