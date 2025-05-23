@@ -231,7 +231,7 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
             self.sessions.clear()
 
     def _valid_ndjson_file(self, file_path: Path) -> bool:
-        """Check if the file is a valid NDJSON file."""        
+        """Check if the file is a valid NDJSON file."""
         # Supported extensions:
         # - .ndjson: Explicitly indicates newline-delimited JSON.
         # - .log, .txt: Commonly used for logs where NDJSON content can be stored.
