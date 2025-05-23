@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SourceFile Checksum="A1E2EE4BC5230D188303D9B8CA13CB3424606EF0B4B02D245EB80C2397E4E357DC4C4DBC90F6656D886885D57298553C80D0EB0DFB487526F4E57E59781A42A5" xmlns="http://www.ni.com/PlatformFramework">
+<SourceFile Checksum="92AE4D98A220CFF1D09D0452DDFDE44E3E7BD893DEBD8F24E1F56683A0E2BA3573CC0E6B87CB56E6B16FB0A88FEE6551339B5AE40631E4FBD03064E8FA383045" xmlns="http://www.ni.com/PlatformFramework">
 	<SourceModelFeatureSet>
 		<ParsableNamespace AssemblyFileVersion="25.3.2.49833" FeatureSetName="Pin Map" Name="http://www.ni.com/InstrumentFramework/PinMap" OldestCompatibleVersion="21.3.0.0" Version="21.3.0.0" />
 		<ParsableNamespace AssemblyFileVersion="25.3.2.49833" FeatureSetName="InstrumentStudio Measurement UI" Name="http://www.ni.com/InstrumentFramework/ScreenDocument" OldestCompatibleVersion="22.1.0.1" Version="24.8.0.0" />
@@ -30,7 +30,7 @@
 		<NameScopingEnvoy Id="25f25c7dd8a48e4846a48452fa47c09" ModelDefinitionType="DefaultTarget" Name="DefaultTarget">
 			<DefaultTarget />
 			<SourceFileReference Id="7c869e6a42a8474d86779ed686991145" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/ScreenDocument}Screen" Name="NIDCPowerWithLogger.measui" StoragePath="NIDCPowerWithLogger.measui" />
-			<FileReference Id="ea46ac1ada5a4d5c920c3c8271d7c4e3" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="NIDCPowerWithLogger.pinmap" StoragePath="NIDCPowerWithLogger.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
+			<FileReference Id="25219bcad85a4cc297050d614520563b" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="FileSessionSharing.pinmap" StoragePath="..\pinmap\FileSessionSharing.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
 		</NameScopingEnvoy>
 	</Project>
 	<ProjectInformation xmlns="http://www.ni.com/PlatformFramework" />

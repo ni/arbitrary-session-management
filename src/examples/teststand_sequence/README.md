@@ -21,33 +21,13 @@ This TestStand sequence demonstrates how multiple measurement plug-ins can share
 
 This example requires an NI SMU (e.g., PXIe-4141) and an NI DMM (e.g., PXIe-4081) supported by NI-DCPower and NI-DMM respectively.
 
-If no physical instruments are available, simulation can be enabled without using NI MAX by setting environment variables:
+By default, this uses a physical instrument or a simulated instrument created in NI MAX. To simulate an instrument without using NI MAX:
 
-1. Create a `.env` file in the measurement plug-in directory or one of its parent directories (e.g., the repository root or `C:\ProgramData\National Instruments\Plug-Ins\Measurements`).
-2. Add the following environment variables to enable simulation:
-
-    ```env
-    MEASUREMENT_PLUGIN_NIDCPOWER_SIMULATE=1
-    MEASUREMENT_PLUGIN_NIDCPOWER_BOARD_TYPE=PXIe
-    MEASUREMENT_PLUGIN_NIDCPOWER_MODEL=4141
-
-    MEASUREMENT_PLUGIN_NIDMM_SIMULATE=1
-    MEASUREMENT_PLUGIN_NIDMM_BOARD_TYPE=PXIe
-    MEASUREMENT_PLUGIN_NIDMM_MODEL=4081
-    ```
+- Rename the `.env.simulation` file located in the `examples` directory to `.env`.
 
 ## Running the Sequence
 
-1. **Set up the environment**
-
-    In a terminal:
-
-    ```cmd
-    cd teststand_sequence
-    setup.bat
-    ```
-
-2. **Start the JSON Logger Service**
+1. **Start the JSON Logger Service**
 
     In another terminal:
 
@@ -58,7 +38,7 @@ If no physical instruments are available, simulation can be enabled without usin
 
     This sets up a virtual environment and launches the gRPC JSON logging service.
 
-3. **Start the Measurement Plug-ins**
+2. **Start the Measurement Plug-ins**
 
     In separate terminals, navigate to each measurement plug-in's directory and run:
 
@@ -78,6 +58,15 @@ If no physical instruments are available, simulation can be enabled without usin
     start.bat
     ```
 
+3. **Set up the environment**
+
+    In a terminal:
+
+    ```cmd
+    cd teststand_sequence
+    setup.bat
+    ```
+
 4. **Run the TestStand Sequence**
 
     - Open **TestStand**.
@@ -90,4 +79,4 @@ If no physical instruments are available, simulation can be enabled without usin
 
 ## Note
 
-Make sure the JSON Logger Service is running before executing the sequence. The measurement plug-ins depend on this service for logging, and session sharing will fail if the service is not available.
+Before executing the sequence, make sure the JSON Logger Service is running. The measurement plug-ins depend on this service for logging, and session sharing will fail if the service is not available.

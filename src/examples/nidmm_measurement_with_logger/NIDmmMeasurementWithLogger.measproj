@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SourceFile Checksum="0B26C6967BDCEE00E3C8CD5B91618F307E7175A880E3102DAFBE35AAC2917983582B982F3FE8324FBDFD47ABCC54CF5E9C9789D29718989460F38FEF34413B08" xmlns="http://www.ni.com/PlatformFramework">
+<SourceFile Checksum="160DD7FF3A55B30D0526749F3CEA85C6681F1B9A6A5B263A36C5FDA5784E1B28043E1ABB13A4453A7558EFD5771D5D1EFCCF5EEC03697748160DA85830C7D1A6" xmlns="http://www.ni.com/PlatformFramework">
 	<SourceModelFeatureSet>
 		<ParsableNamespace AssemblyFileVersion="25.3.2.49833" FeatureSetName="Pin Map" Name="http://www.ni.com/InstrumentFramework/PinMap" OldestCompatibleVersion="21.3.0.0" Version="21.3.0.0" />
 		<ParsableNamespace AssemblyFileVersion="25.3.2.49833" FeatureSetName="InstrumentStudio Measurement UI" Name="http://www.ni.com/InstrumentFramework/ScreenDocument" OldestCompatibleVersion="22.1.0.1" Version="24.8.0.0" />
@@ -30,7 +30,7 @@
 		<NameScopingEnvoy Id="8a1540a79f81438a8407889bf4817e48" ModelDefinitionType="DefaultTarget" Name="DefaultTarget">
 			<DefaultTarget />
 			<SourceFileReference Id="d5e4bd3e8510459ea77718b72b2e520a" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/ScreenDocument}Screen" Name="NIDmmMeasurementWithLogger.measui" StoragePath="NIDmmMeasurementWithLogger.measui" />
-			<FileReference Id="282abdbb779d489a94146f8df9bbe429" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="NIDmmMeasurementWithLogger.pinmap" StoragePath="NIDmmMeasurementWithLogger.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
+			<FileReference Id="a9747afeca2044babcdeb8fb4feb32b1" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="FileSessionSharing.pinmap" StoragePath="..\pinmap\FileSessionSharing.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
 		</NameScopingEnvoy>
 	</Project>
 	<ProjectInformation xmlns="http://www.ni.com/PlatformFramework" />
