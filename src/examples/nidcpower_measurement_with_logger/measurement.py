@@ -151,7 +151,7 @@ def measure(
         ) as file_session_info:
             file_session = file_session_info.session
             file_session.log_data(
-                measurement_name="NIDCPower",
+                measurement_name="NI DCPower",
                 measurement_configurations={
                     "voltage_level": str(voltage_level),
                     "voltage_level_range": str(voltage_level_range),
