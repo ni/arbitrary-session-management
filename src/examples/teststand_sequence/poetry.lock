@@ -103,7 +103,7 @@ ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
 
 [package.source]
 type = "directory"
-url = "../client"
+url = "../../client"
 
 [[package]]
 name = "colorama"
@@ -1020,4 +1020,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "cda5b87d0fb6297100bac1e016d2e8a2ef461f04a98edf0ed88bfe54ce722ce5"
+content-hash = "1d65c8a6ca4a46cf97db9785013b4610850dcc804ea8a3f5e1ef7cfc29e986f0"

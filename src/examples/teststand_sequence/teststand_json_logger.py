@@ -41,7 +41,7 @@ def create_file_sessions(sequence_context: Any) -> None:
             pin_map_context,
             instrument_type_id=JSON_LOGGER_INSTRUMENT_TYPE,
         ) as reservation:
-            # Initialize file sessions using the constructor in FileLoggerService.
+            # Initialize file sessions using the constructor in JsonLoggerService.
             with reservation.initialize_sessions(
                 session_constructor=session_constructor,
                 instrument_type_id=JSON_LOGGER_INSTRUMENT_TYPE,
@@ -72,7 +72,7 @@ def destroy_file_sessions() -> None:
             if not reservation.session_info:
                 return
 
-            # Attach and close file sessions in FileLoggerService.
+            # Attach and close file sessions in JsonLoggerService.
             with reservation.initialize_sessions(
                 session_constructor=session_constructor,
                 instrument_type_id=JSON_LOGGER_INSTRUMENT_TYPE,

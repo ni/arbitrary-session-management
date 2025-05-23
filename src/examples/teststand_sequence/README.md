@@ -1,6 +1,6 @@
 # TestStand Sequence: Session Sharing Demonstration
 
-This TestStand sequence demonstrates how multiple measurement plug-ins can share a file session using the **JSON Logger Service**. While session reservation for instruments continues to rely on the NI Session Management Service, this example showcases shared access to a non-instrument session (file session) managed by the JSON Logger Service.
+This TestStand sequence demonstrates how multiple measurement plug-ins can share a file session using the **JSON Logger Service**. While session reservation for instruments continues to rely on the NI Session Management Service, this example showcases shared access to a non-instrument session (file session) managed by the service itself (JSON Logger Service).
 
 ## Features
 
@@ -15,7 +15,7 @@ This TestStand sequence demonstrates how multiple measurement plug-ins can share
 - TestStand 2021 SP1 or later
 - NI-DCPower
 - NI-DMM
-- JSON Logger Service (included in this repository under the `server/` directory)
+- JSON Logger Service (included in this repository under the `server` directory)
 
 ## Required Hardware
 
@@ -40,7 +40,7 @@ If no physical instruments are available, simulation can be enabled without usin
 
 1. **Set up the environment**
 
-    In a terminal,
+    In a terminal:
 
     ```cmd
     cd teststand_sequence
@@ -49,14 +49,14 @@ If no physical instruments are available, simulation can be enabled without usin
 
 2. **Start the JSON Logger Service**
 
-    In a terminal window:
+    In another terminal:
 
     ```cmd
     cd server
     start.bat
     ```
 
-    This sets up a virtual environment and launches the gRPC-based logging service.
+    This sets up a virtual environment and launches the gRPC JSON logging service.
 
 3. **Start the Measurement Plug-ins**
 
@@ -82,10 +82,12 @@ If no physical instruments are available, simulation can be enabled without usin
 
     - Open **TestStand**.
     - Load the provided sequence file `FileSessionSharing.seq`.
-    - Update the venv Path in TestStand by **Configure -> Adapters -> Python**. Then click `Configure...` and enter the venv path.
-    - Ensure the pin map file (`PinMap.pinmap`) uses an **absolute path**.
-    - Execute the sequence to observe shared logging behavior between plug-ins.
+    - Update the venv Path in TestStand
+    - Follow **Configure -> Adapters -> Python**.
+    - Then click `Configure...` and enter the venv path.
+    - Ensure the pin map file (`PinMap.pinmap`) uses an **absolute file path**.
+    - Execute the sequence to observe shared logging behavior between two measurement plug-ins.
 
 ## Note
 
-Ensure that the JSON Logger Service is running before running the sequence. The plug-ins rely on it for writing logs, and session sharing will throw an error if the service is unavailable.
+Make sure the JSON Logger Service is running before executing the sequence. The measurement plug-ins depend on this service for logging, and session sharing will fail if the service is not available.

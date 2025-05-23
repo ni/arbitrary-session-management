@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SourceFile Checksum="D2F8D9BAD6910E17B5C76F302840AED61888C974A89B0461DEA1254A9082DE428AEA3F2CD69916F712AC9315EB826BA324BD0E9D87F291B11E7B982EFA3B0A85" xmlns="http://www.ni.com/PlatformFramework">
+<SourceFile Checksum="AFAF0BCCAAFD79C796436B99936DCAD23F132150571637BF09094F30F234DC566D79C17D83AA2C0B2213C356C614BD7F2A04E14404E9685130755A5E1EE43A79" xmlns="http://www.ni.com/PlatformFramework">
 	<SourceModelFeatureSet>
 		<ParsableNamespace AssemblyFileVersion="25.3.2.49833" FeatureSetName="Pin Map" Name="http://www.ni.com/InstrumentFramework/PinMap" OldestCompatibleVersion="21.3.0.0" Version="21.3.0.0" />
 		<ParsableNamespace AssemblyFileVersion="9.16.2.49833" FeatureSetName="Editor" Name="http://www.ni.com/PlatformFramework" OldestCompatibleVersion="8.1.0.49152" Version="8.1.0.49152" />
@@ -12,8 +12,8 @@
 		</EmbeddedDefinitionReference>
 		<NameScopingEnvoy Id="f0fd0a1d98c944258fd0797c80775378" ModelDefinitionType="DefaultTarget" Name="DefaultTarget">
 			<DefaultTarget />
-			<FileReference Id="4274219596fc44d6bbabadbce4cb7312" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="NIDmmMeasurementWithLogger.pinmap" StoragePath="NIDmmMeasurementWithLogger.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
 			<SourceFileReference Bindings="EnvoyManager" Id="8069a00f835f4684b3b91105d3a3aa82" ModelDefinitionType="NationalInstruments.InstrumentFramework.Document.SourceModel.UnifiedTask" Name="NIDmmMeasurementWithLogger.sfp" StoragePath="NIDmmMeasurementWithLogger.sfp" />
+			<FileReference Id="b61e3119a6af45b28a07d02354c52d95" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="FileSessionSharing.pinmap" StoragePath="..\pinmap\FileSessionSharing.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
 		</NameScopingEnvoy>
 	</Project>
 	<ProjectInformation xmlns="http://www.ni.com/PlatformFramework">

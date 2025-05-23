@@ -1,4 +1,4 @@
-"""Helper classes and functions for measurement plug-in examples."""
+"""TestStand helper class for the measurement plug-in."""
 
 import pathlib
 from typing import Any

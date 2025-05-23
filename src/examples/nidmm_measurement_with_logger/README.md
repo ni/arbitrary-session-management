@@ -21,14 +21,7 @@ This example requires an NI DMM supported by NI-DMM (e.g., PXIe-4081).
 
 By default, this example uses a physical instrument or a simulated instrument created in NI MAX. To simulate an instrument without using NI MAX:
 
-1. Create a `.env` file in the measurement plug-in directory or one of its parent directories (e.g., the repository root or `C:\ProgramData\National Instruments\Plug-Ins\Measurements`).
-2. Add the following environment variables:
-
-    ```env
-    MEASUREMENT_PLUGIN_NIDMM_SIMULATE=1
-    MEASUREMENT_PLUGIN_NIDMM_BOARD_TYPE=PXIe
-    MEASUREMENT_PLUGIN_NIDMM_MODEL=4081
-    ```
+- Rename the provided `env.simulation` file to `.env`
 
 ## Set Up and Usage
 

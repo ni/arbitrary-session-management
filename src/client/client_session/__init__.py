@@ -1,1 +1,1 @@
-"""Client-Side Session and its constructor."""
+"""Client-side session and its constructor."""

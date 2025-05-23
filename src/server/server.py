@@ -1,4 +1,4 @@
-"""A user-defined service to log data to JSON file while managing sessions efficiently."""
+"""A user-defined service to log measurement data to JSON file while managing sessions."""
 
 import json
 import logging
@@ -59,7 +59,7 @@ class Session:
 
 
 class JsonFileLoggerServicer(JsonLoggerServicer):
-    """A JSON file logging service that logs data to a file in JSON format.
+    """A JSON file logging service that logs measurement data to a file in JSON format.
 
     Args:
         JsonLoggerServicer: gRPC service class generated from the .proto file.
@@ -231,7 +231,10 @@ class JsonFileLoggerServicer(JsonLoggerServicer):
             self.sessions.clear()
 
     def _valid_ndjson_file(self, file_path: Path) -> bool:
-        """Check if the file is a valid NDJSON file."""
+        """Check if the file is a valid NDJSON file."""        
+        # Supported extensions:
+        # - .ndjson: Explicitly indicates newline-delimited JSON.
+        # - .log, .txt: Commonly used for logs where NDJSON content can be stored.
         if file_path.suffix not in (".ndjson", ".log", ".txt"):
             return False
 

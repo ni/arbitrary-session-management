@@ -10,8 +10,8 @@ requires-python = ">=3.9,<4.0"
 
 [tool.poetry.dependencies]
 ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-client-session = { path = "../../client" }
 nidcpower = ">=1.4.9,<2.0.0"
+client-session = { path = "../../client" }
 
 
 [tool.poetry.group.dev.dependencies]

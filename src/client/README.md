@@ -10,7 +10,7 @@ The **JSON Logger Client** is a reusable Python package designed to simplify int
 
 ## Usage
 
-The JSON Logger Client is meant to be used as a dependency by other measurement plug-in projects (e.g., `examples/`, `teststand_sequence/`).
+The JSON Logger Client is meant to be used as a dependency by other measurement plug-in projects (e.g., `examples`, `teststand_sequence`).
 
 ### Integration Steps
 

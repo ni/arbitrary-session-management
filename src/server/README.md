@@ -1,15 +1,15 @@
 # JSON Logger Service
 
-The **JSON Logger Service** is a gRPC-based logging server that enables measurement plug-ins to log measurement data including configuration and output parameters to structured JSON files. The service supports session-based file management and is registered with the **NI Discovery Service** for easy integration.
+The **JSON Logger Service** is a gRPC logging server that enables measurement plug-ins to log measurement data including configuration and output parameters to structured JSON files. The service supports session-based file management and is registered with the **NI Discovery Service** for easy integration.
 
-This service is intended to be run as a standalone process and provides an interface for clients to initialize sessions, log data, and close file handles.
+This service is intended to be run as a standalone process and provides an interface for clients to initialize sessions, log measurement data using the sessions, and close file sessions.
 
 ## Features
 
 - Provides a gRPC interface for structured JSON logging.
 - Manages logging sessions with lifecycle support: initialize, log, and close.
-- Writes human-readable JSON logs containing measurement configurations and results.
-- Supports session sharing through with different session initialization behaviors (e.g., initialize new or attach to existing).
+- Writes JSON logs containing measurement configurations and outputs.
+- Supports session sharing with different session initialization behaviors (e.g., initialize new or attach to existing).
 
 ## Usage
 
