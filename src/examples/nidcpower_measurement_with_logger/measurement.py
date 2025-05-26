@@ -17,10 +17,11 @@ import ni_measurement_plugin_sdk_service as nims
 import nidcpower
 import nidcpower.session
 from _helpers import configure_logging, verbosity_option
-from client_session.session_constructor import JsonLoggerSessionConstructor
+from client_session.session_constructor import (
+    JsonLoggerSessionConstructor,
+    JSON_LOGGER_INSTRUMENT_TYPE,
+)
 
-# Use the same instrument type ID configured in PinMap.
-JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
 
 _NIDCPOWER_WAIT_FOR_EVENT_TIMEOUT_ERROR_CODE = -1074116059
 _NIDCPOWER_TIMEOUT_EXCEEDED_ERROR_CODE = -1074097933

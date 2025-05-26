@@ -11,7 +11,10 @@ import click
 import ni_measurement_plugin_sdk_service as nims
 import nidmm
 from _helpers import configure_logging, verbosity_option
-from client_session.session_constructor import JsonLoggerSessionConstructor
+from client_session.session_constructor import (
+    JsonLoggerSessionConstructor,
+    JSON_LOGGER_INSTRUMENT_TYPE,
+)
 
 script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
 service_directory = pathlib.Path(script_or_exe).resolve().parent
@@ -19,9 +22,6 @@ measurement_service = nims.MeasurementService(
     service_config_path=service_directory / "NIDmmMeasurementWithLogger.serviceconfig",
     ui_file_paths=[service_directory / "NIDmmMeasurementWithLogger.measui"],
 )
-
-# Use the same instrument type ID configured in PinMap.
-JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
 
 
 class Function(Enum):

@@ -1,4 +1,4 @@
-"""Helper classes and functions for measurement plug-in examples."""
+"""Helper functions for measurement plug-in examples."""
 
 import logging
 from typing import Callable, TypeVar

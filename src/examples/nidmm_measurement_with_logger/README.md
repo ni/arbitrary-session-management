@@ -23,27 +23,25 @@ By default, this example uses a physical instrument or a simulated instrument cr
 
 - Rename the `.env.simulation` file located in the `examples` directory to `.env`.
 
-## Set Up and Usage
-
-### Run the Measurement Plug-In
-
-Use the provided batch script to set up the virtual environment, install dependencies, and start the measurement service:
-
-```cmd
-cd nidcpower_measurement_with_logger
-start.bat
-```
+## Set up and Usage
 
 ### Start the JSON Logger Service
 
-In a separate terminal window:
+Open a new terminal window, navigate to the `server` directory, and execute the following command:
 
 ```cmd
-cd server
 start.bat
 ```
 
 This will set up a virtual environment and launch the JSON Logger Service as a gRPC server. Make sure this is running before executing the measurement.
+
+### Host the Measurement Plug-In
+
+Open an another new terminal window, navigate to the `nidmm_measurement_with_logger` directory, and execute the following command:
+
+```cmd
+start.bat
+```
 
 ### Run the Measurement from InstrumentStudio
 

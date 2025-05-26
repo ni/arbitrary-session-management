@@ -42,7 +42,6 @@ _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
     SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
 }
 
-
 class JsonLoggerClient:
     """Client for the JSON Logger."""
 

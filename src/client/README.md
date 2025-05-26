@@ -8,9 +8,17 @@ The **JSON Logger Client** is a reusable Python package designed to simplify int
 - Logs measurement configurations, and results in a structured JSON format.
 - Designed for easy reuse across different examples and TestStand-integrated plug-ins.
 
-## Usage
+## Set up and Usage
 
 The JSON Logger Client is meant to be used as a dependency by other measurement plug-in projects (e.g., `examples`, `teststand_sequence`).
+
+Before running the following command, make sure your terminal is open and you are in the client directory.
+
+```cmd
+setup.bat
+```
+
+This will set up the virtual environment and install the dependencies.
 
 ### Integration Steps
 
@@ -18,5 +26,5 @@ The JSON Logger Client is meant to be used as a dependency by other measurement 
 2. Import the client module in your measurement plug-in:
 
    ```python
-   from client_session.session_constructor import JsonLoggerSessionConstructor
+   from client_session.session_constructor import JsonLoggerSessionConstructor, JSON_LOGGER_INSTRUMENT_TYPE
    ```
