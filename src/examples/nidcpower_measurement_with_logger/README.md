@@ -49,5 +49,6 @@ This will set up a virtual environment and launch the JSON Logger Service as a g
 
 1. Open **InstrumentStudio**.
 2. Go to **File -> Open Project -> Browse**, and select the measurement plug-in project.
-3. Update the custom instrument's name to an **absolute file path** in the pin map in the project.
+3. Update the file path in `FileSessionSharing.pinmap` available in `pinmap` directory to use an **absolute path** for the custom instrument name.
 4. Run the measurement plug-in from the InstrumentStudio.
+5. If the custom instrument's name isn't updated, the resulting log file (UpdateThisWithActualFilePath.ndjson) will be generated in the `server` directory.
