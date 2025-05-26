@@ -1,75 +1,108 @@
-
 # Arbitrary Session Sharing - Reference Guide and Example
 
-This repository provides a reference guide and implementation examples in **Python** for sharing and reserving arbitrary (non-instrument) sessions. It demonstrates how to define a gRPC service, handle session initialization behaviors, register services with NI Discovery Service, and integrate with measurement plugins.
+## Table of Contents
 
 - [Arbitrary Session Sharing - Reference Guide and Example](#arbitrary-session-sharing---reference-guide-and-example)
+  - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
+  - [Project Structure](#project-structure)
+  - [Required Software](#required-software)
+  - [Quick Start](#quick-start)
   - [Getting Started](#getting-started)
-  - [Key Concepts](#key-concepts)
-    - [gRPC Service](#grpc-service)
-    - [Session Management](#session-management)
-    - [Pin Map Integration](#pin-map-integration)
-  - [Step-by-Step Implementation](#step-by-step-implementation)
-    - [1. Define Your gRPC Service](#1-define-your-grpc-service)
-    - [2. Implement Initialization Behavior](#2-implement-initialization-behavior)
-    - [3. Host and Register gRPC Service](#3-host-and-register-grpc-service)
-    - [4. Generate Client Stubs](#4-generate-client-stubs)
-    - [5. Integrate with Pin Map](#5-integrate-with-pin-map)
-    - [6. Reserve and Initialize Session in Plugin](#6-reserve-and-initialize-session-in-plugin)
-    - [7. Perform Operations](#7-perform-operations)
-    - [8. Unreserve the Session](#8-unreserve-the-session)
-  - [Session Initialization Behaviors](#session-initialization-behaviors)
+  - [Step-by-Step Implementation of Arbitrary (non-instrument) Session Sharing among measurement plugins](#step-by-step-implementation-of-arbitrary-non-instrument-session-sharing-among-measurement-plugins)
+    - [Server-side](#server-side)
+      - [1. Define Your gRPC Service](#1-define-your-grpc-service)
+      - [2. Generate Python Stubs.](#2-generate-python-stubs)
+      - [2. Implement Initialization Behavior](#2-implement-initialization-behavior)
+      - [3. Host and Register gRPC Service](#3-host-and-register-grpc-service)
 
 ## Overview
 
-This repository demonstrates a method for exposing **arbitrary functions** (e.g., file I/O, database operations) as gRPC services, managing sessions using **NI's Session Management Service**, and enabling **session sharing** between measurement plugins.
+This repository serves as a **reference implementation and guide** for securely sharing **arbitrary (non-instrument) sessions** with the help of **NI's Session Management and Discovery Services** in **Python**.
 
-Python examples covers:
+It demonstrates how to:
 
-- Creating a gRPC service for custom logic
-- Initializing and managing sessions
-- Registering the service with Discovery Service
-- Integrating with measurement plugins via Pin Map
-- Sharing sessions with multiple clients
+- Define and implement **custom gRPC services** that expose arbitrary functionality such as **file I/O**, **database access**, or other non-instrument tasks.
+- Integrate with **NI's Session Management Service** to enable **controlled shared access** to resources.
+- Support **session sharing** across multiple measurement plug-ins using different **session initialization behavior**.
+- Register your services with the **NI Discovery Service**
+- Create the client for the implemented server.
+- Use the client in measurement plug-ins to interact with the arbitrary functions' server.
+
+By following this implementation, developers can learn how to:
+
+- Design session-shareable services.
+- Leverage NI's services for **better session handling**.
+- Build systems where sessions are safely shared and managed across multiple measurement plug-ins.
+
+## Project Structure
+
+```txt
+arbitrary-session-management
+|-- src/
+|   |-- server/                        gRPC server implementation for session management and logging
+|   |-- client/                        Example client code for interacting with the server
+|   |-- examples/
+│       |-- nidcpower_measurement_with_logger/   Example: DCPower measurement with logging
+│       |-- nidmm_measurement_with_logger/       Example: DMM measurement with logging
+|       |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
+|       |-- pinmap/                              Pinmap for the measurement plugins and TestStand sequence
+|-- README.md
+|-- ...
+```
+
+- **server/**: Contains the implementation of the gRPC server and session management logic.
+- **client/**: Contains example client code and usage patterns (see [client/README.md](client/README.md) for details).
+- **examples/**: Contains measurement plugin examples that demonstrate session sharing and logging integration.
+
+## Required Software
+
+- [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
+- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
+- [NI TestStand 2021 SP1 or later](https://www.ni.com/en/support/downloads/software-products/download.teststand.html?srsltid=AfmBOoo_2adp0yHttIHxht7_1p04xsEByXulfCtGh8yQi01DZ-yNxZFo#445937)
+- [VS Code](https://code.visualstudio.com/download) (Optional)
+
+## Quick Start
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/ni/arbitrary-session-management.git
+   ```
+
+2. Open the repository in VSCode or your preferred editor.
+
+3. Follow the README instructions in each directory in this order:
+
+   ```text
+   1. server
+   2. client
+   3. examples/nidcpower_measurement_with_logger
+   4. examples/nidmm_measurement_with_logger
+   ```
+
+4. Run the server and examples as described in their respective READMEs.
 
 ## Getting Started
 
-To begin with:
+For a detailed setup and implementation guide, see the [step-by-step implementation section](#step-by-step-implementation-of-arbitrary-non-instrument-session-sharing-among-measurement-plugins) below.
 
-1. Clone this repository with the following command.
+This document covers:
 
-```bash
-git clone https://github.com/ni/arbitrary-session-management.git
-```
+- Implementing the server-side
+- Implementing the client-side
+- Using the client within measurement plugins to demonstrate session sharing
 
-2. Follow the Step-by-Step for detailed setup instructions.
+## Step-by-Step Implementation of Arbitrary (non-instrument) Session Sharing among measurement plugins
 
-3. Run the examples in Python.
+### Server-side
 
-## Key Concepts
-
-### gRPC Service
-
-The user defines arbitrary functionality in `.proto` files and implements them as gRPC services. Each service should support:
-
-- `InitializeSession`
-- `DestroySession`
-- Custom APIs (e.g., `ReadFile`, `WriteFile`)
-
-### Session Management
-
-Sessions are managed using the **InitializationBehavior** enum (similar to NI gRPC Device Server) and registered with **Session Management Service**.
-
-### Pin Map Integration
-
-Measurement plugins must define a **custom instrument** in the pin map to interact with the gRPC service.
-
-## Step-by-Step Implementation
-
-### 1. Define Your gRPC Service
+#### 1. Define Your gRPC Service
 
 Create `.proto` definitions for your service APIs:
+
+A sample proto file for logging measurement data in JSON format is available under `server` directory.
 
 ```proto
 service JsonLogger {
@@ -78,8 +111,11 @@ service JsonLogger {
   rpc CloseFile(CloseFileRequest) returns (CloseFileResponse);
 }
 ```
+The thumb-rule is that it should have 
 
-### 2. Implement Initialization Behavior
+#### 2. Generate Python Stubs.
+
+#### 2. Implement Initialization Behavior
 
 In the gRPC server, manage sessions based on `InitializationBehavior`. For example, the `UNSPECIFIED` behavior in Python:
 
@@ -89,64 +125,10 @@ if request.initialization_behavior == UNSPECIFIED:
   # Otherwise, create a new one and store it
 ```
 
-### 3. Host and Register gRPC Service
+#### 3. Host and Register gRPC Service
 
 Start your service and register it with the **NI Discovery Service**:
 
 ```python
 discovery_client.register_service(service_info, ServiceLocation("localhost", port, ""))
 ```
-
-### 4. Generate Client Stubs
-
-Use `protoc` to generate client stubs for Python.
-
-```cmd
-poetry run python -m grpc_tools.protoc --proto_path=. --python_out=stubs --grpc_python_out=stubs --mypy_out=stubs --mypy_grpc_out=stubs json_logger.proto
-```
-
-Use these to build session constructors and client interfaces.
-
-### 5. Integrate with Pin Map
-
-Define a **custom instrument** in the pin map for the gRPC service.
-
-```json
-{
-  "instrument_type_id": "FileLogger",
-}
-```
-
-### 6. Reserve and Initialize Session in Plugin
-
-Use existing session management APIs:
-
-```python
-with context.reserve_session(resource_name) as reservation:
-  with reservation.initialize_session(session_constructor, instrument_type_id) as session:
-    session.WriteFile(content="data")
-```
-
-### 7. Perform Operations
-
-Invoke custom gRPC APIs using the shared session.
-
-### 8. Unreserve the Session
-
-Always unreserve the session post-use:
-
-```python
-reservation.unreserve()
-```
-
-## Session Initialization Behaviors
-
-| Behavior | Description |
-|----------|-------------|
-| `AUTO` | Attach to an existing session or initialize a new one |
-| `INITIALIZE_SERVER_SESSION` | Always create a new session |
-| `ATTACH_TO_SERVER_SESSION` | Attach to an existing named session |
-| `INITIALIZE_SESSION_THEN_DETACH` | Create a session and detach for reuse |
-| `ATTACH_TO_SESSION_THEN_CLOSE` | Attach temporarily and auto-close on release |
-
-These behaviors must be implemented server-side by the gRPC service.
