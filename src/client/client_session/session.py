@@ -41,12 +41,15 @@ _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
     SessionInitializationBehavior.INITIALIZE_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SessionInitializationBehavior.ATTACH_TO_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     # This behavior is not supported by the server, so it is mapped to the server's NEW behavior.
-    # The JsonLoggerClient's __exit__ method handles the desired close behavior to achieve session sharing as needed.
+    # The JsonLoggerClient's __exit__ method handles the desired close behavior
+    # to achieve session sharing as needed.
     SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
-    # This behavior is not supported by the server, so it is mapped to the server's NEW behavior.
-    # The JsonLoggerClient's __exit__ method handles the desired close behavior to achieve session sharing as needed.
+    # This behavior is not supported by the server, so it is mapped to the server's
+    # ATTACH_TO_EXISTING behavior. The JsonLoggerClient's __exit__ method handles
+    # the desired close behavio to achieve session sharing as needed.
     SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
 }
+
 
 class JsonLoggerClient:
     """Client for the JSON Logger."""
@@ -80,11 +83,9 @@ class JsonLoggerClient:
             logging.error(f"Error while initializing the file session: {error}", exc_info=True)
             raise
 
-    # This method is used to allow the client to be used as a context manager.
-    # It allows the client to be used in a with statement, which will automatically
-    # close the file session when the with block is exited.
-    # This is useful for ensuring that resources are cleaned up properly. 
-    # It is recommended to use as context manager.
+    # This method is used to allow the client to be used as a context manager (with statement).
+    # which will automatically close the file session when the with block is exited.
+    # This is useful for ensuring that resources are cleaned up properly.
     def __enter__(self) -> JsonLoggerClient:
         """Enter the context manager and return the JsonLoggerClient."""
         return self

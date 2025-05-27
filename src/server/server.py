@@ -36,9 +36,8 @@ F = TypeVar("F", bound=Callable[..., Any])
 def get_service_config(file_name: str = "JsonLogger.serviceconfig") -> dict[str, Any]:
     """Get the service configurations from a .serviceconfig file.
 
-    A .serviceconfig file is a better approach for defining service configurations 
-    than hardcoding them in the code. This method is beneficial when deploying 
-    the server statically, similar to the deployment of measurement plugins.
+    A .serviceconfig file is a better approach for defining service configurations
+    than hardcoding them in the code.
 
     Args:
         file_name: Name of .serviceconfig file.
