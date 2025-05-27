@@ -36,6 +36,10 @@ F = TypeVar("F", bound=Callable[..., Any])
 def get_service_config(file_name: str = "JsonLogger.serviceconfig") -> dict[str, Any]:
     """Get the service configurations from a .serviceconfig file.
 
+    A .serviceconfig file is a better approach for defining service configurations 
+    than hardcoding them in the code. This method is beneficial when deploying 
+    the server statically, similar to the deployment of measurement plugins.
+
     Args:
         file_name: Name of .serviceconfig file.
 
@@ -412,6 +416,9 @@ def start_server() -> None:
     port = str(server.add_insecure_port(f"{host}:0"))
     server.start()
 
+    # The JSON Logger Service is registered with the Discovery Service.
+    # This allows clients to dynamically retrieve the service's port information,
+    # enabling them to connect without hardcoding the port.
     discovery_client = DiscoveryClient()
     service_location = ServiceLocation(host, f"{port}", "")
     service_config = get_service_config()

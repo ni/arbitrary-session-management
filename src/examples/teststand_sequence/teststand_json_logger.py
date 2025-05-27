@@ -3,7 +3,7 @@
 from typing import Any
 
 from _helpers import TestStandSupport
-from client_session.session_constructor import JsonLoggerSessionConstructor
+from client_session.session_constructor import JsonLoggerSessionConstructor, JSON_LOGGER_INSTRUMENT_TYPE
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
 from ni_measurement_plugin_sdk_service.grpc.channelpool import GrpcChannelPool
 from ni_measurement_plugin_sdk_service.session_management import (
@@ -11,8 +11,6 @@ from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
     SessionManagementClient,
 )
-
-JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
 
 
 def create_file_sessions(sequence_context: Any) -> None:
@@ -41,7 +39,7 @@ def create_file_sessions(sequence_context: Any) -> None:
             pin_map_context,
             instrument_type_id=JSON_LOGGER_INSTRUMENT_TYPE,
         ) as reservation:
-            # Initialize file sessions using the constructor in JsonLoggerService.
+            # Open file sessions using the constructor in JsonLoggerService.
             with reservation.initialize_sessions(
                 session_constructor=session_constructor,
                 instrument_type_id=JSON_LOGGER_INSTRUMENT_TYPE,
@@ -72,7 +70,7 @@ def destroy_file_sessions() -> None:
             if not reservation.session_info:
                 return
 
-            # Attach and close file sessions in JsonLoggerService.
+            # Attach to existing file sessions and close file sessions in JsonLoggerService.
             with reservation.initialize_sessions(
                 session_constructor=session_constructor,
                 instrument_type_id=JSON_LOGGER_INSTRUMENT_TYPE,

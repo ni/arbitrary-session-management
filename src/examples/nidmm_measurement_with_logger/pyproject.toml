@@ -10,9 +10,9 @@ requires-python = ">=3.9,<4.0"
 
 [tool.poetry.dependencies]
 ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-client-session = { path = "../../client" }
 nidmm = ">=1.4.9,<2.0.0"
-
+# The client-session is the package that provides the client interface for the Json Logger to this measurement.
+client-session = { path = "../../client" }
 
 [tool.poetry.group.dev.dependencies]
 ni-python-styleguide = "^0.4.6"

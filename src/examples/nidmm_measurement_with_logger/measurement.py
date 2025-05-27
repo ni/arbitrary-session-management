@@ -11,6 +11,8 @@ import click
 import ni_measurement_plugin_sdk_service as nims
 import nidmm
 from _helpers import configure_logging, verbosity_option
+# Import the JSON Logger Client Session Constructor and Instrument Type
+# This will be passed to the NI Session Management Service APIs to open the file and log data.
 from client_session.session_constructor import (
     JsonLoggerSessionConstructor,
     JSON_LOGGER_INSTRUMENT_TYPE,
@@ -52,6 +54,7 @@ class Function(Enum):
     "DMMPin",
     instrument_type=nims.session_management.INSTRUMENT_TYPE_NI_DMM,
 )
+# Define the JSON Logger Pin as an IOResource configuration.
 @measurement_service.configuration(
     "json_logger_pin",
     nims.DataType.IOResource,

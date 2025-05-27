@@ -27,18 +27,24 @@ from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
 )
 
+# These constants help to get the JSON Logger Service Location from the Discovery Service.
+# These values must match those defined in the .serviceconfig file of the JsonLogger server.
 GRPC_SERVICE_INTERFACE_NAME = "ni.logger.v1.json"
 GRPC_SERVICE_CLASS = "ni.logger.JSONLogService"
 
+# Although the NI Session Management Service defines five initialization behaviors,
+# the JsonLogger server implements only three. This mapping enables the client to achieve
+# all desired behaviors using the available server-side three options,
+# ensuring TestStand functionalities are accomplished.
 _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
     SessionInitializationBehavior.AUTO: SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
     SessionInitializationBehavior.INITIALIZE_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SessionInitializationBehavior.ATTACH_TO_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
-    # Server does not support this behavior, but we keep it for TestStand functionalities.
-    # And hence points to INITIALIZE_NEW.
+    # This behavior is not supported by the server, so it is mapped to the server's NEW behavior.
+    # The JsonLoggerClient's __exit__ method handles the desired close behavior to achieve session sharing as needed.
     SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
-    # Server does not support this behavior, but we keep it for TestStand functionalities.
-    # And hence points to ATTACH_TO_EXISTING.
+    # This behavior is not supported by the server, so it is mapped to the server's NEW behavior.
+    # The JsonLoggerClient's __exit__ method handles the desired close behavior to achieve session sharing as needed.
     SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
 }
 
@@ -74,6 +80,11 @@ class JsonLoggerClient:
             logging.error(f"Error while initializing the file session: {error}", exc_info=True)
             raise
 
+    # This method is used to allow the client to be used as a context manager.
+    # It allows the client to be used in a with statement, which will automatically
+    # close the file session when the with block is exited.
+    # This is useful for ensuring that resources are cleaned up properly. 
+    # It is recommended to use as context manager.
     def __enter__(self) -> JsonLoggerClient:
         """Enter the context manager and return the JsonLoggerClient."""
         return self
@@ -151,7 +162,9 @@ class JsonLoggerClient:
         """Log data to the file.
 
         Args:
-            content: The content to log.
+            measurement_name: The name of the measurement.
+            measurement_configurations: A dictionary containing the measurement configurations.
+            measurement_outputs: A dictionary containing the measurement outputs.
 
         Returns:
             The empty response from the server if the request is successful.
@@ -188,13 +201,13 @@ class JsonLoggerClient:
             raise
 
     def _get_stub(self) -> JsonLoggerStub:
-        """Get the stub for the FileLoggerService.
+        """Get the stub for the JsonLoggerService.
 
         This method creates a new stub if one does not already exist.
-        It uses the DiscoveryClient to get the File logger service location.
+        It uses the DiscoveryClient to get the JSON logger service location.
 
         Returns:
-            The stub for the FileLoggerService.
+            The stub for the JsonLoggerService.
         """
         with self._stub_lock:
             if self._stub is None:

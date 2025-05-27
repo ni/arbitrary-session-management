@@ -6,7 +6,8 @@ from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
 )
 
-# Use the same instrument type ID configured in PinMap. # Expected to be imported and used by measurement plugins.
+# Use the same instrument type ID configured in PinMap. 
+# Expected to be imported and used by measurement plugins.
 JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
 
 
