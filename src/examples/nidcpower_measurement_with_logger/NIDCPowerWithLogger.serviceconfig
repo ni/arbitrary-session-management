@@ -1,0 +1,20 @@
+{
+  "services": [
+    {
+      "displayName": "NI-DCPower With Logger",
+      "version": "1.0.0",
+      "serviceClass": "ni.examples.NIDCPowerSourceDCVoltageWithLogger",
+      "descriptionUrl": "",
+      "providedInterfaces": [
+        "ni.measurementlink.measurement.v1.MeasurementService",
+        "ni.measurementlink.measurement.v2.MeasurementService"
+      ],
+      "path": "start.bat",
+      "annotations": {
+        "ni/service.description": "Measurement plug-in example that sources and measures a DC voltage with an NI SMU and logs measurement data to a file using JSON Logger.",
+        "ni/service.collection": "NI.Examples",
+        "ni/service.tags": []
+      }
+    }
+  ]
+}
