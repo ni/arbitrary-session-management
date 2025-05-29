@@ -1,6 +1,6 @@
-# Arbitrary Session Sharing - Reference Guide and Example
+# Arbitrary Session Management - Reference Guide and Example
 
-- [Arbitrary Session Sharing - Reference Guide and Example](#arbitrary-session-sharing---reference-guide-and-example)
+- [Arbitrary Session Management - Reference Guide and Example](#arbitrary-session-management---reference-guide-and-example)
   - [Overview](#overview)
   - [Project Structure](#project-structure)
   - [Required Software](#required-software)
@@ -20,7 +20,7 @@
       - [Adapting for Your Own Use Case](#adapting-for-your-own-use-case)
       - [References](#references)
     - [Implement Server-Side](#implement-server-side)
-      - [Adapting Your Own Case](#adapting-your-own-case)
+      - [Adapting Your Own Use Case](#adapting-your-own-use-case)
 
 ## Overview
 
@@ -30,20 +30,20 @@ It demonstrates how to:
 
 - Define and implement **custom gRPC services** that expose arbitrary functionality such as **file I/O**, **database access**, or other non-instrument tasks.
 - Integrate with **NI's Session Management Service** to enable **controlled shared access** to resources.
-- Support **session sharing** across multiple measurement plug-ins using different **session initialization behavior**.
-- Register your services with the **NI Discovery Service** to enable clients to dynamically connect with the server.
-- Create the client for the implemented server.
-- Use the client in measurement plug-ins to interact with the arbitrary functions' server.
+- Support **session sharing** across multiple measurement plugins using different **session initialization behavior**.
+- Register your services with the **NI Discovery Service** to enable clients to dynamically connect to the server.
+- Create a client for the implemented server.
+- Use the client in measurement plugins to interact with the server.
 
 By following this implementation, users can learn how to:
 
 - Design session-shareable services.
 - Leverage NI's services for **better session handling**.
-- Build systems where sessions are safely shared and managed across multiple measurement plug-ins.
+- Build systems where sessions are safely shared and managed across multiple measurement plugins.
 
 ## Project Structure
 
-```txt
+```text
 arbitrary-session-management
 |-- src/
 |   |-- server/                        gRPC server implementation for session management and logging
@@ -67,7 +67,7 @@ arbitrary-session-management
 
 ## Quick Start
 
-1. Clone the repository:
+1. Clone the repository using the following command:
 
    ```bash
    git clone https://github.com/ni/arbitrary-session-management.git
@@ -75,7 +75,7 @@ arbitrary-session-management
 
 2. Open the repository in VSCode or your preferred editor.
 
-3. Follow the README instructions in each of the following directories, in order:
+3. Follow the README instructions in each of the following directories, in the following order:
 
    ```text
    1. server
@@ -87,12 +87,12 @@ arbitrary-session-management
 
 4. Start the server and run the example workflows as described in their respective READMEs.
 
-When you run the server and examples, you'll observe that the TestStand sequence logs data to the same file. In the setup phase, the file is opened, and during the main sequence, the same file session is shared and used across both measurement steps.  
+When you run the server and examples, you'll observe that the TestStand sequence logs data to the same file. In the setup phase, the file is opened, and in the main sequence, the same file session is shared and used across both measurement steps.  
 This demonstrates non-instrument session sharing among measurement plugins.
 
 ## Step-by-Step Implementation Guide for Arbitrary Session Management
 
-The following steps provide a detailed guide for implementing session sharing for arbitrary (non-instrument) resources-such as files, databases, or other custom resources-across measurement plugins. This approach uses gRPC for communication.
+The following steps provide a detailed guide for implementing session sharing for arbitrary (non-instrument) resources such as files, databases, or other custom resources across measurement plugins. This approach uses gRPC for communication.
 
 These steps will guide you to:
 
@@ -298,7 +298,7 @@ The structure described above is flexible and can be adapted to manage any resou
 
 4. **Implement the Close API.**
 
-    ```txt
+    ```text
     Receive a request containing a session
 
     Try to remove the session from the session map
@@ -368,7 +368,7 @@ The structure described above is flexible and can be adapted to manage any resou
 
     The [example implementation](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py) in this repository demonstrates this logic in detail.
 
-#### Adapting Your Own Case
+#### Adapting Your Own Use Case
 
 The core logic for the initialize API should remain consistent, especially regarding how session initialization behavior is handled. You can adapt or extend the implementation details to fit your specific use case, but the session initialization behavior logic should not be altered. For other arbitrary APIs, you are free to modify or extend their implementation as needed to suit your requirements in `server.py`.
 
