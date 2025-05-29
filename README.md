@@ -24,6 +24,11 @@
     - [Implement Client-Side](#implement-client-side)
       - [Packaging the Client for Reuse](#packaging-the-client-for-reuse)
       - [Adapting Your Use Case](#adapting-your-use-case)
+    - [Integrate Client with Measurement Plugins](#integrate-client-with-measurement-plugins)
+      - [Reference](#reference)
+      - [Steps to Integrate](#steps-to-integrate)
+      - [TestStand Integration](#teststand-integration)
+  - [Conclusion](#conclusion)
 
 ## Overview
 
@@ -396,13 +401,7 @@ The client class:
 
     Create a Python file which is where the client side implementation logic is going to be added. You can name as per your project. Here, we go with `session.py`
 
-2. **Import the required modules**
-
-    ```py
-    import <module_name>
-    ```
-
-3. **Define the Session Initialization Behavior Mapping**
+2. **Define the Session Initialization Behavior Mapping**
 
     The client supports five session initialization behaviors defined by NI. However, the server implements only three. The client maps unsupported behaviors to the closest supported ones and handles the rest of the logic internally.
 
@@ -512,3 +511,106 @@ At a minimum, your client implementation should include:
 - `session_constructor.py`: Provides a callable interface for plugins to create sessions.
 
 You are free to extend the client with additional operations or APIs as needed for your specific use case. The core session management logic should remain consistent to accomplish session sharing.
+
+### Integrate Client with Measurement Plugins
+
+This section describes how to use your session-managed client within a measurement plugin to enable resource sharing across multiple measurement steps.
+
+#### Reference
+
+- [Measurement Plugin Python](https://www.ni.com/docs/en-US/bundle/measurementplugins/page/python-measurements.html)
+- [Measurement Plugin Python - Examples](https://github.com/ni/measurement-plugin-python/tree/main/examples)
+- [NI DCPower Measurement With Logger Example](src/examples/nidcpower_measurement_with_logger)
+- [NI DMM Measurement With Logger Example](src/examples/nidmm_measurement_with_logger)
+
+#### Steps to Integrate
+
+1. **Install the Client Package**  
+  Ensure your measurement plugin environment has the client package installed (see [Packaging the Client for Reuse](#packaging-the-client-for-reuse)) and [pyproject.toml](src/examples/nidcpower_measurement_with_logger/pyproject.toml).
+
+2. **Import the Client Constructor**  
+  Import the session constructor and instrument type constant into your plugin's `measurement.py`.
+
+3. **Configure the Resource Pin**  
+  Define a configuration parameter for your resource (e.g., a logger pin) using the instrument type constant.
+
+4. **Reserve and Initialize the Session**  
+  Use the NI Session Management Service to reserve the resource and initialize the session using your client constructor.
+
+5. **Use the Session in Measurement Logic**  
+  Call arbitrary functions (e.g., log data) using the session within your measurement step.
+
+6. **Cleanup**  
+  The session is automatically cleaned up based on the initialization behavior and context management.
+
+```py
+# Import the client constructor and instrument type constant.
+from client_session.session_constructor import (
+    JSON_LOGGER_INSTRUMENT_TYPE,
+    JsonLoggerSessionConstructor,
+)
+
+
+# Define the configuration.
+@measurement_service.configuration(
+    "json_logger_pin",
+    nims.DataType.IOResource,
+    "LoggerPin",
+    instrument_type=JSON_LOGGER_INSTRUMENT_TYPE,
+)
+# Other configurations and outputs
+def measure(json_logger_pin: str):
+
+  # Reserve the JSON Logger Pin using NI Session Management Service API reserve_session.
+  with measurement_service.context.reserve_session(json_logger_pin) as file_session_reservation:
+
+        # Create the client constructor object with initialization behavior. # Defaults to AUTO initialization behavior.
+        file_session_constructor = JsonLoggerSessionConstructor()
+
+        # Initialize the session by passing the constructor and the instrument type constant
+        with file_session_reservation.initialize_session(
+            file_session_constructor, JSON_LOGGER_INSTRUMENT_TYPE
+        ) as file_session_info:
+
+            # Get the session ID
+            file_session = file_session_info.session
+
+            # Use the session ID to call the core arbitrary function.
+            file_session.log_data()
+```
+
+7. **Update the PinMap**
+
+- Define a custom instrument representing your resource (e.g., a file) in the PinMap.
+- Use an absolute file path for the resource to ensure clarity and avoid ambiguity.
+- Create a DUTPin and connect it to the custom instrument.
+
+  When the measurement plug-in executes, data will be logged to the file specified in the PinMap.
+
+**Note:**  
+This solution currently supports pin-centric workflow. Extending support to non-pin-centric (IO Resource) workflow via the IO Discovery Service is not planned at this time due to the following considerations:
+
+- **Manual Configuration Overhead:** The IO Discovery Service depends on a JSON configuration file, typically managed through **NI MAX**, to describe available hardware and instruments. Integrating the logger service would require manual updates to this file, increasing setup complexity.
+- **Pin Map Context Limitations:** When a pin map is active and used by a measurement plug-in, the session management service bypasses the IO Discovery Service. This restricts session reservation for services like the JSON Logger.
+
+As a result, pin-centric workflow is the recommended and supported approach for session-managed resources.
+
+---
+
+#### TestStand Integration
+
+For TestStand sequences, implement a helper module (see [teststand_json_logger.py](src/examples/teststand_sequence/teststand_json_logger.py)) to manage session initialization and cleanup.
+
+To enable session sharing across multiple measurement plug-ins within a sequence:
+
+- In the **setup** section, initialize the session using `INITIALIZE_SESSION_THEN_DETACH`.
+- In the **main** section, measurement steps will share the same session.
+- In the **cleanup** section, close the session using `ATTACH_SESSION_THEN_CLOSE`.
+
+This approach ensures consistent session sharing and proper resource cleanup throughout the TestStand sequence.
+
+## Conclusion
+
+This guide provides a comprehensive reference for implementing arbitrary session management using NI's Session Management Service and gRPC in Python. By following the outlined steps, you can design and deploy, session-shareable services for non-instrument resources such as files, databases, or custom APIs. The provided patterns ensure integration with measurement plugins and TestStand sequences.
+
+For further details, consult the example implementations in this repository and refer to the official NI documentation linked throughout this guide.
