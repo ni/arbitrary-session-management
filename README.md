@@ -15,8 +15,10 @@
       - [Steps to Implement the Server](#steps-to-implement-the-server)
       - [Adapting for Your Own Use Case](#adapting-for-your-own-use-case-1)
     - [Implement Client-Side](#implement-client-side)
+      - [Reference](#reference-1)
+      - [Steps to Implement the Client](#steps-to-implement-the-client)
       - [Packaging the Client for Reuse](#packaging-the-client-for-reuse)
-      - [Adapting Your Use Case](#adapting-your-use-case)
+      - [Adapting for Your Use Case](#adapting-for-your-use-case)
     - [Integrate Client with Measurement Plugins](#integrate-client-with-measurement-plugins)
       - [References](#references-1)
       - [Steps to Integrate](#steps-to-integrate)
@@ -88,7 +90,7 @@ arbitrary-session-management
 
 4. Start the server and run the example workflows as described in their respective `README.md`.
 
-When you run the server and examples, you'll observe that the TestStand sequence logs data to the same log file. In the setup phase, the file is opened, and in the main phase, the same file session is shared and used across both measurement steps. This demonstrates non-instrument session sharing among measurement plugins.
+When you run the server and examples, you'll observe that the TestStand sequence logs data to the same log file. In the setup section, the log file is opened, and in the main section, the same file session is shared and used across both measurement steps. This demonstrates non-instrument session sharing among measurement plugins.
 
 ## Step-by-Step Implementation Guide for Arbitrary Session Management
 
@@ -306,15 +308,19 @@ The client class:
 - Do the arbitrary functionalities.
 - Closes the session when appropriate, based on the initialization behavior.
 
----
+#### Reference
+
+[gRPC Python Client](https://www.ni.com/docs/en-US/bundle/measurementplugins/page/discovery-service.html?srsltid=AfmBOoptOWAW6hUOWItvsyXArJ1R7M5h94VZDonRlJzPGUvL8nQe5TWd)
+
+#### Steps to Implement the Client
 
 1. **Create a Python file**
 
     Create a Python file which is where the client side implementation logic is going to be added. You can name as per your project. Here, we go with `session.py`
 
-2. **Define the Session Initialization Behavior Mapping**
+2. **Define the [Session Initialization Behavior Mapping](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L39)**
 
-    The client supports five session initialization behaviors defined by NI. However, the server implements only three. The client maps unsupported behaviors to the closest supported ones and handles the rest of the logic internally.
+    The client supports five session initialization behaviors defined by NI Session Management Service. However, the server implements only three. The client maps unsupported behaviors to the closest supported ones and handles the rest of the logic internally.
 
     ```python
     _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
@@ -334,49 +340,50 @@ The client class:
     | `INITIALIZE_SESSION_THEN_DETACH` | `INITIALIZE_NEW` | Server starts a new session; client handles detachment logic. |
     | `ATTACH_TO_SESSION_THEN_CLOSE` | `ATTACH_TO_EXISTING` | Server attaches; client ensures close RPC call is made after use. |
 
-    The client’s `__exit__` method ensures correct cleanup behavior for the mapped cases.
+    The client's `__exit__` method ensures correct cleanup behavior for the mapped cases.
 
 3. **Define Lifecycle Methods:** `__init__`, `__enter__`, `__exit__`
 
-    a. `__init__`
+    a. [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L57)
 
     - Initializes the client.
     - Uses the Discovery Service to locate the gRPC server.
     - Call the Initialize RPC call and get the response from server.
     - Stores the session name and whether a new session was created.
 
-    b. `__enter__`
+    b. [`__enter__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L89)
 
     - Enables the client to be used with a `with` statement.
     - Returns the client instance for use inside the block.
 
-    c. `__exit__`
+    c. [`__exit__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L93)
 
     - Automatically called when exiting a `with` block.
     - Handles session cleanup based on the initialization behavior:
-    - Closes the session if it was newly created or if the behavior requires it.
-    - Leaves the session open if it was attached or detached intentionally.
+      - Closes the session if it was newly created and if the behavior is AUTO.
+      - Closes the session if the behavior is INITIALIZE_SERVER_SESSION or ATTACH_TO_SESSION_THEN_CLOSE.
+      - Leaves the session open for other behaviors.
 
     Using the client as a context manager ensures proper resource cleanup and avoids session leaks.
 
-4. **Implement the other arbitrary function calls**
+4. **Implement the Other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L157)**
 
-   - Construct and send the request to the server
-   - Wait for and process the server's response
-   - Handle any errors or exceptions as needed
+   - Construct and send the request to the server.
+   - Wait for and process the server's response.
+   - Handle any errors or exceptions as needed.
   
-5. **Define Session Constructor**
+5. **Define [Session Constructor](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py)**
 
     After creating the `client.py` or `session.py`, now, create client constructor. To streamline the integration of the client with measurement plugins, a helper class should be defined. This class encapsulates the logic for constructing a client using session information passed from the measurement plugin.
 
-    - Define a constant. This should match the instrument type ID configured in your PinMaP.
+    - Define an [instrument type constant](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py#L11). This should match the instrument type ID configured in your PinMaP.
 
       ```python
       JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
       ```
 
     - Define constructor methods. The constructor class should contain the following methods:
-      - `__init__`: Initializes the constructor with a specific session initialization behavior.
+      - [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py#L17): Initializes the constructor with a specific session initialization behavior.
 
         **Parameters:**
         initialization_behavior: Specifies how the session should be initialized. Defaults to SessionInitializationBehavior.AUTO.
@@ -384,7 +391,7 @@ The client class:
         **Purpose:**
         This allows the constructor to be configured once and reused across multiple plugins or measurement steps with consistent behavior.
 
-      - `__call__`: Makes the class instance callable like a function. It takes a SessionInformation object and returns a JsonLoggerClient.
+      - [`__call__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py#L31): Makes the class instance callable like a function. It takes a SessionInformation object and returns a JsonLoggerClient.
 
         **Parameters:**
         session_info: An object containing metadata about the session, including the resource name (here, the file path).
@@ -403,9 +410,13 @@ To enable reuse of the client across multiple projects or plugins, it is recomme
   - The `.proto` file used to define the gRPC service
   - The generated gRPC stubs
 
-- Including the `.proto` file and automating stub generation as part of the package ensures that the client remains self-contained and easy to maintain.
+- Run the following command to build a wheel file if needed. This wheel file can be installed in the Measurement Plugins project environment.
 
-#### Adapting Your Use Case
+  ```cmd
+  poetry build
+  ```
+
+#### Adapting for Your Use Case
 
 While packaging the client is optional, it is **highly recommended** for better modularity and reusability especially when integrating with multiple measurement plugins.
 
@@ -476,20 +487,20 @@ def measure(json_logger_pin: str):
             file_session_constructor, JSON_LOGGER_INSTRUMENT_TYPE
         ) as file_session_info:
 
-            # Get the session ID
+            # Get the session
             file_session = file_session_info.session
 
-            # Use the session ID to call the core arbitrary function.
+            # Use the session to call the core arbitrary function.
             file_session.log_data()
 ```
 
 7. **Update the PinMap**
 
-- Define a custom instrument representing your resource (e.g., a file) in the PinMap.
-- Use an absolute file path for the resource to ensure clarity and avoid ambiguity.
-- Create a DUTPin and connect it to the custom instrument.
+   - Define a custom instrument representing your resource (e.g., a file) in the PinMap.
+   - Use an absolute file path for the resource to ensure clarity and to avoid resource conflicts.
+   - Create a DUTPin and connect it to the custom instrument.
 
-  When the measurement plug-in executes, data will be logged to the file specified in the PinMap.
+  When the measurement plugin executes, data will be logged to the file specified in the PinMap.
 
 > [!Note]
 >
@@ -509,14 +520,14 @@ For TestStand sequences, implement a helper module (see [teststand_json_logger.p
 
 To enable session sharing across multiple measurement plug-ins within a sequence:
 
-- In the **setup** section, initialize the session using `INITIALIZE_SESSION_THEN_DETACH`.
+- In the **setup** section, initialize the session with the `INITIALIZE_SESSION_THEN_DETACH` behavior.
 - In the **main** section, measurement steps will share the same session.
-- In the **cleanup** section, close the session using `ATTACH_SESSION_THEN_CLOSE`.
+- In the **cleanup** section, close the session with the `ATTACH_SESSION_THEN_CLOSE` behavior.
 
 This approach ensures consistent session sharing and proper resource cleanup throughout the TestStand sequence.
 
 ## Conclusion
 
-This guide provides a comprehensive reference for implementing arbitrary session management using NI's Session Management Service and gRPC in Python. By following the outlined steps, you can design and deploy, session-shareable services for non-instrument resources such as files, databases, or custom APIs. The provided patterns ensure integration with measurement plugins.
+This guide provides a comprehensive reference for implementing arbitrary session management using NI's Session Management Service and gRPC in Python. By following the outlined steps, you can design session-shareable services for non-instrument resources such as files, databases, etc. The provided patterns ensure integration with measurement plugins.
 
 For further details, consult the example implementations in this repository and refer to the official NI documentation linked throughout this guide.
