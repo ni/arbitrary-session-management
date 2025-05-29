@@ -78,6 +78,6 @@ By default, this uses a physical instrument or a simulated instrument created in
     - Execute the sequence to observe shared logging behavior between two measurement plug-ins.
     - If the custom instrument's name isn't updated, the resulting log file (UpdateThisWithActualFilePath.ndjson) will be generated in the `server` directory.
 
-## Note
-
-Before executing the sequence, make sure the JSON Logger Service is running. The measurement plug-ins depend on this service for logging, and session sharing will fail if the service is not available.
+> [!Note]
+>
+> Before executing the sequence, make sure the JSON Logger Service is running. The measurement plug-ins depend on this service for logging, and session sharing will fail if the service is not available.
