@@ -1,18 +1,15 @@
 # Arbitrary Session Sharing - Reference Guide and Example
 
-## Table of Contents
-
 - [Arbitrary Session Sharing - Reference Guide and Example](#arbitrary-session-sharing---reference-guide-and-example)
-  - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Project Structure](#project-structure)
   - [Required Software](#required-software)
   - [Quick Start](#quick-start)
-  - [Step-by-Step Implementation Guide for Arbitrary (non-instrument) Functionalities - Shareable Session among Measurement Plugins](#step-by-step-implementation-guide-for-arbitrary-non-instrument-functionalities---shareable-session-among-measurement-plugins)
+  - [Step-by-Step Implementation Guide for Arbitrary Session Management](#step-by-step-implementation-guide-for-arbitrary-session-management)
     - [Define the Proto File for the Intended Arbitrary Functionalities](#define-the-proto-file-for-the-intended-arbitrary-functionalities)
       - [Why Use a Proto File?](#why-use-a-proto-file)
       - [Exposing Arbitrary Functionality](#exposing-arbitrary-functionality)
-      - [Required RPC Methods](#required-rpc-methods)
+      - [Define RPC Methods](#define-rpc-methods)
       - [1. `InitializeFile` - Create or Open the Resource](#1-initializefile---create-or-open-the-resource)
         - [Request - Must Include](#request---must-include)
         - [Response - Must Include](#response---must-include)
@@ -24,33 +21,21 @@
       - [References](#references)
     - [Implement Server-Side](#implement-server-side)
       - [Adapting Your Own Case](#adapting-your-own-case)
-    - [Implement Client-Side](#implement-client-side)
-  - [1. Create a Python file for client](#1-create-a-python-file-for-client)
-  - [3. Behavior Mapping](#3-behavior-mapping)
-  - [4. Discovering the gRPC Server](#4-discovering-the-grpc-server)
-  - [5. Implement the arbitrary functions](#5-implement-the-arbitrary-functions)
-  - [6. Closing the Session](#6-closing-the-session)
-  - [7. Using with Context Management (`with` statement)](#7-using-with-context-management-with-statement)
-  - [8. Adapting to Your Own Use Case](#8-adapting-to-your-own-use-case)
-    - [Customizing Measurement Logging](#customizing-measurement-logging)
-    - [Session Behavior Variants](#session-behavior-variants)
-    - [Packaging Your Client](#packaging-your-client)
-  - [9. Summary](#9-summary)
 
 ## Overview
 
-This repository serves as a **reference implementation and guide** for securely sharing **arbitrary (non-instrument) sessions** with the help of **NI's Session Management and Discovery Services** in **Python**.
+This repository serves as a **reference implementation and guide** for securely sharing **arbitrary (non-instrument) sessions** with the help of **NI's Session Management Service** in **Python**.
 
 It demonstrates how to:
 
 - Define and implement **custom gRPC services** that expose arbitrary functionality such as **file I/O**, **database access**, or other non-instrument tasks.
 - Integrate with **NI's Session Management Service** to enable **controlled shared access** to resources.
 - Support **session sharing** across multiple measurement plug-ins using different **session initialization behavior**.
-- Register your services with the **NI Discovery Service**
+- Register your services with the **NI Discovery Service** to enable clients to dynamically connect with the server.
 - Create the client for the implemented server.
 - Use the client in measurement plug-ins to interact with the arbitrary functions' server.
 
-By following this implementation, developers can learn how to:
+By following this implementation, users can learn how to:
 
 - Design session-shareable services.
 - Leverage NI's services for **better session handling**.
@@ -71,10 +56,6 @@ arbitrary-session-management
 |-- README.md
 |-- ...
 ```
-
-- **server/**: Contains the implementation of the gRPC server and session management logic.
-- **client/**: Contains example client code and usage patterns (see [client/README.md](client/README.md) for details).
-- **examples/**: Contains measurement plugin examples that demonstrate session sharing and logging integration.
 
 ## Required Software
 
@@ -109,13 +90,13 @@ arbitrary-session-management
 When you run the server and examples, you'll observe that the TestStand sequence logs data to the same file. In the setup phase, the file is opened, and during the main sequence, the same file session is shared and used across both measurement steps.  
 This demonstrates non-instrument session sharing among measurement plugins.
 
-## Step-by-Step Implementation Guide for Arbitrary (non-instrument) Functionalities - Shareable Session among Measurement Plugins
+## Step-by-Step Implementation Guide for Arbitrary Session Management
 
-The following steps provide a detailed guide to implementing session sharing for arbitrary (non-instrument) resources-such as files, databases, or other custom resources-across measurement plugins. This approach uses gRPC for communication.
+The following steps provide a detailed guide for implementing session sharing for arbitrary (non-instrument) resources-such as files, databases, or other custom resources-across measurement plugins. This approach uses gRPC for communication.
 
-These steps will help you:
+These steps will guide you to:
 
-- Define the proto file for the service
+- Define the proto file for the arbitrary functions
 - Implement the server-side logic
 - Implement the client-side logic
 - Use the client within measurement plugins to achieve non-instrument session sharing
@@ -140,7 +121,7 @@ The example shows how to expose arbitrary functionalities (such as file I/O) as 
 
 ---
 
-#### Required RPC Methods
+#### Define RPC Methods
 
 Your `.proto` file must define **two RPC methods** to manage the lifecycle of a session-managed resource:
 
@@ -212,10 +193,10 @@ This step bridges your `.proto` specification and your Python implementation.
 **To generate the stubs, run the following command from the directory containing your `.proto` file:**
 
 ```cmd
-poetry run python -m grpc_tools.protoc --proto_path=. --python_out=. --grpc_python_out=. --mypy_out=. --mypy_grpc_out=. json_logger.proto
+poetry run python -m grpc_tools.protoc --proto_path=. --python_out=. --grpc_python_out=. --mypy_out=. --mypy_grpc_out=. <proto_file_name>.proto
 ```
 
-This will generate the following files:
+This will generate the following files in the current working directory:
 
 ```text
 <proto_file_name>_pb2.py
@@ -230,15 +211,18 @@ By default, these files are created in the current directory. For better organiz
 2. Run the command below, replacing `<stubs_directory>` with your chosen directory name:
 
    ```cmd
-   poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> json_logger.proto
+   poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> <proto_file_path>
    ```
 
 3. Add an empty `__init__.py` file to the stubs directory to make it a Python package.
-4. Update your import statement in the generated stubs.
+4. Update your import statements in your component or implementation as needed. For reference:
 
-TODO: Attach links from Client and Server directory stubs
+   - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/server/stubs/json_logger_pb2_grpc.py#L6)
+   - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/server/stubs/json_logger_pb2_grpc.pyi#L26)
+   - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
+   - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
 
-Organizing your stubs in a separate directory is optional but recommended.
+    Organizing your stubs in a separate directory is optional but recommended.
 
 This completes the process of defining your proto file and generating the necessary Python stubs for your arbitrary functionalities.
 
@@ -266,6 +250,8 @@ The structure described above is flexible and can be adapted to manage any resou
 - [Python Quick Start with Protocol Buffers](https://protobuf.dev/getting-started/pythontutorial/)
 - [gRPC Python Documentation](https://grpc.io/docs/languages/python/basics/)
 
+---
+
 ### Implement Server-Side
 
 1. **Create a Python file for your server implementation**
@@ -274,13 +260,11 @@ The structure described above is flexible and can be adapted to manage any resou
 
 2. **Import the required modules**
 
-    Add the following imports at the top of your file. Each import is explained with a comment for clarity:
+    Add the following imports at the top of your file.
 
-    ```text
-    import required modules
+    ```py
+    import <module_name>
     ```
-
-    The single line comments explain why these imports are required. You are not strictly limited to these imports-add other modules and packages as needed for your implementation.
 
 3. **Implement the initialize API**
 
@@ -312,27 +296,23 @@ The structure described above is flexible and can be adapted to manage any resou
             -> Return NOT_FOUND error
     ```
 
-    The example implementation in this repository demonstrates this logic in detail.
-
-4. Implement the Close API.
+4. **Implement the Close API.**
 
     ```txt
     Receive a request containing a session
 
-    Look up the file path associated with the given session
-      -> If not found, return NOT_FOUND error
-
     Try to remove the session from the session map
 
     Check if the file is already closed
+      -> If no, close the file handle
+
       -> If yes, return NOT_FOUND error
 
-      -> If no, close the file handle
 
     Return a success response
     ```
 
-5. Implement the other Arbitrary function APIs
+5. **Implement the other Arbitrary function APIs**
 
     ```text
     Receive the request
@@ -340,7 +320,7 @@ The structure described above is flexible and can be adapted to manage any resou
     Return the response
     ```
 
-6. Implement the start server logic
+6. **Implement the start server logic**
 
     ```text
     Create an instance of the gRPC service implementation
@@ -361,15 +341,13 @@ The structure described above is flexible and can be adapted to manage any resou
 
     Register the service with the discovery service.
 
-    Host the server.
-
     When user ends the server:
       - Clean up any resources used by the service
       - Unregister the service from discovery
       - Stop the gRPC server gracefully and wait until it's fully terminated
     ```
 
-7. Registering with the Discovery Service is optional. If you use Discovery Service, clients can dynamically locate the server's port. Otherwise, the port number must be hardcoded in the client configuration.
+    Registering with the Discovery Service is optional. If you use Discovery Service, clients can dynamically locate the server's port. Otherwise, the port number must be hardcoded in the client configuration.
 
     Optionally, you can provide a .serviceconfig file to configure your service details. This file can be used to supply configuration information when registering your service with the Discovery Service.
 
@@ -388,6 +366,8 @@ The structure described above is flexible and can be adapted to manage any resou
     }
     ```
 
+    The [example implementation](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py) in this repository demonstrates this logic in detail.
+
 #### Adapting Your Own Case
 
 The core logic for the initialize API should remain consistent, especially regarding how session initialization behavior is handled. You can adapt or extend the implementation details to fit your specific use case, but the session initialization behavior logic should not be altered. For other arbitrary APIs, you are free to modify or extend their implementation as needed to suit your requirements in `server.py`.
@@ -397,125 +377,3 @@ Ensure that you include a `start.bat` script if you intend to use a `.servicecon
 With these files in place (`stubs`, `server.py`, optionally `.serviceconfig`, and optionally `start.bat`), you can reliably host your functionality as a managed service. This setup provides robust session management of arbitrary functions and enables seamless sharing of session references or objects across multiple measurement.
 
 ---
-
-### Implement Client-Side
-
-## 1. Create a Python file for client
-
-Create a Python file which is where the client side implementation logic is going to be added. You can name as per your project. Here, we go with `session.py`
-
-## 3. Behavior Mapping
-
-Since not all NI Session Management Service  behaviors are supported by the server, they are internally mapped.
-
-```text
-Behavior Mapping Logic:
-
-  AUTO -> SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED
-  INITIALIZE_SERVER_SESSION -> SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW
-  ATTACH_TO_SERVER_SESSION -> SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING
-  INITIALIZE_SESSION_THEN_DETACH -> SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW
-  ATTACH_TO_SESSION_THEN_CLOSE -> SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING
-```
-
----
-
-## 4. Discovering the gRPC Server
-
-```text
-When needing to make a gRPC call:
-  - Use the DiscoveryClient to resolve the server:
-      -> Provide the service interface name and class
-
-  - Open a gRPC channel to the resolved endpoint.
-
-  - Create a stub from the channel to communicate with the server.
-```
-
----
-
-## 5. Implement the arbitrary functions
-
-```text
-To log measurement data:
-  - Capture the current UTC timestamp.
-
-  - Construct a LogMeasurementData request with:
-      - session_name
-      - measurement_name
-      - timestamp
-      - measurement_configurations (key-value pairs)
-      - measurement_outputs (key-value pairs)
-
-  - Send the request using the gRPC stub.
-```
-
----
-
-## 6. Closing the Session
-
-```text
-To explicitly close the session:
-  - Create a CloseFile request with:
-      - session_name
-
-  - Send the request using the gRPC stub.
-```
-
----
-
-## 7. Using with Context Management (`with` statement)
-
-```text
-When using 'with JsonLoggerClient(...) as client':
-  - On entry:
-      -> Initialize and connect the session.
-
-  - On exit:
-      -> If the session was newly created or the behavior implies closure:
-          - Attempt to close the file session gracefully.
-```
-
-This ensures resource cleanup even in case of exceptions.
-
----
-
-## 8. Adapting to Your Own Use Case
-
-You can extend this client pattern to implement your own case.
-
-### Customizing Measurement Logging
-
-```text
-To log custom measurements:
-  - Subclass JsonLoggerClient
-
-  - Add wrapper methods like:
-      -> log_voltage_result(voltage: float)
-      -> log_test_outcome(test_id: str, status: str)
-
-  - Internally call log_data() with your specific key-value fields.
-```
-
-### Session Behavior Variants
-
-```text
-You can configure:
-  - Always creating a new session -> INITIALIZE_SERVER_SESSION
-  - Reattaching to existing logs -> ATTACH_TO_SERVER_SESSION
-  - Using AUTO to let the client choose based on state
-```
-
-### Packaging Your Client
-
-```text
-To reuse the client across projects:
-  - Package it as a Python module.
-  - Include the `.proto` and grpc stub generation as part of setup.
-```
-
----
-
-## 9. Summary
-
-This Python client offers a clean interface to connect, log, and manage structured JSON measurement sessions. It is built with NI MeasurementLink conventions and supports extension to suit diverse data logging needs.
