@@ -17,7 +17,7 @@
 
 ## Overview
 
-This repository serves as a **reference implementation and guide** for securely sharing **arbitrary (non-instrument) sessions** across Python Measurement Plugins with the help of **NI's Session Management Service**.
+This repository serves as a **reference implementation and guide** for sharing **arbitrary (non-instrument) sessions** across Python Measurement Plugins with the help of **NI's Session Management Service**.
 
 - TODO: Add workflow diagram
 
@@ -25,7 +25,7 @@ It demonstrates how to:
 
 - Define and implement **custom gRPC services** that expose arbitrary functionality such as **file I/O**, **database access**, or other non-instrument tasks.
 - Integrate with **NI's Session Management Service** to enable **controlled shared access** to resources.
-- Support **session sharing** across multiple measurement plugins using different **session initialization behavior**.
+- Support **session sharing** across multiple measurement plugins using different [session initialization behavior](https://github.com/ni/measurement-plugin-python/blob/main/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L458).
 - Register your services with the **NI Discovery Service** to enable clients to dynamically connect to the server.
 - Create a client for the implemented server.
 - Use the client in measurement plugins to interact with the server.
@@ -34,7 +34,7 @@ By following this implementation, users can learn how to:
 
 - Design session-shareable services.
 - Leverage NI's services for **better session handling**.
-- Build systems where sessions are safely shared and managed across multiple measurement plugins.
+- Build systems where sessions are shared and managed across multiple measurement plugins.
 
 ## Project Structure
 
@@ -197,7 +197,7 @@ The structure described above is flexible and can be adapted to manage any resou
 - You can rename the RPCs and modify the input/output fields to suit your specific resource.
 - The fundamental pattern-**initialize/acquire** and **close/release**-remains unchanged.
 - Beyond these core RPCs, you are free to define additional custom RPCs (such as `LogMeasurementData` in the example) to support any arbitrary functionality your application requires.
-- This design allows your resource to be safely and efficiently shared among multiple clients or plugins.
+- This design allows your resource to be efficiently shared among multiple clients or plugins.
 
 ---
 
