@@ -458,41 +458,41 @@ This section describes how to use your session-managed client within a measureme
 6. **Cleanup**  
   The session is automatically cleaned up based on the initialization behavior and context management.
 
-```py
-# Import the client constructor and instrument type constant.
-from client_session.session_constructor import (
-    JSON_LOGGER_INSTRUMENT_TYPE,
-    JsonLoggerSessionConstructor,
-)
+  ```py
+  # Import the client constructor and instrument type constant.
+  from client_session.session_constructor import (
+      JSON_LOGGER_INSTRUMENT_TYPE,
+      JsonLoggerSessionConstructor,
+  )
 
 
-# Define the configuration.
-@measurement_service.configuration(
-    "json_logger_pin",
-    nims.DataType.IOResource,
-    "LoggerPin",
-    instrument_type=JSON_LOGGER_INSTRUMENT_TYPE,
-)
-# Other configurations and outputs
-def measure(json_logger_pin: str):
+  # Define the configuration.
+  @measurement_service.configuration(
+      "json_logger_pin",
+      nims.DataType.IOResource,
+      "LoggerPin",
+      instrument_type=JSON_LOGGER_INSTRUMENT_TYPE,
+  )
+  # Other configurations and outputs
+  def measure(json_logger_pin: str):
 
-  # Reserve the JSON Logger Pin using NI Session Management Service API reserve_session.
-  with measurement_service.context.reserve_session(json_logger_pin) as file_session_reservation:
+    # Reserve the JSON Logger Pin using NI Session Management Service API reserve_session.
+    with measurement_service.context.reserve_session(json_logger_pin) as file_session_reservation:
 
-        # Create the client constructor object with initialization behavior. # Defaults to AUTO initialization behavior.
-        file_session_constructor = JsonLoggerSessionConstructor()
+          # Create the client constructor object with initialization behavior. # Defaults to AUTO initialization behavior.
+          file_session_constructor = JsonLoggerSessionConstructor()
 
-        # Initialize the session by passing the constructor and the instrument type constant
-        with file_session_reservation.initialize_session(
-            file_session_constructor, JSON_LOGGER_INSTRUMENT_TYPE
-        ) as file_session_info:
+          # Initialize the session by passing the constructor and the instrument type constant
+          with file_session_reservation.initialize_session(
+              file_session_constructor, JSON_LOGGER_INSTRUMENT_TYPE
+          ) as file_session_info:
 
-            # Get the session
-            file_session = file_session_info.session
+              # Get the session
+              file_session = file_session_info.session
 
-            # Use the session to call the core arbitrary function.
-            file_session.log_data()
-```
+              # Use the session to call the core arbitrary function.
+              file_session.log_data()
+  ```
 
 7. **Update the PinMap**
 
@@ -500,7 +500,7 @@ def measure(json_logger_pin: str):
    - Use an absolute file path for the resource to ensure clarity and to avoid resource conflicts.
    - Create a DUTPin and connect it to the custom instrument.
 
-  When the measurement plugin executes, data will be logged to the file specified in the PinMap.
+    When the measurement plugin executes, data will be logged to the file specified in the PinMap.
 
 > [!Note]
 >
