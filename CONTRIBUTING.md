@@ -24,7 +24,7 @@ See [GitHub's official documentation](https://help.github.com/articles/using-pul
 ## Prerequisites
 
 - (Optional) Install [Visual Studio Code](https://code.visualstudio.com/download).
-- Install Git.
+- Install [Git](https://git-scm.com/downloads).
 - Install Python and add it to the `PATH`. [Version 3.9 or later](https://www.python.org/downloads/release/python-390)
 - Install [Poetry](https://python-poetry.org/docs/#installation). [Version 2.0.1 or later](https://python-poetry.org/docs/)
 
@@ -37,8 +37,7 @@ repository to your local PC.
 git clone https://github.com/ni/arbitrary-session-management.git
 ```
 
-If you already have the Git repository on your local PC, you can update it and
-its submodules.
+If you already have the Git repository on your local PC, you can update it.
 
 ```cmd
 git checkout main
@@ -72,11 +71,11 @@ poetry install
 # Update gRPC Stubs (If Needed)
 
 The `src/server` and `src/client` directories contain the
-auto-generated Python files based on (`.proto`) file. The file needs
-to be replaced whenever there is a change to this `.proto` files:
+auto-generated Python files based on (`.proto`) file. The following files need
+to be replaced whenever there is a change to this [`server.proto`](src/server/json_logger.proto) or [`client.proto`](src/client/client_session/json_logger.proto) files:
 
-- [server stubs](src/server/json_logger.proto)
-- [client stubs](src/client/client_session/json_logger.proto)
+- [server stubs](src/server/stubs/)
+- [client stubs](src/client/client_session/stubs/)
 
 To regenerate the gRPC stubs, `cd` to the directory, install
 it with `poetry install`, and run `poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> <proto_file_path>`.
