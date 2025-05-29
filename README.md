@@ -78,7 +78,7 @@ arbitrary-session-management
    - [nidmm_measurement_with_logger](src/examples/nidmm_measurement_with_logger/README.md)
    - [teststand_sequence](src/examples/teststand_sequence/README.md)
 
-4. Start the server and run the example workflows as described in their respective READMEs.
+4. Start the server and run the example workflows as described in their respective `README.md`.
 
 When you run the server and examples, you'll observe that the TestStand sequence logs data to the same file. In the setup phase, the file is opened, and in the main sequence, the same file session is shared and used across both measurement steps. This demonstrates non-instrument session sharing among measurement plugins.
 
@@ -91,7 +91,7 @@ These steps will guide you to:
 - Define the proto file for the arbitrary functions
 - Implement the server-side logic
 - Implement the client-side logic
-- Use the client within measurement plugins to achieve non-instrument session sharing
+- Use client within measurement plugins to communicate with the custom gRPC service created.
 
 ---
 
@@ -99,7 +99,7 @@ These steps will guide you to:
 
 The first step is to define a `.proto` file. In this implementation, we use a custom gRPC server for handling session-based functionalities, as the NI gRPC Device Server does not support non-instrument sessions.
 
-A sample `.proto` file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means you can use the same approach to expose other resources, like database connections, hardware locks, or network streams, and share those resources across different measurement plugins.
+A [sample.proto](src/server/json_logger.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means you can use the same approach to expose other resources, like database connections, hardware locks, or network streams, and share those resources across different measurement plugins.
 
 Before you begin, make sure you're familiar with the basics of gRPC in Python and how .proto files define the structure of messages and services used in communication between clients and servers.
 
@@ -117,7 +117,7 @@ Before you begin, make sure you're familiar with the basics of gRPC in Python an
 
     a. `InitializeFile` - Create or Open the Resource
 
-    This RPC is responsible for either creating a new resource (such as opening a new file or establishing a new database connection) or retrieving an existing one if it already exists. This is essential for enabling session sharing, as it allows multiple clients or plugins to access the same resource session if needed.
+    This RPC defines the interface for requesting the creation of a new resource (e.g., opening a file or establishing a database connection) or retrieving an existing one. This enables session sharing by allowing multiple clients or plugins to access the same resource session when appropriate.
 
       - **Purpose:** To create or retrieve a session-managed resource.
       - **Typical Use Cases:** Opening a file for logging, connecting to a database, acquiring a hardware lock, etc.
@@ -142,7 +142,7 @@ Before you begin, make sure you're familiar with the basics of gRPC in Python an
 
 2. `CloseFile` - Destroy or Release the Resource
 
-    This RPC is used to cleanly close or release the session when you are done with the resource. For example, after logging is complete, you would call this RPC to close the file and release any associated resources.
+    This RPC defines the interface for requesting the server to close or release a session-managed resource ensuring proper cleanup and avoiding resource leaks.
 
     - **Purpose:** To release or destroy a session-managed resource.
     - **Typical Use Cases:** Closing a file, disconnecting from a database, releasing a hardware lock, etc.
@@ -161,7 +161,7 @@ Before you begin, make sure you're familiar with the basics of gRPC in Python an
 
 ---
 
-3. **Generate Python Stubs**
+1. **Generate Python Stubs**
 
     For better organization, you can place the stub files in a dedicated directory (e.g., `stubs`). To do so,
 
@@ -203,7 +203,7 @@ The structure described above is flexible and can be adapted to manage any resou
 
 ### Implement Server-Side
 
-The server is responsible for hosting the core functionality and, more importantly, managing sessions. This enables consistent session sharing and lifecycle management, which is a key role typically handled on the server side.
+The server is responsible for hosting the core functionality and, more importantly, managing sessions. This enables consistent session sharing and lifecycle management, which is a key role typically handled on the server side.  It is recommended that the service is registered with the NI Discovery Service to enable dynamic port resolution and seamless client connectivity.
 
 #### Reference
 
@@ -211,98 +211,55 @@ The server is responsible for hosting the core functionality and, more important
 
 #### Steps to Implement the Server
 
+The [example implementation](src/server/server.py) in this repository demonstrates this logic in detail.
+
 1. **Create a Python file for your server implementation**
 
     You can name this file `server.py` or choose any name you prefer.
 
-2. **Import the required modules**
+2. **Implement the [Initialize API](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L76)**
 
-    Add the following imports at the top of your file.
+    The InitializeFile API handles client requests to create or open a resource (such as a file) and manages session sharing based on the specified session initialization behavior.
 
-    ```py
-    import <module_name>
-    ```
+    - Receive a request, it expects a file path (used as the resource identifier) and session initialization behavior.
+    - Process the request as follows according to the behavior:
 
-3. **Implement the Initialize API**
+      - UNSPECIFIED: If a session for the file exists and is still open, return the existing session. Otherwise create a new session.
+      - INITIALIZE_NEW: If a session for the file exists and is still open, return an ALREADY_EXISTS error. Otherwise create a new session.
+      - ATTACH_TO_EXISTING: If a session for the file exists and is still open, return the existing session. Otherwise, return a NOT_FOUND error.
+    - Return the Session ID.
 
-    The Initialize API handles requests to create or open a resource (such as a file) and manages session sharing based on the requested behavior.
+3. **Implement the [Close API](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L186)**
 
-    ```text
-    Receive a request containing:
-      - A file path
-      - A session initialization behavior
+    - Receive a request containing a session
+    - Try to remove the session from the session map
+    - Check if the file is already closed
+      - If no, close the file handle
+      - If yes, return NOT_FOUND error
+    - Return a success response
 
-    Depending on the session initialization behavior:
-      
-      If behavior is UNSPECIFIED:
-        - If a session for this file exists and is still open:
-            -> Return the existing session
-        - Otherwise:
-            -> Try to create a new session
+4. **Implement the other [Arbitrary function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L112)**
 
-      If behavior is INITIALIZE_NEW:
-        - If a session for this file exists and is still open:
-            -> Return ALREADY_EXISTS error
-        - Otherwise:
-            -> Try to create a new session
+    - Receive the request
+    - Do the functionality
+    - Return the response
 
-      If behavior is ATTACH_TO_EXISTING:
-        - If a session exists and is still open:
-            -> Return the existing session
-        - Otherwise:
-            -> Return NOT_FOUND error
-    ```
+5. **Implement the [Start Server Logic](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L405)**
 
-4. **Implement the Close API.**
-
-    ```text
-    Receive a request containing a session
-
-    Try to remove the session from the session map
-
-    Check if the file is already closed
-      -> If no, close the file handle
-
-      -> If yes, return NOT_FOUND error
-
-
-    Return a success response
-    ```
-
-5. **Implement the other Arbitrary function APIs**
-
-    ```text
-    Receive the request
-    Do the functionality
-    Return the response
-    ```
-
-6. **Implement the Start Server Logic**
-
-    ```text
-    Create an instance of the gRPC service implementation
-
-    Create a gRPC server using a thread pool
-
-    Add the service implementation to the gRPC server
-
-    Bind the server to a dynamically chosen port on localhost
-
-    Start the server
-
-    Create a discovery client for service registration
-
-    Prepare the service location and configuration:
-      - Set host and port
+    - Create an instance of the gRPC service implementation.
+    - Create a gRPC server using a thread pool.
+    - Add the service implementation to the gRPC server.
+    - Bind the server to a dynamically chosen port on localhost.
+    - Start the server.
+    - Create a discovery client for service registration.
+    - Prepare the service location and configuration:
+      - Set host and port.
       - Load service metadata (class, interface, name, etc.)
-
-    Register the service with the discovery service.
-
-    When user ends the server:
-      - Clean up any resources used by the service
-      - Unregister the service from discovery
-      - Stop the gRPC server gracefully and wait until it's fully terminated
-    ```
+    - Register the service with the discovery service.
+    - When user ends the server:
+      - Clean up any resources used by the service.
+      - Unregister the service from discovery.
+      - Stop the gRPC server gracefully and wait until it's fully terminated.
 
     Registering with the Discovery Service is optional. If you use Discovery Service, clients can dynamically locate the server's port. Otherwise, the port number must be hardcoded in the client configuration.
 
@@ -322,8 +279,6 @@ The server is responsible for hosting the core functionality and, more important
       ]
     }
     ```
-
-    The [example implementation](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py) in this repository demonstrates this logic in detail.
 
 #### Adapting for Your Own Use Case
 
