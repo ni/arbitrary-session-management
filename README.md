@@ -174,10 +174,10 @@ Before you begin, make sure you're familiar with the basics of gRPC in Python an
 
     3. Update your import statements in your component or implementation as needed. For reference:
 
-      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/server/stubs/json_logger_pb2_grpc.py#L6)
-      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/server/stubs/json_logger_pb2_grpc.pyi#L26)
-      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
-      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/26aa426a8f74cf50a1d6305a08d4f6dd1835e22f/src/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
+      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.py#L6)
+      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.pyi#L26)
+      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
+      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
 
 ---
 
