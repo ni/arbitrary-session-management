@@ -21,6 +21,9 @@
       - [References](#references)
     - [Implement Server-Side](#implement-server-side)
       - [Adapting Your Own Use Case](#adapting-your-own-use-case)
+    - [Implement Client-Side](#implement-client-side)
+      - [Packaging the Client for Reuse](#packaging-the-client-for-reuse)
+      - [Adapting Your Use Case](#adapting-your-use-case)
 
 ## Overview
 
@@ -260,8 +263,6 @@ The structure described above is flexible and can be adapted to manage any resou
 
 2. **Import the required modules**
 
-    Add the following imports at the top of your file.
-
     ```py
     import <module_name>
     ```
@@ -377,3 +378,137 @@ Ensure that you include a `start.bat` script if you intend to use a `.servicecon
 With these files in place (`stubs`, `server.py`, optionally `.serviceconfig`, and optionally `start.bat`), you can reliably host your functionality as a managed service. This setup provides robust session management of arbitrary functions and enables seamless sharing of session references or objects across multiple measurement.
 
 ---
+
+### Implement Client-Side
+
+The client is responsible for interacting with the gRPC server to manage and use session-based resources. This section explains how to create client to initialize, use, and close a session-managed resource (e.g., a log file).
+
+The client class:
+
+- Connects to the gRPC service using NI Discovery Service.
+- Initializes or attaches to a session-managed resource (e.g., a file).
+- Do the arbitrary functionalities.
+- Closes the session when appropriate, based on the initialization behavior.
+
+---
+
+1. **Create a Python file**
+
+    Create a Python file which is where the client side implementation logic is going to be added. You can name as per your project. Here, we go with `session.py`
+
+2. **Import the required modules**
+
+    ```py
+    import <module_name>
+    ```
+
+3. **Define the Session Initialization Behavior Mapping**
+
+    The client supports five session initialization behaviors defined by NI. However, the server implements only three. The client maps unsupported behaviors to the closest supported ones and handles the rest of the logic internally.
+
+    ```python
+    _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
+        SessionInitializationBehavior.AUTO: SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
+        SessionInitializationBehavior.INITIALIZE_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
+        SessionInitializationBehavior.ATTACH_TO_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
+        SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
+        SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
+    }
+    ```
+
+    | Client Behavior | Mapped Server Behavior | Reason |
+    |-----------------|------------------------|--------|
+    | `AUTO` | `UNSPECIFIED` | Lets the server decide whether to create or attach. |
+    | `INITIALIZE_SERVER_SESSION` | `INITIALIZE_NEW` | Always starts a new session. |
+    | `ATTACH_TO_SERVER_SESSION` | `ATTACH_TO_EXISTING` | Reuses an existing session if available. |
+    | `INITIALIZE_SESSION_THEN_DETACH` | `INITIALIZE_NEW` | Server starts a new session; client handles detachment logic. |
+    | `ATTACH_TO_SESSION_THEN_CLOSE` | `ATTACH_TO_EXISTING` | Server attaches; client ensures close RPC call is made after use. |
+
+    The client’s `__exit__` method ensures correct cleanup behavior for the mapped cases.
+
+3. **Define Lifecycle Methods:** `__init__`, `__enter__`, `__exit__`
+
+    a. `__init__`
+
+    - Initializes the client.
+    - Uses the Discovery Service to locate the gRPC server.
+    - Call the Initialize RPC call and get the response from server.
+    - Stores the session name and whether a new session was created.
+
+    b. `__enter__`
+
+    - Enables the client to be used with a `with` statement.
+    - Returns the client instance for use inside the block.
+
+    c. `__exit__`
+
+    - Automatically called when exiting a `with` block.
+    - Handles session cleanup based on the initialization behavior:
+    - Closes the session if it was newly created or if the behavior requires it.
+    - Leaves the session open if it was attached or detached intentionally.
+
+    Using the client as a context manager ensures proper resource cleanup and avoids session leaks.
+
+4. **Implement the other arbitrary function calls**
+
+    ```text
+    Construct and send the request to the server
+    Wait for and process the server's response
+    Handle any errors or exceptions as needed
+    ```
+
+5. **Define Session Constructor**
+
+    After creating the `client.py` or `session.py`, now, create client constructor.
+
+    To streamline the integration of the JSON Logger client with measurement plug-ins, a helper class should be defined. This class encapsulates the logic for constructing a client using session information passed from the measurement plugin.
+
+    *Define a constant:*
+
+    ```python
+    JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
+    ```
+
+    This should match the instrument type ID configured in your PinMap(TODO:) and used in your TestStand sequence.
+
+    *Define constructor methods:* The constructor class should contain the following methods:
+
+    a. `__init__`: Initializes the constructor with a specific session initialization behavior.
+
+    Parameters:
+    initialization_behavior: Specifies how the session should be initialized. Defaults to SessionInitializationBehavior.AUTO.
+
+    Purpose:
+    This allows the constructor to be configured once and reused across multiple plugins or measurement steps with consistent behavior.
+
+    b. `__call__`: Makes the class instance callable like a function. It takes a SessionInformation object and returns a JsonLoggerClient.
+
+    Parameters:
+    session_info: An object containing metadata about the session, including the resource name (here, the file path).
+
+    Purpose:
+    This design allows the constructor to be passed directly into measurement plugin's method that expect a callable for session initialization.
+
+#### Packaging the Client for Reuse
+
+To enable reuse of the client across multiple projects or plugins, it is recommended to package the client code as a standalone Python package.
+
+Follow the structure provided in the `client/` directory as a reference. This structure should include:
+
+- The core client logic (`session.py`)
+- The session constructor (`session_constructor.py`)
+- The `.proto` file used to define the gRPC service
+- The generated gRPC stubs
+
+Including the `.proto` file and automating stub generation as part of the package ensures that the client remains self-contained and easy to maintain.
+
+#### Adapting Your Use Case
+
+While packaging the client is optional, it is **highly recommended** for better modularity and reusability especially when integrating with multiple measurement plugins.
+
+At a minimum, your client implementation should include:
+
+- `session.py`: Defines the client and its session lifecycle logic.
+- `session_constructor.py`: Provides a callable interface for plugins to create sessions.
+
+You are free to extend the client with additional operations or APIs as needed for your specific use case. The core session management logic should remain consistent to accomplish session sharing.
