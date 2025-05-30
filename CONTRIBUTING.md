@@ -26,7 +26,7 @@ See [GitHub's official documentation](https://help.github.com/articles/using-pul
 - (Optional) Install [Visual Studio Code](https://code.visualstudio.com/download).
 - Install [Git](https://git-scm.com/downloads).
 - Install Python and add it to the `PATH`. [Version 3.9 or later](https://www.python.org/downloads/release/python-390)
-- Install [Poetry](https://python-poetry.org/docs/#installation). [Version 2.0.1 or later](https://python-poetry.org/docs/)
+- Install Poetry. [Version 2.0.1 or later](https://python-poetry.org/docs/#installation)
 
 ## Clone or Update the Git Repository
 
@@ -52,7 +52,7 @@ Open a terminal window and `cd` to the package that you want to develop.
 cd <package/module>
 ```
 
-## Install the Package and Its Dependencies
+## Install the Dependencies
 
 From the subdirectory, run the [`poetry install`](https://python-poetry.org/docs/cli/#install)
 command. This creates an in-project virtual environment (`.venv`) and installs
