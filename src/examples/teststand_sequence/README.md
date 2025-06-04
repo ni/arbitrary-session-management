@@ -1,6 +1,6 @@
 # TestStand Sequence: Session Sharing Demonstration
 
-This TestStand sequence demonstrates how multiple measurement plug-ins can share a file session using the **JSON Logger Service**. While session reservation for instruments continues to rely on the NI Session Management Service, this example showcases shared access to a non-instrument session (file session) managed by the service itself (JSON Logger Service).
+The [FileSessionSharing sequence](FileSessionSharing.seq) demonstrates how multiple measurement plug-ins can share a file session using the **JSON Logger Service**. While session reservation for instruments continues to rely on the NI Session Management Service, this example showcases shared access to arbitrary session (file session) managed by the service itself (JSON Logger Service).
 
 ## Features
 
@@ -12,9 +12,12 @@ This TestStand sequence demonstrates how multiple measurement plug-ins can share
 
 ## Required Software
 
-- TestStand 2021 SP1 or later
-- NI-DCPower
-- NI-DMM
+- [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
+- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
+- [NI TestStand 2021 SP1 or later](https://www.ni.com/en/support/downloads/software-products/download.teststand.html?srsltid=AfmBOoo_2adp0yHttIHxht7_1p04xsEByXulfCtGh8yQi01DZ-yNxZFo#445937)
+- [NI-DCPower](https://www.ni.com/en/support/downloads/drivers/download.ni-dcpower.html?srsltid=AfmBOop2A4MHewR0o_CsHmGlczMbhFXAxXLRDPqMEcDzVeITOgDtebrL#565032)
+- [NI-DMM](https://www.ni.com/en/support/downloads/drivers/download.ni-dmm.html?srsltid=AfmBOoqVEVJSkBcgIIeYwS4jik4CPhgCzLYL0sBdSWe67eCL_LSOgMev#564319)
 - JSON Logger Service (included in this repository under the `server` directory)
 
 ## Required Hardware

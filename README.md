@@ -2,6 +2,7 @@
 
 - [Arbitrary Session Management - Reference Guide and Example](#arbitrary-session-management---reference-guide-and-example)
   - [Overview](#overview)
+  - [Workflow](#workflow)
   - [Project Structure](#project-structure)
   - [Required Software](#required-software)
   - [Quick Start](#quick-start)
@@ -27,13 +28,22 @@
 
 ## Overview
 
-This repository serves as a **reference implementation and guide** for sharing **arbitrary (non-instrument) sessions** across Python Measurement Plugins with the help of **NI's Session Management Service**.
+This repository serves as a **reference implementation and guide** for sharing **arbitrary sessions** across Python Measurement Plugins with the help of **NI's Session Management Service**.The file session used in this repository serves as a reference example to demonstrate the approach. However, this implementation is not limited to file sessions - **any session object or reference to a resource** (such as an instrument driver session,  database connection, hardware lock, or network stream, etc.,) can be managed and shared using the same pattern described here. By following the guidelines and structure provided, you can use the solution to support a wide variety of arbitrary resources that benefit from session-based access and sharing.
 
-- TODO: Add workflow diagram
+For NI instrument sessions, NI gRPC Device Server already provides built-in support for the following drivers:
 
-It demonstrates how to:
+- NI-DAQmx
+- NI-DCPower
+- NI-Digital Pattern Driver
+- NI-DMM
+- NI-FGEN
+- NI-SCOPE
+- NI-SWITCH
+- NI-VISA
 
-- Define and implement **custom gRPC services** that expose arbitrary functionality such as **file I/O**, **database access**, or other non-instrument tasks.
+This guide focuses on enabling similar session management and sharing capabilities for arbitrary resources. It demonstrates how to:
+
+- Define and implement **custom gRPC services** that expose arbitrary functionality such as **file I/O**, **database access**, or other tasks.
 - Integrate with **NI's Session Management Service** to enable **controlled shared access** to resources.
 - Support **session sharing** across multiple measurement plugins using different [session initialization behavior](https://github.com/ni/measurement-plugin-python/blob/main/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L458).
 - Register your services with the **NI Discovery Service** to enable clients to dynamically connect to the server.
@@ -45,6 +55,22 @@ By following this implementation, users can learn how to:
 - Design session-shareable services.
 - Leverage NI's services for **better session handling**.
 - Build systems where sessions are shared and managed across multiple measurement plugins.
+
+## Workflow
+
+![alt text](<docs/detailed_workflow.png>)
+
+The journey begins when an **arbitrary resource** is created as a custom instrument. A **DUTPin** is connected to this resource, and this connection is recorded by the **NI PinMap Service**, which acts like a central registry of all pin-to-resource mappings.
+
+Once the setup is in place, the **Measurement Plugin** steps in. But before it can use the resource, it needs to **reserve it**. To do this, it contacts the **NI Session Management Service**, which is responsible for handling who gets access to what and when.
+
+The Session Management Service doesn't work in isolation. It reaches out to the **NI PinMap Service** to get the exact details of the resource that needs to be reserved. With this information, it proceeds to **reserve the resource**.
+
+Now that the reservation is successful, the **Constructor** is called to **initialize the resource**. This is where the **Arbitrary Resource Server** comes into play. It opens a session for the resource and keeps track of it, based on how the initialization behavior.
+
+With the session now active, the Measurement Plugin can **perform the arbitrary functionality**.
+
+Once the plugin is done, it **unreserves the session**. The session tracking and initialization behavior enables the same session to be **shared with another Measurement Plugin**.
 
 ## Project Structure
 
@@ -68,6 +94,8 @@ arbitrary-session-management
 - [Poetry 2.0.1](https://python-poetry.org/docs/)
 - [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 - [NI TestStand 2021 SP1 or later](https://www.ni.com/en/support/downloads/software-products/download.teststand.html?srsltid=AfmBOoo_2adp0yHttIHxht7_1p04xsEByXulfCtGh8yQi01DZ-yNxZFo#445937)
+- [NI-DCPower](https://www.ni.com/en/support/downloads/drivers/download.ni-dcpower.html?srsltid=AfmBOop2A4MHewR0o_CsHmGlczMbhFXAxXLRDPqMEcDzVeITOgDtebrL#565032)
+- [NI-DMM](https://www.ni.com/en/support/downloads/drivers/download.ni-dmm.html?srsltid=AfmBOoqVEVJSkBcgIIeYwS4jik4CPhgCzLYL0sBdSWe67eCL_LSOgMev#564319)
 - [VS Code](https://code.visualstudio.com/download) (Optional)
 
 ## Quick Start
@@ -90,11 +118,11 @@ arbitrary-session-management
 
 4. Start the server and run the example workflows as described in their respective `README.md`.
 
-When you run the server and examples, you'll observe that the TestStand sequence logs data to the same log file. In the setup section, the log file is opened, and in the main section, the same file session is shared and used across both measurement steps. This demonstrates non-instrument session sharing among measurement plugins.
+When you run the server and examples, you'll observe that the TestStand sequence logs data to the same log file. In the setup section, the log file is opened, and in the main section, the same file session is shared and used across both measurement steps. This demonstrates file session sharing among measurement plugins.
 
 ## Step-by-Step Implementation Guide for Arbitrary Session Management
 
-The following steps provide a detailed guide for implementing session sharing for arbitrary (non-instrument) resources such as files, databases, or other custom resources across measurement plugins. This approach uses gRPC for communication.
+The following steps provide a detailed guide for implementing session sharing for arbitrary resources such as files, databases, or other custom resources across measurement plugins. This approach uses gRPC for communication.
 
 These steps will guide you to:
 
@@ -107,7 +135,7 @@ These steps will guide you to:
 
 ### Define the Proto File for the Intended Arbitrary Functionalities
 
-The first step is to define a `.proto` file. In this implementation, we use a custom gRPC server for handling session-based functionalities, as the NI gRPC Device Server does not support non-instrument sessions.
+The first step is to define a `.proto` file. In this implementation, we use a custom gRPC server for handling session-based functionalities.
 
 A [sample.proto](src/server/json_logger.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means you can use the same approach to expose other resources, like database connections, hardware locks, or network streams, and share those resources across different measurement plugins.
 
@@ -528,6 +556,6 @@ This approach ensures consistent session sharing and proper resource cleanup thr
 
 ## Conclusion
 
-This guide provides a comprehensive reference for implementing arbitrary session management using NI's Session Management Service and gRPC in Python. By following the outlined steps, you can design session-shareable services for non-instrument resources such as files, databases, etc. The provided patterns ensure integration with measurement plugins.
+This guide provides a comprehensive reference for implementing arbitrary session management using NI's Session Management Service and gRPC in Python. By following the outlined steps, you can design session-shareable services for arbitrary resources such as instrument drivers, files, databases, etc. The provided patterns ensure integration with measurement plugins.
 
 For further details, consult the example implementations in this repository and refer to the official NI documentation linked throughout this guide.
