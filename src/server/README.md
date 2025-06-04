@@ -11,20 +11,25 @@ This service is intended to be run as a standalone process and provides an inter
 - Writes JSON logs containing measurement configurations and outputs.
 - Supports session sharing with different session initialization behaviors (e.g., initialize new or attach to existing).
 
+## Required Software
+
+- [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
+- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [VS Code](https://code.visualstudio.com/download) (Optional)
+
 ## Usage
 
 The JSON Logger Service is **not** designed to be imported as a Python module. Instead, it should be run as a standalone gRPC server process.
 
 ### Set up and Launch
 
-- To run the service:
+- To run the service, open a terminal and navigate to `server` directory. Then run the batch file using the following command:
 
 ```cmd
-cd server
 start.bat
 ```
 
-A .serviceconfig file is the place to **configure** your service details. This file can be used to supply configuration information when registering your service with the Discovery Service. A sample [.serviceconfig](JsonLogger.serviceconfig) is provided for reference
+This sets up the virtual environment for server, install necessary depencies and then launches the server. For customizing the server's config details, a .serviceconfig file is used. This file can be used to supply configuration information when registering your service with the Discovery Service. A sample [.serviceconfig](JsonLogger.serviceconfig) is provided for reference
 
 ```json
 {
@@ -32,9 +37,9 @@ A .serviceconfig file is the place to **configure** your service details. This f
     {
         "displayName": "JSON Logger Service",        // Human-readable name for the service
         "version": "1.0.0",                          // Service version
-        "serviceClass": "ni.logger.JSONLogService",  // Format: <organization>.<functionality>.<service name>
+        "serviceClass": "ni.logger.JSONLogService",  // Format: <organization>.<functionality>.<name>
         "descriptionUrl": "",                        // URL with additional service documentation (optional)
-        "providedInterface": "ni.logger.v1.json",    // Format: <organization>.<functionality>.<version>.<service name>
+        "providedInterface": "ni.logger.v1.json",    // Format: <organization>.<functionality>.<version>.<name>
         "path": "start.bat"                          // Script or command to start the service
     }
     ]

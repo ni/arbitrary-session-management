@@ -8,6 +8,12 @@ The **JSON Logger Client** is a reusable Python package designed to simplify int
 - Logs measurement configurations, and results in a structured JSON format.
 - Designed for easy reuse across different examples and TestStand-integrated plug-ins.
 
+## Required Software
+
+- [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
+- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [VS Code](https://code.visualstudio.com/download) (Optional)
+
 ## Set up and Usage
 
 The JSON Logger Client is meant to be used as a dependency by other measurement plug-in projects (e.g., `examples`, `teststand_sequence`).
@@ -20,9 +26,17 @@ setup.bat
 
 This will set up the virtual environment and install the dependencies.
 
+To enable reuse of the client across multiple plugins, it is recommended to package the client code as a standalone Python package.
+
+- Run the following command to build a wheel file if needed. This wheel file can be installed in the Measurement Plugins project environment.
+
+  ```cmd
+  poetry build
+  ```
+
 ### Integration Steps
 
-1. Add the `client-session` package as a dependency in your project's `pyproject.toml`.
+1. Add the `client-session` package as a dependency in your project's [pyproject.toml](https://github.com/ni/arbitrary-session-management/blob/main/src/examples/nidcpower_measurement_with_logger/pyproject.toml#L16).
 2. Import the client module in your measurement plug-in:
 
    ```python

@@ -32,10 +32,9 @@ By default, this uses a physical instrument or a simulated instrument created in
 
 1. **Start the JSON Logger Service**
 
-    In another terminal:
+    In a terminal, navigate to the `server` directory, and run the following command
 
     ```cmd
-    cd server
     start.bat
     ```
 
@@ -63,10 +62,9 @@ By default, this uses a physical instrument or a simulated instrument created in
 
 3. **Set up the environment**
 
-    In a terminal:
+    In another terminal, navigate to the `teststand_sequence` directory, and run the following command:
 
     ```cmd
-    cd teststand_sequence
     setup.bat
     ```
 
@@ -74,9 +72,9 @@ By default, this uses a physical instrument or a simulated instrument created in
 
     - Open **TestStand**.
     - Load the provided sequence file `FileSessionSharing.seq`.
-    - Update the venv Path in TestStand
-    - Follow **Configure -> Adapters -> Python**.
-    - Then click `Configure...` and enter the venv path.
+    - Update the venv Path in TestStand.
+      - Follow **Configure -> Adapters -> Python**.
+      - Then click `Configure...` and enter the venv path.
     - Update the file path in `FileSessionSharing.pinmap` available in `pinmap` directory to use an **absolute path** for the custom instrument name.
     - Execute the sequence to observe shared logging behavior between two measurement plug-ins.
     - If the custom instrument's name isn't updated, the resulting log file (UpdateThisWithActualFilePath.ndjson) will be generated in the `server` directory.
