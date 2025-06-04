@@ -14,7 +14,7 @@ This service is intended to be run as a standalone process and provides an inter
 ## Required Software
 
 - [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
-- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
 - [VS Code](https://code.visualstudio.com/download) (Optional)
 
 ## Usage

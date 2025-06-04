@@ -92,7 +92,7 @@ arbitrary-session-management
 ## Required Software
 
 - [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
-- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
 - [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 - [NI TestStand 2021 SP1 or later](https://www.ni.com/en/support/downloads/software-products/download.teststand.html?srsltid=AfmBOoo_2adp0yHttIHxht7_1p04xsEByXulfCtGh8yQi01DZ-yNxZFo#445937)
 - [NI-DCPower](https://www.ni.com/en/support/downloads/drivers/download.ni-dcpower.html?srsltid=AfmBOop2A4MHewR0o_CsHmGlczMbhFXAxXLRDPqMEcDzVeITOgDtebrL#565032)

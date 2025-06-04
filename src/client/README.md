@@ -11,7 +11,7 @@ The **JSON Logger Client** is a reusable Python package designed to simplify int
 ## Required Software
 
 - [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
-- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
 - [VS Code](https://code.visualstudio.com/download) (Optional)
 
 ## Set up and Usage

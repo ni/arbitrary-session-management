@@ -12,7 +12,7 @@ This measurement plug-in example demonstrates how to perform a measurement using
 ## Required Software
 
 - [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
-- [Poetry 2.0.1](https://python-poetry.org/docs/)
+- [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
 - [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 - [NI-DMM](https://www.ni.com/en/support/downloads/drivers/download.ni-dmm.html?srsltid=AfmBOoqVEVJSkBcgIIeYwS4jik4CPhgCzLYL0sBdSWe67eCL_LSOgMev#564319)
 - Json Logger Service (included in this repository under the `server/` directory)
