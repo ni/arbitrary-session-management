@@ -1,6 +1,6 @@
 # TestStand Sequence: Session Sharing Demonstration
 
-This TestStand sequence demonstrates how multiple measurement plug-ins can share a file session using the **JSON Logger Service**. While session reservation for instruments continues to rely on the NI Session Management Service, this example showcases shared access to a non-instrument session (file session) managed by the service itself (JSON Logger Service).
+The [FileSessionSharing sequence](FileSessionSharing.seq) demonstrates how multiple measurement plug-ins can share a file session using the **JSON Logger Service**. While session reservation for instruments continues to rely on the NI Session Management Service, this example showcases shared access to arbitrary session (file session) managed by the service itself (JSON Logger Service).
 
 ## Features
 
@@ -12,9 +12,12 @@ This TestStand sequence demonstrates how multiple measurement plug-ins can share
 
 ## Required Software
 
-- TestStand 2021 SP1 or later
-- NI-DCPower
-- NI-DMM
+- [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
+- [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
+- [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
+- [NI TestStand 2021 SP1 or later](https://www.ni.com/en/support/downloads/software-products/download.teststand.html?srsltid=AfmBOoo_2adp0yHttIHxht7_1p04xsEByXulfCtGh8yQi01DZ-yNxZFo#445937)
+- [NI-DCPower](https://www.ni.com/en/support/downloads/drivers/download.ni-dcpower.html?srsltid=AfmBOop2A4MHewR0o_CsHmGlczMbhFXAxXLRDPqMEcDzVeITOgDtebrL#565032)
+- [NI-DMM](https://www.ni.com/en/support/downloads/drivers/download.ni-dmm.html?srsltid=AfmBOoqVEVJSkBcgIIeYwS4jik4CPhgCzLYL0sBdSWe67eCL_LSOgMev#564319)
 - JSON Logger Service (included in this repository under the `server` directory)
 
 ## Required Hardware
@@ -29,10 +32,9 @@ By default, this uses a physical instrument or a simulated instrument created in
 
 1. **Start the JSON Logger Service**
 
-    In another terminal:
+    In a terminal, navigate to the `server` directory, and run the following command
 
     ```cmd
-    cd server
     start.bat
     ```
 
@@ -60,10 +62,9 @@ By default, this uses a physical instrument or a simulated instrument created in
 
 3. **Set up the environment**
 
-    In a terminal:
+    In another terminal, navigate to the `teststand_sequence` directory, and run the following command:
 
     ```cmd
-    cd teststand_sequence
     setup.bat
     ```
 
@@ -71,13 +72,13 @@ By default, this uses a physical instrument or a simulated instrument created in
 
     - Open **TestStand**.
     - Load the provided sequence file `FileSessionSharing.seq`.
-    - Update the venv Path in TestStand
-    - Follow **Configure -> Adapters -> Python**.
-    - Then click `Configure...` and enter the venv path.
+    - Update the venv Path in TestStand.
+      - Follow **Configure -> Adapters -> Python**.
+      - Then click `Configure...` and enter the venv path.
     - Update the file path in `FileSessionSharing.pinmap` available in `pinmap` directory to use an **absolute path** for the custom instrument name.
     - Execute the sequence to observe shared logging behavior between two measurement plug-ins.
     - If the custom instrument's name isn't updated, the resulting log file (UpdateThisWithActualFilePath.ndjson) will be generated in the `server` directory.
 
-## Note
-
-Before executing the sequence, make sure the JSON Logger Service is running. The measurement plug-ins depend on this service for logging, and session sharing will fail if the service is not available.
+> [!Note]
+>
+> Before executing the sequence, make sure the JSON Logger Service is running. The measurement plug-ins depend on this service for logging, and session sharing will fail if the service is not available.

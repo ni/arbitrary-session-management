@@ -1,37 +1,51 @@
 # JSON Logger Service
 
-The **JSON Logger Service** is a gRPC logging server that enables measurement plug-ins to log measurement data including configuration and output parameters to structured JSON files. The service supports session-based file management and is registered with the **NI Discovery Service** for easy integration.
+The **JSON Logger Service** is a gRPC logging server that enables Measurement Plugins to log measurement data including configuration and output parameters to structured JSON files. The service is responsible for maintaining file sessions and sharing access to them upon client requests and uses the **NI Discovery Service** to dynamically resolve service ports, enabling client packages to connect without requiring manual port configuration.
 
-This service is intended to be run as a standalone process and provides an interface for clients to initialize sessions, log measurement data using the sessions, and close file sessions.
+This service is intended to be run as a standalone process and provides an interface for clients to initialize file sessions, log measurement data using the sessions, and close file sessions.
 
 ## Features
 
 - Provides a gRPC interface for structured JSON logging.
-- Manages logging sessions with lifecycle support: initialize, log, and close.
+- Manages logging sessions with lifecycle support: Initialize, Log, and Close.
 - Writes JSON logs containing measurement configurations and outputs.
 - Supports session sharing with different session initialization behaviors (e.g., initialize new or attach to existing).
+
+## Required Software
+
+- [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
+- [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
+- [VS Code](https://code.visualstudio.com/download) (Optional)
 
 ## Usage
 
 The JSON Logger Service is **not** designed to be imported as a Python module. Instead, it should be run as a standalone gRPC server process.
 
-### Setup and Launch
+### Set up and Launch
 
-- To run the service:
+- To run the service, open a terminal and navigate to `server` directory. Then run the batch file using the following command:
 
 ```cmd
-cd server
 start.bat
 ```
 
-### Note
+This sets up the virtual environment for server, install necessary depencies and then launches the server. For customizing the server's config details, a .serviceconfig file is used. This file can be used to supply configuration information when registering your service with the Discovery Service. A sample [.serviceconfig](JsonLogger.serviceconfig) is provided for reference
 
-The initial version of the JSON Logger Service is designed specifically for pin-centric workflows. In these workflows, non-instrument sessions (such as file-based logging sessions) can be shared and managed effectively.
+```json
+{
+    "services": [
+    {
+        "displayName": "JSON Logger Service",        // Human-readable name for the service
+        "version": "1.0.0",                          // Service version
+        "serviceClass": "ni.logger.JSONLogService",  // Format: <organization>.<functionality>.<name>
+        "descriptionUrl": "",                        // URL with additional service documentation (optional)
+        "providedInterface": "ni.logger.v1.json",    // Format: <organization>.<functionality>.<version>.<name>
+        "path": "start.bat"                          // Script or command to start the service
+    }
+    ]
+}
+```
 
-Extending support to non-pin-centric (IO Resource) workflows via the IO Discovery Service is not planned at this time, due to the following limitations:
-
-- **Manual Configuration Overhead**: The IO Discovery Service relies on a JSON configuration file that describes available hardware and instruments-typically populated through **NI MAX**. Incorporating the logger service into this model would require users to manually update the JSON file with resource data, increasing complexity.
-
-- **Incompatibility with Pin Map Context**: When a pin map is active and used by a measurement plug-in, the session management service bypasses the IO Discovery Service. This limits the ability to reserve sessions for services like the JSON Logger.
-
-As a result, pin-centric workflows remain the recommended approach.
+> [!Note]
+>
+> This solution currently supports pin-centric workflow. Extending support to non-pin-centric (IO Resource) workflow via the IO Discovery Service is not planned and pin-centric workflow is the recommended and supported approach for session-managed resources.

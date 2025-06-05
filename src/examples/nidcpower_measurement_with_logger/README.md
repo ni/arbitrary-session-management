@@ -5,15 +5,17 @@ This measurement plug-in example demonstrates how to source and measure a DC vol
 ## Features
 
 - Uses the `nidcpower` Python package to interact with NI SMUs.
-- Pin-aware implementation supporting both instrument and non-instrument sessions.
+- Pin-aware implementation supporting both instrument and file sessions.
 - Logs measurement data (configuration and results) via a custom `JsonLoggerService`.
 - Includes InstrumentStudio and Measurement Plug-In UI Editor project files.
 
 ## Required Software
 
-- InstrumentStudio 2025 Q2 or later
-- NI-DCPower
-- JsonLoggerService (included in this repository under the `server/` directory)
+- [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
+- [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
+- [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
+- [NI-DCPower](https://www.ni.com/en/support/downloads/drivers/download.ni-dcpower.html?srsltid=AfmBOop2A4MHewR0o_CsHmGlczMbhFXAxXLRDPqMEcDzVeITOgDtebrL#565032)
+- Json Logger Service (included in this repository under the `server/` directory)
 
 ## Required Hardware
 
