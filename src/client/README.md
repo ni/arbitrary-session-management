@@ -1,6 +1,6 @@
 # JSON Logger Client
 
-The **JSON Logger Client** is a reusable Python package designed to simplify integration with the JSON Logger Service. It enables measurement plug-ins to log configuration and output data to a file. This client acts as an interface to the JSON Logger Service and is intended to be used within measurement plug-in examples or TestStand sequences.
+The **JSON Logger Client** is a reusable Python package designed to simplify integration with the JSON Logger gRPC Service. It enables Measurement Plugins to log configuration and output data to a file. This client acts as an interface to the JSON Logger Service and is intended to be used within Measurement Plugin examples or TestStand sequences.
 
 ## Features
 
@@ -16,7 +16,7 @@ The **JSON Logger Client** is a reusable Python package designed to simplify int
 
 ## Set up and Usage
 
-The JSON Logger Client is meant to be used as a dependency by other measurement plug-in projects (e.g., `examples`, `teststand_sequence`).
+The JSON Logger Client is meant to be used as a dependency by other Measurement Plugin projects (e.g., `examples`, `teststand_sequence`).
 
 Before running the following command, make sure your terminal is open and you are in the client directory.
 
@@ -37,7 +37,7 @@ To enable reuse of the client across multiple plugins, it is recommended to pack
 ### Integration Steps
 
 1. Add the `client-session` package as a dependency in your project's [pyproject.toml](https://github.com/ni/arbitrary-session-management/blob/main/src/examples/nidcpower_measurement_with_logger/pyproject.toml#L16).
-2. Import the client module in your measurement plug-in:
+2. Import the client module in your Measurement Plugin:
 
    ```python
    from client_session.session_constructor import JsonLoggerSessionConstructor, JSON_LOGGER_INSTRUMENT_TYPE

@@ -1,6 +1,6 @@
 # JSON Logger Service
 
-The **JSON Logger Service** is a gRPC logging server that enables measurement plug-ins to log measurement data including configuration and output parameters to structured JSON files. The service is responsible for maintaining file sessions and sharing access to them upon client requests and uses the **NI Discovery Service** to dynamically resolve service ports, enabling client packages to connect without requiring manual port configuration.
+The **JSON Logger Service** is a gRPC logging server that enables Measurement Plugins to log measurement data including configuration and output parameters to structured JSON files. The service is responsible for maintaining file sessions and sharing access to them upon client requests and uses the **NI Discovery Service** to dynamically resolve service ports, enabling client packages to connect without requiring manual port configuration.
 
 This service is intended to be run as a standalone process and provides an interface for clients to initialize file sessions, log measurement data using the sessions, and close file sessions.
 
@@ -48,10 +48,4 @@ This sets up the virtual environment for server, install necessary depencies and
 
 > [!Note]
 >
-> This solution currently supports pin-centric workflow. Extending support to non-pin-centric (IO Resource) workflow via the IO Discovery Service is not planned at this time due to the following considerations:
->
-> **Manual Configuration Overhead:** The IO Discovery Service depends on a JSON configuration file, typically managed through **NI MAX**, to describe available hardware and instruments. Integrating the logger service would require manual updates to this file, increasing setup complexity.
->
-> **Pin Map Context Limitations:** When a pin map is active and used by a measurement plug-in, the session management service does not query the IO Discovery Service. This restricts session reservation for services like the JSON Logger.
->
-> As a result, pin-centric workflow is the recommended and supported approach for session-managed resources.
+> This solution currently supports pin-centric workflow. Extending support to non-pin-centric (IO Resource) workflow via the IO Discovery Service is not planned and pin-centric workflow is the recommended and supported approach for session-managed resources.
