@@ -2,21 +2,21 @@
 
 - [Arbitrary Session Management - Reference Guide and Example](#arbitrary-session-management---reference-guide-and-example)
   - [Overview](#overview)
-  - [Workflow](#workflow)
-  - [Project Structure](#project-structure)
+  - [Concept Overview](#concept-overview)
+  - [Repo Structure](#repo-structure)
   - [Required Software](#required-software)
   - [Required Hardware](#required-hardware)
   - [Quick Start](#quick-start)
   - [Step-by-Step Implementation Guide for Arbitrary Session Management](#step-by-step-implementation-guide-for-arbitrary-session-management)
-    - [Define the Proto File for the Intended Arbitrary Functionalities](#define-the-proto-file-for-the-intended-arbitrary-functionalities)
+    - [Define the proto file for the functions of the arbitrary resource](#define-the-proto-file-for-the-functions-of-the-arbitrary-resource)
       - [References](#references)
       - [Steps to Define the Proto \& Generate Stubs](#steps-to-define-the-proto--generate-stubs)
       - [Adapting for Your Own Use Case](#adapting-for-your-own-use-case)
-    - [Implement Server-Side](#implement-server-side)
+    - [Implement the gRPC server-side logic](#implement-the-grpc-server-side-logic)
       - [Reference](#reference)
       - [Steps to Implement the Server](#steps-to-implement-the-server)
       - [Adapting for Your Own Use Case](#adapting-for-your-own-use-case-1)
-    - [Implement Client-Side](#implement-client-side)
+    - [Implement gRPC Client-Side](#implement-grpc-client-side)
       - [Reference](#reference-1)
       - [Steps to Implement the Client](#steps-to-implement-the-client)
       - [Packaging the Client for Reuse](#packaging-the-client-for-reuse)
@@ -29,9 +29,9 @@
 
 ## Overview
 
-This repository serves as a **reference implementation and guide** for sharing **arbitrary resources** across Measurement Plugins through **NI Session Management Service**. 
+This repository serves as a **reference implementation and guide** for sharing **arbitrary resources** across Measurement Plugins through **NI Session Management Service**.
 
-A text file as resource to be share among Measurement Plugins is chosen for this reference example. However, the concept is not limited to File sessions - **any session object or reference to a resource** (such as an instrument driver session, communication reference, database connection, hardware lock, or network stream, etc.,) can be managed and shared using the same pattern described here. 
+A file as resource to be share among Measurement Plugins is chosen for this reference example. However, the concept is not limited to File sessions - **any session object or reference to a resource** (such as an instrument driver session, communication reference, database connection, hardware lock, or network stream, etc.,) can be managed and shared using the same pattern described here.
 
 For NI Instruments, [NI gRPC Device](https://github.com/ni/grpc-device) server  provides built-in support for the following drivers:
 
@@ -47,17 +47,17 @@ For NI Instruments, [NI gRPC Device](https://github.com/ni/grpc-device) server  
 This guide focuses on enabling similar session management and sharing capabilities for arbitrary resources. It demonstrates how to:
 
 1. Define and implement a **custom gRPC service** to expose functionalities supported by the arbitrary resource such as *instrument, file I/O, database*, or other tasks.
-1. Integrate with **NI Session Management Service** to enable **controlled shared access** to resource.
-1. Support **session sharing** across multiple measurement plugins using different [session initialization behavior](https://github.com/ni/measurement-plugin-python/blob/main/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L458).
-1. Register the **custom gRPC service** with the **NI Discovery Service** to enable clients to dynamically connect to the gRPC service.
-1. Create a gRPC client for the implemented gRPC service.
-1. Use the gRPC client in Measurement Plugins to utilize the shared *arbitrary resource* through the *custom gRPC service*.
+2. Integrate with **NI Session Management Service** to enable **controlled shared access** to resource.
+3. Support **session sharing** across multiple measurement plugins using different [session initialization behavior](https://github.com/ni/measurement-plugin-python/blob/main/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L458).
+4. Register the **custom gRPC service** with the **NI Discovery Service** to enable clients to dynamically connect to the gRPC service.
+5. Create a gRPC client for the implemented gRPC service.
+6. Use the gRPC client in Measurement Plugins to utilize the shared *arbitrary resource* through the *custom gRPC service*.
 
 ## Concept Overview
 
 ![alt text](<docs/detailed_workflow.png>)
 
-The journey begins when an **arbitrary resource** is created as a custom instrument. A **DUTPin** is connected to this resource, and this connection is recorded by the **NI PinMap Service**, which acts like a central registry of all pin-to-resource mappings.
+The journey begins when an **arbitrary resource** is created as a custom instrument. A **Pin** is connected to this resource, and this connection is recorded by the **NI PinMap Service**, which acts like a central registry of all pin-to-resource mappings.
 
 Once the setup is in place, the **Measurement Plugin** steps in. But before it can use the resource, it needs to **reserve it**. To do this, it contacts the **NI Session Management Service**, which is responsible for handling who gets access to what and when.
 
@@ -145,8 +145,6 @@ The first step is to define a `.proto` file. In this implementation, a custom gR
 
 A [sample.proto](src/server/json_logger.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means one can use the same approach to expose other resources, like instruments, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
 
-~~Before you begin, make sure you're familiar with the basics of gRPC in Python and how .proto files define the structure of messages and services used in communication between clients and servers.~~
-
 It is essential to familiarize with basics of gRPC in Python using the following resources,
 
 #### References
@@ -163,10 +161,10 @@ It is essential to familiarize with basics of gRPC in Python using the following
 
     `InitializeFile` - Create or Open the Resource (method name can be different)
 
-    This RPC defines the interface for requesting the creation of a new resource connection (example, Open connection to an instrument, opening a file, establishing a database connection) or retrieving an existing one. This enables session sharing by allowing multiple clients or plugins to access the same resource session when appropriate.
+    This RPC defines the interface for requesting the creation of a new resource connection (example, open connection to an instrument, opening a file, establishing a database connection) or retrieving an existing one. This enables session sharing by allowing multiple clients or plugins to access the same resource session when appropriate.
 
       - **Purpose:** To create or retrieve a session-managed resource.
-      - **Typical Use Cases:** Connecting to an instrument, Opening a file for logging, connecting to a database, acquiring a hardware lock, etc.
+      - **Typical Use Cases:** Connecting to an instrument, opening a file for logging, connecting to a database, acquiring a hardware lock, etc.
 
     **Request - Must Include**
 
@@ -189,7 +187,7 @@ It is essential to familiarize with basics of gRPC in Python using the following
     This RPC defines the interface for requesting the server to close or release a session-managed resource ensuring proper cleanup and avoiding resource leaks.
 
     - **Purpose:** To release or destroy a session-managed resource.
-    - **Typical Use Cases:** Closing the instrument connection, Closing a file, disconnecting from a database, releasing a hardware lock, etc.
+    - **Typical Use Cases:** Closing the instrument connection, closing a file, disconnecting from a database, releasing a hardware lock, etc.
 
     **Request - Must Include**
 
@@ -205,25 +203,24 @@ It is essential to familiarize with basics of gRPC in Python using the following
 
 2. **Generate Python Stubs**
 
-  For better organization, place the stub files in a dedicated directory (example, `stubs`).
+    For better organization, place the stub files in a dedicated directory (example, `stubs`).
 
-  1. Create the directory `stubs` and add an `__init__.py` file to make it a Python package.
-  2. Generate the stubs using following command,
+    1. Create the directory `stubs` and add an `__init__.py` file to make it a Python package.
+    2. Generate the stubs using following command,
 
-      ```cmd
-      poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> <proto_file_path>
-      ```
+        ```cmd
+        poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> <proto_file_path>
+        ```
 
-  3. Update the `import` statements in your component or implementation as needed. For reference:
-
-    - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.py#L6)
-    - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.pyi#L26)
-    - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
-    - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
+    3. Update the `import` statements in your component or implementation as needed. For reference:
+      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.py#L6)
+      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.pyi#L26)
+      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
+      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
 
 ---
 
-This completes the process of defining your proto file and generating the necessary Python stubs for your arbitrary functionalities.
+This completes the process of defining your proto file and generating the necessary Python stubs.
 
 #### Adapting for Your Own Use Case
 
@@ -241,7 +238,7 @@ The structure described above is flexible and can be adapted to manage any resou
 >
 > - Rename the RPCs and modify the input/output fields to suit your specific resource.
 > - The fundamental pattern-**initialize/acquire** and **close/release**-remains unchanged.
-> - Beyond these core RPCs, you are free to define additional custom RPCs (such as `LogMeasurementData` in the example) to support any arbitrary functionality your application requires.
+> - Beyond these core RPCs, you are free to define additional custom RPCs (such as `LogMeasurementData` in the example) to support any functionality your application requires.
 > - This design allows the resource to be efficiently shared among multiple Measurement Plugins.
 
 ---
