@@ -55,7 +55,7 @@ This guide focuses on enabling similar session management and sharing capabiliti
 
 ## Concept Overview
 
-![alt text](<docs/detailed_workflow.png>)
+![alt text](<docs/images/concept_overview.png>)
 
 The journey begins when an **arbitrary resource** is created as a custom instrument. A **Pin** is connected to this resource, and this connection is recorded by the **NI PinMap Service**, which acts like a central registry of all pin-to-resource mappings.
 
