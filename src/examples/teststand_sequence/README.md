@@ -75,6 +75,7 @@ By default, this uses a physical instrument or a simulated instrument created in
     - Update the venv Path in TestStand.
       - Follow **Configure -> Adapters -> Python**.
       - Then click `Configure...` and enter the venv path.
+      - Select Python version of the corresponding venv.
     - Update the file path in `FileSessionSharing.pinmap` available in `pinmap` directory to use an **absolute path** for the custom instrument name.
     - Execute the sequence to observe shared logging behavior between two measurement plug-ins.
     - If the custom instrument's name isn't updated, the resulting log file (UpdateThisWithActualFilePath.ndjson) will be generated in the `server` directory.
