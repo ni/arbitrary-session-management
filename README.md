@@ -554,6 +554,11 @@ To enable session sharing across multiple Measurement Plugins within a sequence:
 
 This approach ensures consistent session sharing and proper resource cleanup throughout the TestStand sequence.
 
+>[!Note]
+>
+> - Ensure that the Python version used to create the virtual environment in the `teststand_sequence` directory matches a version supported by your installed version of TestStand.
+> - Click [here](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA03q000000xDgrCAE&l=en-IN#:~:text=Supported%20Python%20Adapters%3A) to know which Python versions are compatible with your specific TestStand release.
+
 ## Conclusion
 
 This guide provides a comprehensive reference for implementing arbitrary resource management using NI Session Management Service and gRPC in Python. By following the outlined steps, you can design session-shareable services for arbitrary resources such as instruments, files, databases, etc. The provided patterns ensure integration with Measurement Plugins.

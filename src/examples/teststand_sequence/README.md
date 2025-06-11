@@ -20,6 +20,11 @@ The [FileSessionSharing sequence](FileSessionSharing.seq) demonstrates how multi
 - [NI-DMM](https://www.ni.com/en/support/downloads/drivers/download.ni-dmm.html?srsltid=AfmBOoqVEVJSkBcgIIeYwS4jik4CPhgCzLYL0sBdSWe67eCL_LSOgMev#564319)
 - JSON Logger Service (included in this repository under the `server` directory)
 
+>[!Note]
+>
+> - Ensure that the Python version you use is supported by your installed version of TestStand.
+> - Click [here](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA03q000000xDgrCAE&l=en-IN#:~:text=Supported%20Python%20Adapters%3A) to know which Python versions are compatible with your specific TestStand release.
+
 ## Required Hardware
 
 This example requires an NI SMU (e.g., PXIe-4141) and an NI DMM (e.g., PXIe-4081) supported by NI-DCPower and NI-DMM respectively.
