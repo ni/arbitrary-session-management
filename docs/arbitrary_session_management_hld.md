@@ -31,7 +31,7 @@
 
 ## Problem Statement
 
-A solution is needed to manage and share arbitrary sessions (e.g., Non-NI instruments, database connections, file references, etc.,) across multiple measurement plugins ensuring controlled access through a session reservation mechanism to prevent conflicts.
+A solution is needed to manage and share arbitrary sessions (e.g., custom instruments, data communication, file references, etc.,) across multiple measurement plugins ensuring controlled access through a session reservation mechanism to prevent conflicts.
 
 ### Key Requirements
 
@@ -52,16 +52,16 @@ The high-level workflow is outlined below, with detailed instructions available 
 1. **User has to Create a gRPC Service for the Arbitrary Functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
    - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).
-   - An example proto file for a Non-NI Instrument with read/configure functions to be hosted as gRPC service is shown below.
+   - An example proto file for a custom instrument with read/configure functions to be hosted as gRPC service is shown below.
 
       ```proto
          syntax = "proto3";
 
          // Define the package name
-         package keysightdmm;
+         package CustomInstrument;
 
-         // Define the BasicKeysightDMM service with its RPC methods
-         service BasicKeysightDMM {
+         // Define the BasicCustomInstrument service with its RPC methods
+         service BasicCustomInstrument {
             rpc Initialize (InitializeInputs) returns (SessionInformation) {}
             rpc Close (SessionInformation) returns (StatusInfo) {}
             rpc ConfigureMeasurement (ConfigureMeasurementInfo) returns (SessionInformation) {}
@@ -169,15 +169,15 @@ The high-level workflow is outlined below, with detailed instructions available 
    - A Python server side example is given for the AUTO initialization behavior.
 
       ```py
-      class BasicKeysightDMMServicer(keysightdmm_pb2_grpc.BasicKeysightDMMServicer):
+      class CustomInstrumentServicer(CustomInstrument_pb2_grpc.CustomInstrumentServicer):
          def __init__(self):
-            self.dmm_sessions = {}
+            self.Instr_sessions = {}
 
          def Initialize(self, request, context):
             # Example: AUTO initialization behavior
             if request.initialization_behavior == keysightdmm_pb2.AUTO:
                # Check if a session already exists for the given VISA resource
-               for session_id, session_info in self.dmm_sessions.items():
+               for session_id, session_info in self.Instr_sessions.items():
                   if session_info['visa_resource_name'] == request.visa_resource_name:
                      return keysightdmm_pb2.SessionInformation(session_id=session_id)
 
@@ -191,13 +191,13 @@ The high-level workflow is outlined below, with detailed instructions available 
                   'serial_configuration': request.serial_configuration,
                   # Add any other session-specific data as needed
                }
-               self.dmm_sessions[session_id] = session_info
+               self.Instr_sessions[session_id] = session_info
 
                return keysightdmm_pb2.SessionInformation(session_id=session_id)
       ```
 
 3. **Host & Register the gRPC Service**
-   - Host the FileLogger as gRPC service.
+   - Host the CustomInstrument as gRPC service.
    - Register the service with the Discovery Service to ensure measurement plugins can dynamically discover and connect to it.
 
       ```py
@@ -247,15 +247,15 @@ The high-level workflow is outlined below, with detailed instructions available 
 
    ```py
       # Session Constructor for managing file sessions
-      class FileSessionConstructor:
+      class CustomInstrSessionConstructor:
          def __init__(self, resource_name, initialization_behavior):
             # Store file resource name and initialization behavior
             self.resource_name = resource_name
             self.initialization_behavior = initialization_behavior
 
-         def __call__(self) -> FileServiceClient:
+         def __call__(self) -> CustomInstrClient:
             # Create and return a FileServiceClient instance
-            return FileServiceClient(self.resource_name, self.initialization_behavior)
+            return CustomInstrClient(self.resource_name, self.initialization_behavior)
    ```
 
 5. **Create Custom Instrument in PinMap**:
@@ -276,23 +276,24 @@ The high-level workflow is outlined below, with detailed instructions available 
   
 ```py
    # Instrument type ID (should match the one in the PinMap)
-   instrument_type_id = "FileLogger"
+   instrument_type_id = "CustomInstr"
 
-   # Create a session constructor for file operations with auto-initialization
-   file_session_constructor = FileSessionConstructor(file_resource_name, InitializationBehavior.AUTO)
+   # Create a session constructor for the custom instrument with auto-initialization
+   custom_instr_session_constructor = CustomInstrSessionConstructor(visa_resource_name, InitializationBehavior.AUTO)
 
-   # Reserve the session for the given resource
-   with measurement_service.context.reserve_session(resource_name) as arbitrary_reservation:
+   # Reserve the session for the given VISA resource
+   with measurement_service.context.reserve_session(visa_resource_name) as arbitrary_reservation:
       # Initialize the session using the session constructor
-      with arbitrary_reservation.initialize_session(file_session_constructor, instrument_type_id) as arbitrary_session_info:
-         arbitrary_session = arbitrary_session_info.session  # Extract the active session
+      with arbitrary_reservation.initialize_session(custom_instr_session_constructor, instrument_type_id) as arbitrary_session_info:
+         custom_instr_session = arbitrary_session_info.session  # Extract the active session
          
-         # Write content to the file
-         arbitrary_session.WriteFile(content=content)
+         # Configure the measurement (example: DC voltage)
+         custom_instr_session.ConfigureMeasurement(function=Function.DC_VOLTAGE, enable_auto_range=True)
          
-         # Read and print file content
-         print(arbitrary_session.ReadFile())
-   ```
+         # Read a single point measurement and print the result
+         result = custom_instr_session.ReadSinglePoint()
+         print(f"Measurement: {result.measurement}")
+```
 
 ## Proposed Design & Implementation
 
