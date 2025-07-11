@@ -45,23 +45,23 @@ A solution is needed to manage and share arbitrary sessions—such as custom ins
 
 ![alt text](workflow.png)
 
-A step-by-step user guide, along with Python and LabVIEW examples, will be provided to help users implement session reservation and the sharing of arbitrary sessions. The reference guide and examples will cover everything from defining arbitrary functions as a gRPC service to reserving and registering sessions using session management service APIs for both Python and LabVIEW. It will also guide users on implementing session sharing using the appropriate [initialization behavior ENUM](https://github.com/ni/measurement-plugin-python/blob/001af74269501f874aa4f092ee2963bb9290348e/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L457C1-L457C46) on the server side.
+A step-by-step user guide, along with Python examples, will be provided to help users implement session reservation and the sharing of arbitrary sessions. The reference guide and examples will cover everything from defining arbitrary functions as a gRPC service to reserving and registering sessions using session management service APIs for both Python and LabVIEW. It will also guide users on implementing session sharing using the appropriate [initialization behavior ENUM](https://github.com/ni/measurement-plugin-python/blob/001af74269501f874aa4f092ee2963bb9290348e/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L457C1-L457C46) on the server side.
 
 The high-level workflow is outlined below, with detailed instructions available in the deliverable - **User Reference Guide**.
 
 1. **User has to Create a gRPC Service for the Arbitrary Functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
    - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).
-   - An example proto file for a custom instrument called `KeyvoltDMM` with read/configure functions to be hosted as gRPC service is shown below.
+   - An example proto file for a custom instrument with read/configure functions to be hosted as gRPC service is shown below.
 
       ```proto
          syntax = "proto3";
 
          // Define the package name
-         package KeyvoltDMM;
+         package CustomInstrument;
 
-         // Define the BasicKeyvoltDMM service with its RPC methods
-         service KeyvoltDMM {
+         // Define the CustomInstrument service with its RPC methods
+         service CustomInstrument {
             rpc Initialize (InitializeInputs) returns (SessionInformation) {}
             rpc Close (SessionInformation) returns (StatusInfo) {}
             rpc ConfigureMeasurement (ConfigureMeasurementInfo) returns (SessionInformation) {}
@@ -169,17 +169,17 @@ The high-level workflow is outlined below, with detailed instructions available 
    - A Python server side example is given for the AUTO initialization behavior.
 
       ```py
-      class KeyvoltDmmServicer(KeyvoltDmm_pb2_grpc.KeyvoltDmmServicer):
+      class CustomInstrumentServicer(CustomInstrument_pb2_grpc.CustomInstrumentServicer):
          def __init__(self):
             self.instr_sessions = {}
 
          def Initialize(self, request, context):
             # Example: AUTO initialization behavior
-            if request.initialization_behavior == keyvoltdmm_pb2.AUTO:
+            if request.initialization_behavior == custom_instrument_pb2.AUTO:
                # Check if a session already exists for the given VISA resource
                for session_id, session_info in self.instr_sessions.items():
                   if session_info['visa_resource_name'] == request.visa_resource_name:
-                     return keyvoltdmm_pb2.SessionInformation(session_id=session_id)
+                     return custom_instrument_pb2.SessionInformation(session_id=session_id)
 
                # Otherwise, create a new session
                session_id = str(uuid.uuid4())
@@ -193,7 +193,7 @@ The high-level workflow is outlined below, with detailed instructions available 
                }
                self.instr_sessions[session_id] = session_info
 
-               return keyvoltdmm_pb2.SessionInformation(session_id=session_id)
+               return custom_instrument_pb2.SessionInformation(session_id=session_id)
       ```
 
 3. **Host & Register the gRPC Service**
@@ -205,8 +205,8 @@ The high-level workflow is outlined below, with detailed instructions available 
          # Create a gRPC server with multiple worker threads
          server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-         # Add the KeyvoltDmmServiceServicer to the server
-         keyvolt_dmm_pb2_grpc.add_KeyvoltDmmServicer_to_server(KeyvoltDmmServicer(), server)
+         # Add the CustomInstrumentServicer to the server
+         custom_instrument_dmm_pb2_grpc.add_CustomInstrumentServicer_to_server(CustomInstrumentServicer(), server)
 
          # Define host and assign a free available port
          host = "[::1]"
@@ -219,7 +219,7 @@ The high-level workflow is outlined below, with detailed instructions available 
          discovery_client = DiscoveryClient()
          service_info = ServiceInfo(
             service_class=GRPC_SERVICE_CLASS,
-            description_url="Custom DMM Instrument",
+            description_url="Custom Instrument",
             provided_interfaces=[GRPC_SERVICE_INTERFACE_NAME],
             display_name=DISPLAY_NAME,
          )
@@ -247,15 +247,15 @@ The high-level workflow is outlined below, with detailed instructions available 
 
    ```py
       # Session Constructor for managing instrument sessions
-      class KeyvoltDmmSessionConstructor:
+      class CustomInstrumentSessionConstructor:
          def __init__(self, resource_name, initialization_behavior):
             # Store file resource name and initialization behavior
             self.resource_name = resource_name
             self.initialization_behavior = initialization_behavior
 
-         def __call__(self) -> KeyvoltDmmClient:
+         def __call__(self) -> CustomInstrumentClient:
             # Create and return a client instance
-            return KeyvoltDmmClient(self.resource_name, self.initialization_behavior)
+            return CustomInstrumentClient(self.resource_name, self.initialization_behavior)
    ```
 
 5. **Create Custom Instrument in PinMap**:
@@ -276,10 +276,10 @@ The high-level workflow is outlined below, with detailed instructions available 
   
 ```py
    # Instrument type ID (should match the one in the PinMap)
-   instrument_type_id = "KeyvoltDMM"
+   instrument_type_id = "CustomInstrument"
 
    # Create a session constructor for the custom instrument with auto-initialization
-   custom_instr_session_constructor = KeyvoltDmmSessionConstructor(visa_resource_name, InitializationBehavior.AUTO)
+   custom_instr_session_constructor = CustomInstrumentSessionConstructor(visa_resource_name, InitializationBehavior.AUTO)
 
    # Reserve the session for the given VISA resource
    with measurement_service.context.reserve_session(visa_resource_name) as arbitrary_reservation:
