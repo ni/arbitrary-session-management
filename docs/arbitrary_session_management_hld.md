@@ -1,6 +1,6 @@
 # Session Management for Custom Instrument Session
 
-- [Session Management for Custom Instrument Session](#session-management-for-custom Instrument-session)
+- [Session Management for Custom Instrument Session](#session-management-for-custom-instrument-session)
   - [Who](#who)
   - [Feature WorkItem](#feature-workitem)
   - [Problem Statement](#problem-statement)
@@ -43,7 +43,7 @@ A solution is needed to manage and share arbitrary sessions—such as custom ins
 
 ## Workflow
 
-![alt text](workflow.png)
+![alt text](images/concept_overview.png)
 
 A step-by-step user guide, along with Python examples, will be provided to help users implement session reservation and the sharing of arbitrary sessions. The reference guide and examples will cover everything from defining arbitrary functions as a gRPC service to reserving and registering sessions using session management service APIs for both Python and LabVIEW. It will also guide users on implementing session sharing using the appropriate [initialization behavior ENUM](https://github.com/ni/measurement-plugin-python/blob/001af74269501f874aa4f092ee2963bb9290348e/packages/service/ni_measurement_plugin_sdk_service/session_management/_types.py#L457C1-L457C46) on the server side.
 
