@@ -27,11 +27,11 @@
 
 ## Feature WorkItem
 
-[Feature: Session Management to maintain arbitrary session](https://dev.azure.com/ni/DevCentral/_workitems/edit/2956637)
+[Feature: Create a custom instrument example to demonstrate session management](https://dev.azure.com/ni/DevCentral/_workitems/edit/3154212)
 
 ## Problem Statement
 
-A solution is needed to manage and share arbitrary sessions (e.g., custom instruments, data communication, file references, etc.,) across multiple measurement plugins ensuring controlled access through a session reservation mechanism to prevent conflicts.
+A solution is needed to manage and share arbitrary sessions—such as custom instruments, data communication etc., ensuring controlled access through a session reservation mechanism to prevent conflicts. The current example could be improved or added with a new variant that better resonates with the users.
 
 ### Key Requirements
 
@@ -52,16 +52,16 @@ The high-level workflow is outlined below, with detailed instructions available 
 1. **User has to Create a gRPC Service for the Arbitrary Functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
    - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).
-   - An example proto file for a custom instrument with read/configure functions to be hosted as gRPC service is shown below.
+   - An example proto file for a custom instrument called `KeyvoltDMM` with read/configure functions to be hosted as gRPC service is shown below.
 
       ```proto
          syntax = "proto3";
 
          // Define the package name
-         package CustomInstrument;
+         package KeyvoltDMM;
 
-         // Define the BasicCustomInstrument service with its RPC methods
-         service BasicCustomInstrument {
+         // Define the BasicKeyvoltDMM service with its RPC methods
+         service ProbeMate {
             rpc Initialize (InitializeInputs) returns (SessionInformation) {}
             rpc Close (SessionInformation) returns (StatusInfo) {}
             rpc ConfigureMeasurement (ConfigureMeasurementInfo) returns (SessionInformation) {}
@@ -169,7 +169,7 @@ The high-level workflow is outlined below, with detailed instructions available 
    - A Python server side example is given for the AUTO initialization behavior.
 
       ```py
-      class CustomInstrumentServicer(CustomInstrument_pb2_grpc.CustomInstrumentServicer):
+      class KeyvoltDmmServicer(KeyvoltDmm_pb2_grpc.KeyvoltDmmServicer):
          def __init__(self):
             self.Instr_sessions = {}
 
@@ -205,8 +205,8 @@ The high-level workflow is outlined below, with detailed instructions available 
          # Create a gRPC server with multiple worker threads
          server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-         # Add the FileServiceServicer to the server
-         file_service_pb2_grpc.add_FileServiceServicer_to_server(FileServiceServicer(), server)
+         # Add the KeyvoltDmmServiceServicer to the server
+         keyvolt_dmm_pb2_grpc.add_KeyvoltDmmServicer_to_server(KeyvoltDmmServicer(), server)
 
          # Define host and assign a free available port
          host = "[::1]"
@@ -219,7 +219,7 @@ The high-level workflow is outlined below, with detailed instructions available 
          discovery_client = DiscoveryClient()
          service_info = ServiceInfo(
             service_class=GRPC_SERVICE_CLASS,
-            description_url="File Service",
+            description_url="Custom DMM Instrument",
             provided_interfaces=[GRPC_SERVICE_INTERFACE_NAME],
             display_name=DISPLAY_NAME,
          )
@@ -246,16 +246,16 @@ The high-level workflow is outlined below, with detailed instructions available 
       ![alt text](client_side_stubs.png)
 
    ```py
-      # Session Constructor for managing file sessions
-      class CustomInstrSessionConstructor:
+      # Session Constructor for managing instrument sessions
+      class KeyvoltDmmSessionConstructor:
          def __init__(self, resource_name, initialization_behavior):
             # Store file resource name and initialization behavior
             self.resource_name = resource_name
             self.initialization_behavior = initialization_behavior
 
-         def __call__(self) -> CustomInstrClient:
-            # Create and return a FileServiceClient instance
-            return CustomInstrClient(self.resource_name, self.initialization_behavior)
+         def __call__(self) -> KeyvoltDmmClient:
+            # Create and return a client instance
+            return KeyvoltDmmClient(self.resource_name, self.initialization_behavior)
    ```
 
 5. **Create Custom Instrument in PinMap**:
@@ -276,10 +276,10 @@ The high-level workflow is outlined below, with detailed instructions available 
   
 ```py
    # Instrument type ID (should match the one in the PinMap)
-   instrument_type_id = "CustomInstr"
+   instrument_type_id = "KeyvoltDMM"
 
    # Create a session constructor for the custom instrument with auto-initialization
-   custom_instr_session_constructor = CustomInstrSessionConstructor(visa_resource_name, InitializationBehavior.AUTO)
+   custom_instr_session_constructor = KeyvoltDmmSessionConstructor(visa_resource_name, InitializationBehavior.AUTO)
 
    # Reserve the session for the given VISA resource
    with measurement_service.context.reserve_session(visa_resource_name) as arbitrary_reservation:
