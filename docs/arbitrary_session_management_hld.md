@@ -61,7 +61,7 @@ The high-level workflow is outlined below, with detailed instructions available 
          package KeyvoltDMM;
 
          // Define the BasicKeyvoltDMM service with its RPC methods
-         service ProbeMate {
+         service KeyvoltDMM {
             rpc Initialize (InitializeInputs) returns (SessionInformation) {}
             rpc Close (SessionInformation) returns (StatusInfo) {}
             rpc ConfigureMeasurement (ConfigureMeasurementInfo) returns (SessionInformation) {}
@@ -201,7 +201,7 @@ The high-level workflow is outlined below, with detailed instructions available 
    - Register the service with the Discovery Service to ensure measurement plugins can dynamically discover and connect to it.
 
       ```py
-      def serve():
+      def server():
          # Create a gRPC server with multiple worker threads
          server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
@@ -297,7 +297,7 @@ The high-level workflow is outlined below, with detailed instructions available 
 
 ## Proposed Design & Implementation
 
-To address the problem, a reference guide and example for both Python and LabVIEW will be provided which will demonstrate how to manage and share arbitrary sessions (e.g., database connections, file connections) across multiple measurement plugins. The solution will incorporate the session reservation mechanism using the existing session management service.
+To address the problem, a reference guide and example in python will be provided which will demonstrate how to manage and share custom instrument sessions across multiple measurement plugins. The solution will incorporate the session reservation mechanism using the existing session management service.
 
 In this workflow, users are expected to define core functionalities as APIs in the proto file and then host them as a gRPC service.
 
