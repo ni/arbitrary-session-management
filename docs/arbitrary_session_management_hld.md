@@ -1,6 +1,6 @@
-# Session Management for Arbitrary Session
+# Session Management for Custom Instrument Session
 
-- [Session Management for Arbitrary Session](#session-management-for-arbitrary-session)
+- [Session Management for Custom Instrument Session](#session-management-for-custom Instrument-session)
   - [Who](#who)
   - [Feature WorkItem](#feature-workitem)
   - [Problem Statement](#problem-statement)
@@ -171,15 +171,15 @@ The high-level workflow is outlined below, with detailed instructions available 
       ```py
       class KeyvoltDmmServicer(KeyvoltDmm_pb2_grpc.KeyvoltDmmServicer):
          def __init__(self):
-            self.Instr_sessions = {}
+            self.instr_sessions = {}
 
          def Initialize(self, request, context):
             # Example: AUTO initialization behavior
-            if request.initialization_behavior == keysightdmm_pb2.AUTO:
+            if request.initialization_behavior == keyvoltdmm_pb2.AUTO:
                # Check if a session already exists for the given VISA resource
-               for session_id, session_info in self.Instr_sessions.items():
+               for session_id, session_info in self.instr_sessions.items():
                   if session_info['visa_resource_name'] == request.visa_resource_name:
-                     return keysightdmm_pb2.SessionInformation(session_id=session_id)
+                     return keyvoltdmm_pb2.SessionInformation(session_id=session_id)
 
                # Otherwise, create a new session
                session_id = str(uuid.uuid4())
@@ -191,9 +191,9 @@ The high-level workflow is outlined below, with detailed instructions available 
                   'serial_configuration': request.serial_configuration,
                   # Add any other session-specific data as needed
                }
-               self.Instr_sessions[session_id] = session_info
+               self.instr_sessions[session_id] = session_info
 
-               return keysightdmm_pb2.SessionInformation(session_id=session_id)
+               return keyvoltdmm_pb2.SessionInformation(session_id=session_id)
       ```
 
 3. **Host & Register the gRPC Service**
