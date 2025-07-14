@@ -1,6 +1,6 @@
-# Session Management for Custom Instrument Session
+# Session Management for Device Communication
 
-- [Session Management for Custom Instrument Session](#session-management-for-custom-instrument-session)
+- [Session Management for Device Communication](#session-management-for-device-communication)
   - [Who](#who)
   - [Feature WorkItem](#feature-workitem)
   - [Problem Statement](#problem-statement)
@@ -27,7 +27,7 @@
 
 ## Feature WorkItem
 
-[Feature: Create a custom instrument example to demonstrate session management](https://dev.azure.com/ni/DevCentral/_workitems/edit/3154212)
+[Feature: Create a device communication example to demonstrate session management](https://dev.azure.com/ni/DevCentral/_workitems/edit/3154212)
 
 ## Problem Statement
 
@@ -52,110 +52,94 @@ The high-level workflow is outlined below, with detailed instructions available 
 1. **User has to Create a gRPC Service for the Arbitrary Functions**  
    - Implement the logical functions that need to be exposed to the client on each function call (e.g., database or file operations).  
    - Include session-handling APIs (e.g., `InitializeSession`, `DestroySession`).
-   - An example proto file for a custom instrument with read/configure functions to be hosted as gRPC service is shown below.
+   - An example proto file for a device communication to be hosted as gRPC service is shown below.
 
       ```proto
          syntax = "proto3";
 
-         // Define the package name
-         package CustomInstrument;
+         package DeviceCommunication;
 
-         // Define the CustomInstrument service with its RPC methods
-         service CustomInstrument {
-            rpc Initialize (InitializeInputs) returns (SessionInformation) {}
-            rpc Close (SessionInformation) returns (StatusInfo) {}
-            rpc ConfigureMeasurement (ConfigureMeasurementInfo) returns (SessionInformation) {}
-            rpc ReadSinglePoint (SessionInformation) returns (ReadSinglePointResult) {}
+         // Protocol enumeration for device communication
+         enum Protocol {
+            SPI = 0;
+            I2C = 1;
+            UART = 2;
+            I3C = 3;
+            ETHERNET = 4;
          }
 
-         // Message to return status information
-         message StatusInfo {
-            string status = 1;
+         // Service definition for device communication
+         service DeviceCommunication {
+            rpc Initialize (InitializeRequest) returns (StatusResponse) {}
+            rpc Close (CloseRequest) returns (StatusResponse) {}
+            rpc WriteRegister (WriteRegisterRequest) returns (StatusResponse) {}
+            rpc ReadRegister (ReadRegisterRequest) returns (ReadRegisterResponse) {}
+            rpc WriteGpioChannel (WriteGpioChannelRequest) returns (StatusResponse) {}
+            rpc ReadGpioChannel (ReadGpioChannelRequest) returns (ReadGpioChannelResponse) {}
+            rpc WriteGpioPort (WriteGpioPortRequest) returns (StatusResponse) {}
+            rpc ReadGpioPort (ReadGpioPortRequest) returns (ReadGpioPortResponse) {}
          }
 
-         message SessionInformation {
-            uint64 session_id = 1;
-         }
+         // Request/Response messages
 
-         // Enumeration for baud rates
-         enum BaudRate {
-            BAUDRATE_300 = 0;
-            BAUDRATE_600 = 1;
-            BAUDRATE_1200 = 2;
-            BAUDRATE_2400 = 3;
-            BAUDRATE_4800 = 4;
-            BAUDRATE_9600 = 5;
-            BAUDRATE_19200 = 6;
-         }
-
-         // Enumeration for parity settings
-         enum Parity {
-            NONE = 0;
-            ODD = 1;
-            EVEN = 2;
-         }
-
-         // Enumeration for data bits settings
-         enum DataBits {
-            SEVEN = 0;
-            EIGHT = 1;
-         }
-
-         // Message to hold serial configuration settings
-         message SerialConfiguration {
-            BaudRate baud_rate = 1;
-            Parity parity = 2;
-            DataBits data_bits = 3;
-         }
-
-         // Message to hold inputs for initializing the VISA resource
-         message InitializeInputs {
-            string visa_resource_name = 1;
-            bool id_query = 2;
+         message InitializeRequest {
+            string device_id = 1;
+            Protocol protocol = 2;
             bool reset = 3;
-            SerialConfiguration serial_configuration = 4;
+            string register_map = 4;
          }
 
-         // Enumeration for measurement functions
-         enum Function {
-            DC_VOLTAGE = 0;
-            AC_VOLTAGE = 1;
-            TWO_WIRE_RESISTANCE = 2;
-            FOUR_WIRE_RESISTANCE = 3;
-            DC_CURRENT = 4;
-            AC_CURRENT = 5;
-            FREQUENCY = 6;
-            PERIOD = 7;
-            CONTINUITY = 8;
-            DIODE_CHECKING = 9;
-            VDC_VCD_RATIO = 10;
-            TEMPERATURE = 11;
-            CAPACITANCE = 12;
+         message CloseRequest {
+            string device_id = 1;
          }
 
-         // Enumeration for manual resolution settings
-         enum ManualResolution {
-            RESOLUTION_4_5_DIGITS = 0;
-            RESOLUTION_5_5_DIGITS = 1;
-            RESOLUTION_6_5_DIGITS = 2;
+         message WriteRegisterRequest {
+            string name = 1;
+            int32 value = 2;
          }
 
-         // Message to hold configuration settings for a measurement
-         message ConfigureMeasurementInfo {
-            SessionInformation session_info = 1;
-            Function function = 2;
-            bool enable_auto_range = 3;
-            ManualResolution manual_resolution = 4;
-            double manual_range = 5;
+         message ReadRegisterRequest {
+            string name = 1;
          }
 
-         // Message to return the result of a single point measurement
-         message ReadSinglePointResult {
-            SessionInformation session_info = 1;
-            double measurement = 2;
+         message ReadRegisterResponse {
+            int32 value = 1;
          }
 
-         // Similary other APIs for the core functionalities should be defined.
+         message WriteGpioChannelRequest {
+            int32 port = 1;
+            int32 channel = 2;
+            bool state = 3;
+         }
+
+         message ReadGpioChannelRequest {
+            int32 port = 1;
+            int32 channel = 2;
+         }
+
+         message ReadGpioChannelResponse {
+            bool state = 1;
+         }
+
+         message WriteGpioPortRequest {
+            int32 port = 1;
+            int32 mask = 2;
+            int32 state = 3;
+         }
+
+         message ReadGpioPortRequest {
+            int32 port = 1;
+            int32 mask = 2;
+         }
+
+         message ReadGpioPortResponse {
+            int32 state = 1;
+         }
+
+         message StatusResponse {
+            string status = 1;
+            string error_message = 2;
+         }
       ```
 
 2. **User has to Implement Session Initialization Behavior**  
@@ -169,35 +153,40 @@ The high-level workflow is outlined below, with detailed instructions available 
    - A Python server side example is given for the AUTO initialization behavior.
 
       ```py
-      class CustomInstrumentServicer(CustomInstrument_pb2_grpc.CustomInstrumentServicer):
+      class DeviceCommunicationServicer(DeviceCommunication_pb2_grpc.DeviceCommunicationServicer):
          def __init__(self):
-            self.instr_sessions = {}
+            self.sessions = {}
 
          def Initialize(self, request, context):
             # Example: AUTO initialization behavior
-            if request.initialization_behavior == custom_instrument_pb2.AUTO:
-               # Check if a session already exists for the given VISA resource
-               for session_id, session_info in self.instr_sessions.items():
-                  if session_info['visa_resource_name'] == request.visa_resource_name:
-                     return custom_instrument_pb2.SessionInformation(session_id=session_id)
+            # Try to find an existing session for the given device_id and protocol
+            for session_id, session_info in self.sessions.items():
+               if (session_info['device_id'] == request.device_id and
+                  session_info['protocol'] == request.protocol):
+                  return DeviceCommunication_pb2.StatusResponse(
+                     status="OK",
+                     error_message="",
+                  )
 
-               # Otherwise, create a new session
-               session_id = str(uuid.uuid4())
-               # Here, you would initialize the actual instrument session (stubbed below)
-               session_info = {
-                  'visa_resource_name': request.visa_resource_name,
-                  'id_query': request.id_query,
-                  'reset': request.reset,
-                  'serial_configuration': request.serial_configuration,
-                  # Add any other session-specific data as needed
-               }
-               self.instr_sessions[session_id] = session_info
+            # Otherwise, create a new session
+            session_id = str(uuid.uuid4())
+            session_info = {
+               'device_id': request.device_id,
+               'protocol': request.protocol,
+               'reset': request.reset,
+               'register_map': request.register_map,
+               # Add any other session-specific data as needed
+            }
+            self.sessions[session_id] = session_info
 
-               return custom_instrument_pb2.SessionInformation(session_id=session_id)
+            return DeviceCommunication_pb2.StatusResponse(
+               status="OK",
+               error_message="",
+            )
       ```
 
 3. **Host & Register the gRPC Service**
-   - Host the CustomInstrument as gRPC service.
+   - Host the device communication as gRPC service.
    - Register the service with the Discovery Service to ensure measurement plugins can dynamically discover and connect to it.
 
       ```py
@@ -205,8 +194,8 @@ The high-level workflow is outlined below, with detailed instructions available 
          # Create a gRPC server with multiple worker threads
          server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-         # Add the CustomInstrumentServicer to the server
-         custom_instrument_dmm_pb2_grpc.add_CustomInstrumentServicer_to_server(CustomInstrumentServicer(), server)
+         # Add the DeviceCommunicationServicer to the server
+         device_communication_pb2_grpc.add_DeviceCommunicationServicer_to_server(DeviceCommunicationServicer(), server)
 
          # Define host and assign a free available port
          host = "[::1]"
@@ -219,7 +208,7 @@ The high-level workflow is outlined below, with detailed instructions available 
          discovery_client = DiscoveryClient()
          service_info = ServiceInfo(
             service_class=GRPC_SERVICE_CLASS,
-            description_url="Custom Instrument",
+            description_url="Device Communicaton",
             provided_interfaces=[GRPC_SERVICE_INTERFACE_NAME],
             display_name=DISPLAY_NAME,
          )
@@ -247,15 +236,15 @@ The high-level workflow is outlined below, with detailed instructions available 
 
    ```py
       # Session Constructor for managing instrument sessions
-      class CustomInstrumentSessionConstructor:
+      class DeviceCommunicationSessionConstructor:
          def __init__(self, resource_name, initialization_behavior):
             # Store file resource name and initialization behavior
             self.resource_name = resource_name
             self.initialization_behavior = initialization_behavior
 
-         def __call__(self) -> CustomInstrumentClient:
+         def __call__(self) -> DeviceCommunicationClient:
             # Create and return a client instance
-            return CustomInstrumentClient(self.resource_name, self.initialization_behavior)
+            return DeviceCommunicationClient(self.resource_name, self.initialization_behavior)
    ```
 
 5. **Create Custom Instrument in PinMap**:
@@ -276,23 +265,30 @@ The high-level workflow is outlined below, with detailed instructions available 
   
 ```py
    # Instrument type ID (should match the one in the PinMap)
-   instrument_type_id = "CustomInstrument"
+   instrument_type_id = "DeviceCommunication"
 
-   # Create a session constructor for the custom instrument with auto-initialization
-   custom_instr_session_constructor = CustomInstrumentSessionConstructor(visa_resource_name, InitializationBehavior.AUTO)
+   # Create a session constructor for device communication with auto-initialization
+   device_communication_session_constructor = DeviceCommunicationSessionConstructor(device_id, InitializationBehavior.AUTO)
 
-   # Reserve the session for the given VISA resource
-   with measurement_service.context.reserve_session(visa_resource_name) as arbitrary_reservation:
+   # Reserve the session for the given device resource
+   with measurement_service.context.reserve_session(device_id) as arbitrary_reservation:
       # Initialize the session using the session constructor
-      with arbitrary_reservation.initialize_session(custom_instr_session_constructor, instrument_type_id) as arbitrary_session_info:
-         custom_instr_session = arbitrary_session_info.session  # Extract the active session
-         
-         # Configure the measurement (example: DC voltage)
-         custom_instr_session.ConfigureMeasurement(function=Function.DC_VOLTAGE, enable_auto_range=True)
-         
-         # Read a single point measurement and print the result
-         result = custom_instr_session.ReadSinglePoint()
-         print(f"Measurement: {result.measurement}")
+      with arbitrary_reservation.initialize_session(device_communication_session_constructor, instrument_type_id) as arbitrary_session_info:
+         device_session = arbitrary_session_info.session  # Extract the active session
+
+         # Example: Write to a register
+         device_session.WriteRegister(name="CONTROL", value=0x01)
+
+         # Example: Read from a register and print the result
+         read_result = device_session.ReadRegister(name="STATUS")
+         print(f"Register STATUS value: {read_result.value}")
+
+         # Example: Write to a GPIO channel
+         device_session.WriteGpioChannel(port=1, channel=0, state=True)
+
+         # Example: Read from a GPIO channel
+         gpio_result = device_session.ReadGpioChannel(port=1, channel=0)
+         print(f"GPIO Channel State: {gpio_result.state}")
 ```
 
 ## Proposed Design & Implementation
