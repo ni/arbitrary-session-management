@@ -31,7 +31,7 @@
 
 ## Problem Statement
 
-A solution is needed to manage and share arbitrary sessions—such as custom instruments, data communication etc., ensuring controlled access through a session reservation mechanism to prevent conflicts. The current example could be improved or added with a new variant that better resonates with the users.
+A solution is needed to manage and share arbitrary sessions—such as data communications, custom instrument etc., ensuring controlled access through a session reservation mechanism to prevent conflicts. The current example could be improved or added with a new variant that better resonates with the users.
 
 ### Key Requirements
 
@@ -232,8 +232,6 @@ The high-level workflow is outlined below, with detailed instructions available 
      - Create a session constructor for the created client.
    - The created files will be used in the measurement plugin for session initialization.
 
-      ![alt text](client_side_stubs.png)
-
    ```py
       # Session Constructor for managing instrument sessions
       class DeviceCommunicationSessionConstructor:
@@ -247,8 +245,8 @@ The high-level workflow is outlined below, with detailed instructions available 
             return DeviceCommunicationClient(self.resource_name, self.initialization_behavior)
    ```
 
-5. **Create Custom Instrument in PinMap**:
-   - This design uses pin-centric workflow and requires a custom instrument in the PinMap to be associated with the arbitrary gRPC service.
+5. **Create data communication in PinMap**:
+   - This design uses pin-centric workflow and requires a data communication in the PinMap to be associated with the arbitrary gRPC service.
    - The instrument type ID defined in the pinmap is required when calling the session management service’s initialization API.
 
 6. **Reserve the Resource in the Measurement Plugin**  
@@ -293,7 +291,7 @@ The high-level workflow is outlined below, with detailed instructions available 
 
 ## Proposed Design & Implementation
 
-To address the problem, a reference guide and example in python will be provided which will demonstrate how to manage and share custom instrument sessions across multiple measurement plugins. The solution will incorporate the session reservation mechanism using the existing session management service.
+To address the problem, a reference guide and example in python will be provided which will demonstrate how to manage and share data communication sessions across multiple measurement plugins. The solution will incorporate the session reservation mechanism using the existing session management service.
 
 In this workflow, users are expected to define core functionalities as APIs in the proto file and then host them as a gRPC service.
 
@@ -315,7 +313,7 @@ Extending the IO Discovery Service (non-pin-centric workflow) is not suitable du
 
 **Disadvantages**
 
-**Lacks support for non pin centric workflow**: Since the user is required to define the custom instrument in the pin map and make the pin map active, the measurement plugins that are non-pin-centric will not be able to reserve the session as the activeness of pin map hinders the session management service to query the IO Discovery Service.
+**Lacks support for non pin centric workflow**: Since the user is required to define the data communication in the pin map and make the pin map active, the measurement plugins that are non-pin-centric will not be able to reserve the session as the activeness of pin map hinders the session management service to query the IO Discovery Service.
 
 ### Session Sharing
 
@@ -340,7 +338,7 @@ The gRPC service will register itself with the **Discovery Service** on startup 
 
 #### Session Initialization
 
-This will follow a model similar to NI-VISA instrument sessions, where a session constructor is defined and passed with initialize session API. The instrument type ID can be the one associated with the custom instrument specified in the pin map.
+This will follow a model similar to NI-VISA instrument sessions, where a session constructor is defined and passed with initialize session API. The instrument type ID can be the one associated with the data communication specified in the pin map.
 
 The implementation of initialization behavior will align with **NI gRPC Device Server’s** initialization behavior.
 
