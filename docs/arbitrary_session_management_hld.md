@@ -35,7 +35,7 @@ A solution is needed to manage and share arbitrary sessions—such as data commu
 
 ### Key Requirements
 
-**Session Reservation:** A mechanism to reserve and unreserve sessions that prevents simultaneous access by multiple measurement plugins, thereby avoiding conflicts.
+**Session Reservation:** A mechanism to reserve and unreserve sessions that prevent simultaneous access by multiple measurement plugins, thereby avoiding conflicts.
 
 **Session Registration:** A mechanism to register and unregister sessions in the session management service to enable the TestStand sequence workflow.
 
@@ -64,14 +64,12 @@ The high-level workflow is outlined below, with detailed instructions available 
             SPI = 0;
             I2C = 1;
             UART = 2;
-            I3C = 3;
-            ETHERNET = 4;
          }
 
          // Service definition for device communication
          service DeviceCommunication {
             rpc Initialize (InitializeRequest) returns (StatusResponse) {}
-            rpc Close (CloseRequest) returns (StatusResponse) {}
+            rpc Close () returns (StatusResponse) {}
             rpc WriteRegister (WriteRegisterRequest) returns (StatusResponse) {}
             rpc ReadRegister (ReadRegisterRequest) returns (ReadRegisterResponse) {}
             rpc WriteGpioChannel (WriteGpioChannelRequest) returns (StatusResponse) {}
@@ -87,10 +85,6 @@ The high-level workflow is outlined below, with detailed instructions available 
             Protocol protocol = 2;
             bool reset = 3;
             string register_map = 4;
-         }
-
-         message CloseRequest {
-            string device_id = 1;
          }
 
          message WriteRegisterRequest {
@@ -266,16 +260,16 @@ The high-level workflow is outlined below, with detailed instructions available 
    instrument_type_id = "DeviceCommunication"
 
    # Create a session constructor for device communication with auto-initialization
-   device_communication_session_constructor = DeviceCommunicationSessionConstructor(device_id, InitializationBehavior.AUTO)
+   device_communication_session_constructor = DeviceCommunicationSessionConstructor(device_comm_port, InitializationBehavior.AUTO)
 
    # Reserve the session for the given device resource
-   with measurement_service.context.reserve_session(device_id) as arbitrary_reservation:
+   with measurement_service.context.reserve_session(resource_name) as arbitrary_reservation:
       # Initialize the session using the session constructor
       with arbitrary_reservation.initialize_session(device_communication_session_constructor, instrument_type_id) as arbitrary_session_info:
          device_session = arbitrary_session_info.session  # Extract the active session
 
          # Example: Write to a register
-         device_session.WriteRegister(name="CONTROL", value=0x01)
+         device_session.WriteRegister(name="CONTROL_WORD", value=0x01)
 
          # Example: Read from a register and print the result
          read_result = device_session.ReadRegister(name="STATUS")
