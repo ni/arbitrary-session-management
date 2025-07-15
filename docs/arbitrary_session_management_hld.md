@@ -229,14 +229,13 @@ The high-level workflow is outlined below, with detailed instructions available 
    ```py
       # Session Constructor for managing instrument sessions
       class DeviceCommunicationSessionConstructor:
-         def __init__(self, resource_name, initialization_behavior):
+         def __init__(self, initialization_behavior):
             # Store file resource name and initialization behavior
-            self.resource_name = resource_name
             self.initialization_behavior = initialization_behavior
 
-         def __call__(self) -> DeviceCommunicationClient:
+         def __call__(self, session_info: SessionInformation) -> DeviceCommunicationClient:
             # Create and return a client instance
-            return DeviceCommunicationClient(self.resource_name, self.initialization_behavior)
+            return DeviceCommunicationClient(session_info.resource_name, self.initialization_behavior)
    ```
 
 5. **Create data communication in PinMap**:
@@ -260,10 +259,10 @@ The high-level workflow is outlined below, with detailed instructions available 
    instrument_type_id = "DeviceCommunication"
 
    # Create a session constructor for device communication with auto-initialization
-   device_communication_session_constructor = DeviceCommunicationSessionConstructor(device_comm_port, InitializationBehavior.AUTO)
+   device_communication_session_constructor = DeviceCommunicationSessionConstructor(InitializationBehavior.AUTO)
 
    # Reserve the session for the given device resource
-   with measurement_service.context.reserve_session(resource_name) as arbitrary_reservation:
+   with measurement_service.context.reserve_session(device_comm_pin) as arbitrary_reservation:
       # Initialize the session using the session constructor
       with arbitrary_reservation.initialize_session(device_communication_session_constructor, instrument_type_id) as arbitrary_session_info:
          device_session = arbitrary_session_info.session  # Extract the active session
