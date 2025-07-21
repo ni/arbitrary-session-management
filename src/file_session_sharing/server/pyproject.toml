@@ -17,6 +17,7 @@ dependencies = [
 ni-python-styleguide = "^0.4.6"
 mypy = "^1.15.0"
 bandit = "^1.8.3"
+mypy-protobuf = "^3.6.0"
 
 [tool.mypy]
 disallow_untyped_defs = true

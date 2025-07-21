@@ -74,13 +74,14 @@ Once the plugin is done, it **unreserves the session**. The session tracking and
 ```text
 arbitrary-session-management
 |-- src/
-|   |-- server/                        gRPC server implementation for session management and logging
-|   |-- client/                        Example client code for interacting with the server
-|   |-- examples/               
-│       |-- nidcpower_measurement_with_logger/   Example: DCPower measurement with logging
-│       |-- nidmm_measurement_with_logger/       Example: DMM measurement with logging
-|       |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
-|       |-- pinmap/                              Pinmap for the Measurement Plugins and TestStand sequence
+|   |--file_session_sharing
+|       |-- server/                        gRPC server implementation for session management and logging
+|       |-- client/                        Example client code for interacting with the server
+|       |-- examples/               
+│           |-- nidcpower_measurement_with_logger/   Example: DCPower measurement with logging
+│           |-- nidmm_measurement_with_logger/       Example: DMM measurement with logging
+|           |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
+|           |-- pinmap/                              Pinmap for the Measurement Plugins and TestStand sequence
 |-- README.md
 |-- ...
 ```
@@ -118,11 +119,11 @@ To simulate the instruments *without* using NI MAX or [NI Hardware Configuration
 
 3. Follow the README instructions in each of the following directories, in the following order:
 
-   - [server](src/server/README.md)
-   - [client](src/client/README.md)
-   - [nidcpower_measurement_with_logger](src/examples/nidcpower_measurement_with_logger/README.md)
-   - [nidmm_measurement_with_logger](src/examples/nidmm_measurement_with_logger/README.md)
-   - [teststand_sequence](src/examples/teststand_sequence/README.md)
+   - [server](src/file_session_sharing/server/README.md)
+   - [client](src/file_session_sharing/client/README.md)
+   - [nidcpower_measurement_with_logger](src/file_session_sharing/examples/nidcpower_measurement_with_logger/README.md)
+   - [nidmm_measurement_with_logger](src/file_session_sharing/examples/nidmm_measurement_with_logger/README.md)
+   - [teststand_sequence](src/file_session_sharing/examples/teststand_sequence/README.md)
 
 4. Start the server and run the example workflows as described in the respective `README.md`.
 
@@ -143,7 +144,7 @@ The following steps provide a detailed guide for implementing session sharing fo
 
 The first step is to define a `.proto` file. In this implementation, a custom gRPC server is used to handle session-based functionalities.
 
-A [sample.proto](src/server/json_logger.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means one can use the same approach to expose other resources, like instruments, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
+A [sample.proto](src/file_session_sharing/server/json_logger.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means one can use the same approach to expose other resources, like instruments, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
 
 It is essential to familiarize with basics of gRPC in Python using the following resources,
 
@@ -253,7 +254,7 @@ The server is responsible for hosting the core functionality and, more important
 
 #### Steps to Implement the Server
 
-The [example implementation](src/server/server.py) in this repository demonstrates this logic in detail.
+The [example implementation](src/file_session_sharing/server/server.py) in this repository demonstrates this logic in detail.
 
 1. **Create a Python file for your server implementation**
 
