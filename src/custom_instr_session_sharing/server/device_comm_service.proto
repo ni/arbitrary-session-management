@@ -28,6 +28,7 @@ message InitializeRequest {
     Protocol protocol = 2;
     bool reset = 3;
     string register_map = 4;
+    SessionInitializationBehavior initialization_behavior = 5;
 }
 
 message WriteRegisterRequest {
@@ -80,4 +81,11 @@ message StatusResponse {
 
 message CloseRequest {
     string name = 1;
+}
+
+enum SessionInitializationBehavior {
+  // Automatically decide whether to initialize new or attach.
+  SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED = 0;
+  SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW = 1;
+  SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING = 2;
 }

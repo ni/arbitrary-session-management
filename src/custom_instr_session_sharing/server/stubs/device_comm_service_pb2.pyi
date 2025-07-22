@@ -35,6 +35,25 @@ I2C: Protocol.ValueType  # 1
 UART: Protocol.ValueType  # 2
 global___Protocol = Protocol
 
+class _SessionInitializationBehavior:
+    ValueType = typing.NewType("ValueType", builtins.int)
+    V: typing_extensions.TypeAlias = ValueType
+
+class _SessionInitializationBehaviorEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_SessionInitializationBehavior.ValueType], builtins.type):
+    DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+    SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED: _SessionInitializationBehavior.ValueType  # 0
+    """Automatically decide whether to initialize new or attach."""
+    SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW: _SessionInitializationBehavior.ValueType  # 1
+    SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING: _SessionInitializationBehavior.ValueType  # 2
+
+class SessionInitializationBehavior(_SessionInitializationBehavior, metaclass=_SessionInitializationBehaviorEnumTypeWrapper): ...
+
+SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED: SessionInitializationBehavior.ValueType  # 0
+"""Automatically decide whether to initialize new or attach."""
+SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW: SessionInitializationBehavior.ValueType  # 1
+SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING: SessionInitializationBehavior.ValueType  # 2
+global___SessionInitializationBehavior = SessionInitializationBehavior
+
 @typing.final
 class InitializeRequest(google.protobuf.message.Message):
     """Request/Response messages"""
@@ -45,10 +64,12 @@ class InitializeRequest(google.protobuf.message.Message):
     PROTOCOL_FIELD_NUMBER: builtins.int
     RESET_FIELD_NUMBER: builtins.int
     REGISTER_MAP_FIELD_NUMBER: builtins.int
+    INITIALIZATION_BEHAVIOR_FIELD_NUMBER: builtins.int
     device_id: builtins.str
     protocol: global___Protocol.ValueType
     reset: builtins.bool
     register_map: builtins.str
+    initialization_behavior: global___SessionInitializationBehavior.ValueType
     def __init__(
         self,
         *,
@@ -56,8 +77,9 @@ class InitializeRequest(google.protobuf.message.Message):
         protocol: global___Protocol.ValueType = ...,
         reset: builtins.bool = ...,
         register_map: builtins.str = ...,
+        initialization_behavior: global___SessionInitializationBehavior.ValueType = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["device_id", b"device_id", "protocol", b"protocol", "register_map", b"register_map", "reset", b"reset"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["device_id", b"device_id", "initialization_behavior", b"initialization_behavior", "protocol", b"protocol", "register_map", b"register_map", "reset", b"reset"]) -> None: ...
 
 global___InitializeRequest = InitializeRequest
 
