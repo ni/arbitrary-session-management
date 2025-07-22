@@ -74,13 +74,14 @@ Once the plugin is done, it **unreserves the session**. The session tracking and
 ```text
 arbitrary-session-management
 |-- src/
-|   |-- server/                        gRPC server implementation for session management and logging
-|   |-- client/                        Example client code for interacting with the server
-|   |-- examples/               
-│       |-- nidcpower_measurement_with_logger/   Example: DCPower measurement with logging
-│       |-- nidmm_measurement_with_logger/       Example: DMM measurement with logging
-|       |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
-|       |-- pinmap/                              Pinmap for the Measurement Plugins and TestStand sequence
+|   |--file_session_sharing/
+|       |-- server/                        gRPC server implementation for session management and logging
+|       |-- client/                        Example client code for interacting with the server
+|       |-- examples/               
+│           |-- nidcpower_measurement_with_logger/   Example: DCPower measurement with logging
+│           |-- nidmm_measurement_with_logger/       Example: DMM measurement with logging
+|           |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
+|           |-- pinmap/                              Pinmap for the Measurement Plugins and TestStand sequence
 |-- README.md
 |-- ...
 ```
@@ -118,11 +119,11 @@ To simulate the instruments *without* using NI MAX or [NI Hardware Configuration
 
 3. Follow the README instructions in each of the following directories, in the following order:
 
-   - [server](src/server/README.md)
-   - [client](src/client/README.md)
-   - [nidcpower_measurement_with_logger](src/examples/nidcpower_measurement_with_logger/README.md)
-   - [nidmm_measurement_with_logger](src/examples/nidmm_measurement_with_logger/README.md)
-   - [teststand_sequence](src/examples/teststand_sequence/README.md)
+   - [server](src/file_session_sharing/server/README.md)
+   - [client](src/file_session_sharing/client/README.md)
+   - [nidcpower_measurement_with_logger](src/file_session_sharing/examples/nidcpower_measurement_with_logger/README.md)
+   - [nidmm_measurement_with_logger](src/file_session_sharing/examples/nidmm_measurement_with_logger/README.md)
+   - [teststand_sequence](src/file_session_sharing/examples/teststand_sequence/README.md)
 
 4. Start the server and run the example workflows as described in the respective `README.md`.
 
@@ -143,7 +144,7 @@ The following steps provide a detailed guide for implementing session sharing fo
 
 The first step is to define a `.proto` file. In this implementation, a custom gRPC server is used to handle session-based functionalities.
 
-A [sample.proto](src/server/json_logger.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means one can use the same approach to expose other resources, like instruments, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
+A [sample.proto](src/file_session_sharing/server/json_logger.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means one can use the same approach to expose other resources, like instruments, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
 
 It is essential to familiarize with basics of gRPC in Python using the following resources,
 
@@ -213,10 +214,10 @@ It is essential to familiarize with basics of gRPC in Python using the following
         ```
 
     3. Update the `import` statements in your component or implementation as needed. For reference:
-      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.py#L6)
-      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.pyi#L26)
-      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
-      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
+      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/stubs/json_logger_pb2_grpc.py#L6)
+      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/stubs/json_logger_pb2_grpc.pyi#L26)
+      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
+      - [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
 
 ---
 
@@ -253,13 +254,13 @@ The server is responsible for hosting the core functionality and, more important
 
 #### Steps to Implement the Server
 
-The [example implementation](src/server/server.py) in this repository demonstrates this logic in detail.
+The [example implementation](src/file_session_sharing/server/server.py) in this repository demonstrates this logic in detail.
 
 1. **Create a Python file for your server implementation**
 
     Typically named `server.py`.
 
-2. **Implement the [Initialize API](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L76)**
+2. **Implement the [Initialize API](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/server.py#L76)**
 
     The InitializeFile API handles client requests to create or open a resource (such as a file resourced used in this reference) and manages session sharing based on the specified session initialization behavior.
 
@@ -270,20 +271,20 @@ The [example implementation](src/server/server.py) in this repository demonstrat
       - INITIALIZE_NEW: If a session for the resource exists and is still open, return an ALREADY_EXISTS error. Otherwise create a new session.
       - ATTACH_TO_EXISTING: If a session for the resource exists and is still open, return the existing session. Otherwise, return a NOT_FOUND error.
 
-3. **Implement the [Close API](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L186)**
+3. **Implement the [Close API](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/server.py#L186)**
 
     - Receive a request containing a session ID.
     - Check if the resource is already closed
       - If no, close the resource handle, return a success response.
       - If yes, return NOT_FOUND error
 
-4. **Implement the other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L112)**
+4. **Implement the other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/server.py#L112)**
 
     - Receive the request
     - Execute the business logic
     - Return the response
 
-5. **Implement the [Start Server Logic](https://github.com/ni/arbitrary-session-management/blob/main/src/server/server.py#L405)**
+5. **Implement the [Start Server Logic](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/server.py#L405)**
 
     - Create an instance of the gRPC service implementation.
     - Add the service implementation to the gRPC server.
@@ -351,7 +352,7 @@ The client class:
 
     Create `your_client_name.py` to implement the gRPC client and this example uses `session.py`
 
-2. **Define the [Session Initialization Behavior Mapping](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L39)**
+2. **Define the [Session Initialization Behavior Mapping](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session.py#L39)**
 
     Client supports five session initialization behaviors defined by NI Session Management Service. However, the server implements only three. The client maps unsupported behaviors to the closest supported ones and handles the rest of the logic internally.
 
@@ -377,19 +378,19 @@ The client class:
 
 3. **Define Lifecycle Methods:** `__init__`, `__enter__`, `__exit__`
 
-    a. [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L57)
+    a. [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session.py#L57)
 
     - Initializes the client.
     - Uses the Discovery Service to locate the gRPC server.
     - Call the Initialize RPC call and get the response from server.
     - Stores the session name and whether a new session was created.
 
-    b. [`__enter__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L89)
+    b. [`__enter__`](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session.py#L89)
 
     - Enables the client to be used with a `with` statement (i.e., a context manager).
     - Returns the client instance for use inside the block.
 
-    c. [`__exit__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L93)
+    c. [`__exit__`](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session.py#L93)
 
     - Automatically called when exiting a `with` block.
     - Handles session cleanup based on the initialization behavior:
@@ -399,24 +400,24 @@ The client class:
 
     Using the client as a context manager ensures proper resource cleanup and avoids session leaks.
 
-4. **Implement the Other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session.py#L157)**
+4. **Implement the Other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session.py#L157)**
 
    - Construct and send the request to the server.
    - Wait for and process the server's response.
    - Handle any errors or exceptions as needed.
   
-5. **Define [Session Constructor](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py)**
+5. **Define [Session Constructor](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session_constructor.py)**
 
     After creating the `client.py` or `session.py`, now, create client constructor. To streamline the integration of the client with measurement plugins, a helper class should be defined. This class encapsulates the logic for constructing a client using session information passed from the measurement plugin.
 
-    - Define an [instrument type constant](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py#L11). This should match the instrument type ID configured in your PinMap.
+    - Define an [instrument type constant](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session_constructor.py#L11). This should match the instrument type ID configured in your PinMap.
 
       ```python
       JSON_LOGGER_INSTRUMENT_TYPE = "JsonLoggerService"
       ```
 
     - Define constructor methods. The constructor class should contain the following methods:
-      - [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py#L17): Initializes the constructor with a specific session initialization behavior.
+      - [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session_constructor.py#L17): Initializes the constructor with a specific session initialization behavior.
 
         **Parameters:**
         initialization_behavior: Specifies how the session should be initialized. Defaults to `SessionInitializationBehavior.AUTO`.
@@ -424,7 +425,7 @@ The client class:
         **Purpose:**
         This allows the constructor to be configured once and reused across multiple plugins or measurement steps with consistent behavior.
 
-      - [`__call__`](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/session_constructor.py#L31): Makes the class instance callable like a function. It takes a SessionInformation object and returns a JsonLoggerClient.
+      - [`__call__`](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/client_session/session_constructor.py#L31): Makes the class instance callable like a function. It takes a SessionInformation object and returns a JsonLoggerClient.
 
         **Parameters:**
         session_info: An object containing data about the session, including the resource name (in this example, the file path).
@@ -468,13 +469,13 @@ This section describes how to use your session-managed client within a Measureme
 
 - [Measurement Plugin Python](https://www.ni.com/docs/en-US/bundle/measurementplugins/page/python-measurements.html)
 - [Measurement Plugin Python - Examples](https://github.com/ni/measurement-plugin-python/tree/main/examples)
-- [NI DCPower Measurement With Logger Example](src/examples/nidcpower_measurement_with_logger)
-- [NI DMM Measurement With Logger Example](src/examples/nidmm_measurement_with_logger)
+- [NI DCPower Measurement With Logger Example](src/file_session_sharing/examples/nidcpower_measurement_with_logger)
+- [NI DMM Measurement With Logger Example](src/file_session_sharing/examples/nidmm_measurement_with_logger)
 
 #### Steps to Integrate
 
 1. **Install the Client Package**  
-  Ensure your measurement plugin environment has the client package installed (see [Packaging the Client for Reuse](#packaging-the-client-for-reuse)) and [pyproject.toml](https://github.com/ni/arbitrary-session-management/blob/main/src/examples/nidcpower_measurement_with_logger/pyproject.toml#L16).
+  Ensure your measurement plugin environment has the client package installed (see [Packaging the Client for Reuse](#packaging-the-client-for-reuse)) and [pyproject.toml](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/examples/nidcpower_measurement_with_logger/pyproject.toml#L16).
 
 1. **Import the Client Constructor**  
   Import the session constructor and instrument type constant into your plugin's `measurement.py`.
@@ -544,7 +545,7 @@ This section describes how to use your session-managed client within a Measureme
 
 #### TestStand Integration
 
-For TestStand sequences, implement a helper module (see [teststand_json_logger.py](src/examples/teststand_sequence/teststand_json_logger.py)) to manage session initialization and cleanup.
+For TestStand sequences, implement a helper module (see [teststand_json_logger.py](src/file_session_sharing/examples/teststand_sequence/teststand_json_logger.py)) to manage session initialization and cleanup.
 
 To enable session sharing across multiple Measurement Plugins within a sequence:
 
