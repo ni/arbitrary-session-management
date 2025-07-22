@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package DeviceCommunication;
+
+// Protocol enumeration for device communication
+enum Protocol {
+    SPI = 0;
+    I2C = 1;
+    UART = 2;
+}
+
+// Service definition for device communication
+service DeviceCommunication {
+    rpc Initialize (InitializeRequest) returns (StatusResponse) {}
+    rpc Close (CloseRequest) returns (StatusResponse) {}
+    rpc WriteRegister (WriteRegisterRequest) returns (StatusResponse) {}
+    rpc ReadRegister (ReadRegisterRequest) returns (ReadRegisterResponse) {}
+    rpc WriteGpioChannel (WriteGpioChannelRequest) returns (StatusResponse) {}
+    rpc ReadGpioChannel (ReadGpioChannelRequest) returns (ReadGpioChannelResponse) {}
+    rpc WriteGpioPort (WriteGpioPortRequest) returns (StatusResponse) {}
+    rpc ReadGpioPort (ReadGpioPortRequest) returns (ReadGpioPortResponse) {}
+}
+
+// Request/Response messages
+
+message InitializeRequest {
+    string device_id = 1;
+    Protocol protocol = 2;
+    bool reset = 3;
+    string register_map = 4;
+}
+
+message WriteRegisterRequest {
+    string name = 1;
+    int32 value = 2;
+}
+
+message ReadRegisterRequest {
+    string name = 1;
+}
+
+message ReadRegisterResponse {
+    int32 value = 1;
+}
+
+message WriteGpioChannelRequest {
+    int32 port = 1;
+    int32 channel = 2;
+    bool state = 3;
+}
+
+message ReadGpioChannelRequest {
+    int32 port = 1;
+    int32 channel = 2;
+}
+
+message ReadGpioChannelResponse {
+    bool state = 1;
+}
+
+message WriteGpioPortRequest {
+    int32 port = 1;
+    int32 mask = 2;
+    int32 state = 3;
+}
+
+message ReadGpioPortRequest {
+    int32 port = 1;
+    int32 mask = 2;
+}
+
+message ReadGpioPortResponse {
+    int32 state = 1;
+}
+
+message StatusResponse {
+    string status = 1;
+    string error_message = 2;
+}
+
+message CloseRequest {
+    string name = 1;
+}
