@@ -38,7 +38,7 @@ class DeviceCommunicationStub(object):
         self.Initialize = channel.unary_unary(
                 '/DeviceCommunication.DeviceCommunication/Initialize',
                 request_serializer=device__comm__service__pb2.InitializeRequest.SerializeToString,
-                response_deserializer=device__comm__service__pb2.StatusResponse.FromString,
+                response_deserializer=device__comm__service__pb2.InitializeResponse.FromString,
                 _registered_method=True)
         self.Close = channel.unary_unary(
                 '/DeviceCommunication.DeviceCommunication/Close',
@@ -135,7 +135,7 @@ def add_DeviceCommunicationServicer_to_server(servicer, server):
             'Initialize': grpc.unary_unary_rpc_method_handler(
                     servicer.Initialize,
                     request_deserializer=device__comm__service__pb2.InitializeRequest.FromString,
-                    response_serializer=device__comm__service__pb2.StatusResponse.SerializeToString,
+                    response_serializer=device__comm__service__pb2.InitializeResponse.SerializeToString,
             ),
             'Close': grpc.unary_unary_rpc_method_handler(
                     servicer.Close,
@@ -200,7 +200,7 @@ class DeviceCommunication(object):
             target,
             '/DeviceCommunication.DeviceCommunication/Initialize',
             device__comm__service__pb2.InitializeRequest.SerializeToString,
-            device__comm__service__pb2.StatusResponse.FromString,
+            device__comm__service__pb2.InitializeResponse.FromString,
             options,
             channel_credentials,
             insecure,

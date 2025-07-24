@@ -23,7 +23,7 @@ class DeviceCommunicationStub:
     def __init__(self, channel: typing.Union[grpc.Channel, grpc.aio.Channel]) -> None: ...
     Initialize: grpc.UnaryUnaryMultiCallable[
         device_comm_service_pb2.InitializeRequest,
-        device_comm_service_pb2.StatusResponse,
+        device_comm_service_pb2.InitializeResponse,
     ]
 
     Close: grpc.UnaryUnaryMultiCallable[
@@ -66,7 +66,7 @@ class DeviceCommunicationAsyncStub:
 
     Initialize: grpc.aio.UnaryUnaryMultiCallable[
         device_comm_service_pb2.InitializeRequest,
-        device_comm_service_pb2.StatusResponse,
+        device_comm_service_pb2.InitializeResponse,
     ]
 
     Close: grpc.aio.UnaryUnaryMultiCallable[
@@ -112,7 +112,7 @@ class DeviceCommunicationServicer(metaclass=abc.ABCMeta):
         self,
         request: device_comm_service_pb2.InitializeRequest,
         context: _ServicerContext,
-    ) -> typing.Union[device_comm_service_pb2.StatusResponse, collections.abc.Awaitable[device_comm_service_pb2.StatusResponse]]: ...
+    ) -> typing.Union[device_comm_service_pb2.InitializeResponse, collections.abc.Awaitable[device_comm_service_pb2.InitializeResponse]]: ...
 
     @abc.abstractmethod
     def Close(

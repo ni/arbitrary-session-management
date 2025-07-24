@@ -70,6 +70,7 @@ class InitializeRequest(google.protobuf.message.Message):
     reset: builtins.bool
     register_map: builtins.str
     initialization_behavior: global___SessionInitializationBehavior.ValueType
+    """Defines how the session should be initialized."""
     def __init__(
         self,
         *,
@@ -84,20 +85,41 @@ class InitializeRequest(google.protobuf.message.Message):
 global___InitializeRequest = InitializeRequest
 
 @typing.final
+class InitializeResponse(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    SESSION_NAME_FIELD_NUMBER: builtins.int
+    NEW_SESSION_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
+    new_session: builtins.bool
+    def __init__(
+        self,
+        *,
+        session_name: builtins.str = ...,
+        new_session: builtins.bool = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["new_session", b"new_session", "session_name", b"session_name"]) -> None: ...
+
+global___InitializeResponse = InitializeResponse
+
+@typing.final
 class WriteRegisterRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    NAME_FIELD_NUMBER: builtins.int
+    SESSION_NAME_FIELD_NUMBER: builtins.int
+    ADDRESS_FIELD_NUMBER: builtins.int
     VALUE_FIELD_NUMBER: builtins.int
-    name: builtins.str
+    session_name: builtins.str
+    address: builtins.str
     value: builtins.int
     def __init__(
         self,
         *,
-        name: builtins.str = ...,
+        session_name: builtins.str = ...,
+        address: builtins.str = ...,
         value: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["name", b"name", "value", b"value"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["address", b"address", "session_name", b"session_name", "value", b"value"]) -> None: ...
 
 global___WriteRegisterRequest = WriteRegisterRequest
 
@@ -105,14 +127,17 @@ global___WriteRegisterRequest = WriteRegisterRequest
 class ReadRegisterRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    NAME_FIELD_NUMBER: builtins.int
-    name: builtins.str
+    SESSION_NAME_FIELD_NUMBER: builtins.int
+    ADDRESS_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
+    address: builtins.str
     def __init__(
         self,
         *,
-        name: builtins.str = ...,
+        session_name: builtins.str = ...,
+        address: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["name", b"name"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["address", b"address", "session_name", b"session_name"]) -> None: ...
 
 global___ReadRegisterRequest = ReadRegisterRequest
 
@@ -135,20 +160,23 @@ global___ReadRegisterResponse = ReadRegisterResponse
 class WriteGpioChannelRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    SESSION_NAME_FIELD_NUMBER: builtins.int
     PORT_FIELD_NUMBER: builtins.int
     CHANNEL_FIELD_NUMBER: builtins.int
     STATE_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
     port: builtins.int
     channel: builtins.int
     state: builtins.bool
     def __init__(
         self,
         *,
+        session_name: builtins.str = ...,
         port: builtins.int = ...,
         channel: builtins.int = ...,
         state: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["channel", b"channel", "port", b"port", "state", b"state"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel", b"channel", "port", b"port", "session_name", b"session_name", "state", b"state"]) -> None: ...
 
 global___WriteGpioChannelRequest = WriteGpioChannelRequest
 
@@ -156,17 +184,20 @@ global___WriteGpioChannelRequest = WriteGpioChannelRequest
 class ReadGpioChannelRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    SESSION_NAME_FIELD_NUMBER: builtins.int
     PORT_FIELD_NUMBER: builtins.int
     CHANNEL_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
     port: builtins.int
     channel: builtins.int
     def __init__(
         self,
         *,
+        session_name: builtins.str = ...,
         port: builtins.int = ...,
         channel: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["channel", b"channel", "port", b"port"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel", b"channel", "port", b"port", "session_name", b"session_name"]) -> None: ...
 
 global___ReadGpioChannelRequest = ReadGpioChannelRequest
 
@@ -189,20 +220,23 @@ global___ReadGpioChannelResponse = ReadGpioChannelResponse
 class WriteGpioPortRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    SESSION_NAME_FIELD_NUMBER: builtins.int
     PORT_FIELD_NUMBER: builtins.int
     MASK_FIELD_NUMBER: builtins.int
     STATE_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
     port: builtins.int
     mask: builtins.int
     state: builtins.int
     def __init__(
         self,
         *,
+        session_name: builtins.str = ...,
         port: builtins.int = ...,
         mask: builtins.int = ...,
         state: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["mask", b"mask", "port", b"port", "state", b"state"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["mask", b"mask", "port", b"port", "session_name", b"session_name", "state", b"state"]) -> None: ...
 
 global___WriteGpioPortRequest = WriteGpioPortRequest
 
@@ -210,17 +244,20 @@ global___WriteGpioPortRequest = WriteGpioPortRequest
 class ReadGpioPortRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    SESSION_NAME_FIELD_NUMBER: builtins.int
     PORT_FIELD_NUMBER: builtins.int
     MASK_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
     port: builtins.int
     mask: builtins.int
     def __init__(
         self,
         *,
+        session_name: builtins.str = ...,
         port: builtins.int = ...,
         mask: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["mask", b"mask", "port", b"port"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["mask", b"mask", "port", b"port", "session_name", b"session_name"]) -> None: ...
 
 global___ReadGpioPortRequest = ReadGpioPortRequest
 
@@ -240,6 +277,21 @@ class ReadGpioPortResponse(google.protobuf.message.Message):
 global___ReadGpioPortResponse = ReadGpioPortResponse
 
 @typing.final
+class CloseRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    SESSION_NAME_FIELD_NUMBER: builtins.int
+    session_name: builtins.str
+    def __init__(
+        self,
+        *,
+        session_name: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["session_name", b"session_name"]) -> None: ...
+
+global___CloseRequest = CloseRequest
+
+@typing.final
 class StatusResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
@@ -256,18 +308,3 @@ class StatusResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["error_message", b"error_message", "status", b"status"]) -> None: ...
 
 global___StatusResponse = StatusResponse
-
-@typing.final
-class CloseRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    NAME_FIELD_NUMBER: builtins.int
-    name: builtins.str
-    def __init__(
-        self,
-        *,
-        name: builtins.str = ...,
-    ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["name", b"name"]) -> None: ...
-
-global___CloseRequest = CloseRequest
