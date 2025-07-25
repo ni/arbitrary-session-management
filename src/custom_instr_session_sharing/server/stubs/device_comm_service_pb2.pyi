@@ -107,19 +107,19 @@ class WriteRegisterRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     SESSION_NAME_FIELD_NUMBER: builtins.int
-    ADDRESS_FIELD_NUMBER: builtins.int
+    REGISTER_NAME_FIELD_NUMBER: builtins.int
     VALUE_FIELD_NUMBER: builtins.int
     session_name: builtins.str
-    address: builtins.str
+    register_name: builtins.str
     value: builtins.int
     def __init__(
         self,
         *,
         session_name: builtins.str = ...,
-        address: builtins.str = ...,
+        register_name: builtins.str = ...,
         value: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["address", b"address", "session_name", b"session_name", "value", b"value"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["register_name", b"register_name", "session_name", b"session_name", "value", b"value"]) -> None: ...
 
 global___WriteRegisterRequest = WriteRegisterRequest
 
@@ -128,16 +128,16 @@ class ReadRegisterRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     SESSION_NAME_FIELD_NUMBER: builtins.int
-    ADDRESS_FIELD_NUMBER: builtins.int
+    REGISTER_NAME_FIELD_NUMBER: builtins.int
     session_name: builtins.str
-    address: builtins.str
+    register_name: builtins.str
     def __init__(
         self,
         *,
         session_name: builtins.str = ...,
-        address: builtins.str = ...,
+        register_name: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["address", b"address", "session_name", b"session_name"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["register_name", b"register_name", "session_name", b"session_name"]) -> None: ...
 
 global___ReadRegisterRequest = ReadRegisterRequest
 
