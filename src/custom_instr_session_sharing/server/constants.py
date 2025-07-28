@@ -1,7 +1,7 @@
 """This module defines constants and enumerations for device communication."""
 
-from enum import Enum, IntEnum
 from dataclasses import dataclass, field
+from enum import Enum, IntEnum
 from typing import Dict
 
 
@@ -27,8 +27,15 @@ class GPIOChannel(IntEnum):
     CH7 = 7
 
 
-class GPIOState(Enum):
+class GPIOPortState(Enum):
     """GPIO states."""
+
+    LOW = 0
+    HIGH = 1
+
+
+class GPIOChannelState(Enum):
+    """GPIO channel states."""
 
     LOW = False
     HIGH = True

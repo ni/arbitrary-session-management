@@ -14,9 +14,10 @@ import grpc
 import pandas as pd
 from constants import (
     GPIOChannel,
+    GPIOChannelState,
     GPIOMask,
     GPIOPort,
-    GPIOState,
+    GPIOPortState,
     Protocol,
     Session,
     Status,
@@ -137,11 +138,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         if handler is None:
             context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
-        protocol: Protocol = Protocol(request.protocol)
+        protocol: Protocol = request.protocol  # type: ignore[arg-type]
 
         return handler(  # type: ignore[misc]
             device_id=request.device_id,
-            protocol=protocol,
+            protocol=protocol,  # type: ignore[arg-type]
             register_map=(request.register_map),
             register_data=filtered_register_data,
             reset=request.reset,
@@ -250,7 +251,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO channel by returning random HIGH or LOW state
-            value = random.choice([GPIOState.HIGH.value, GPIOState.LOW.value])
+            value = random.choice([GPIOChannelState.HIGH.value, GPIOChannelState.LOW.value])
             return ReadGpioChannelResponse(state=value)
 
         except Exception as exp:
@@ -289,7 +290,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Validate the GPIO state
-            if request.state not in [state.value for state in GPIOState]:
+            if request.state not in [state.value for state in GPIOChannelState]:
                 context.abort(
                     grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO state: {request.state}"
                 )
@@ -339,7 +340,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO port by returning random value between valid states
-            value = random.choice([GPIOState.HIGH.value, GPIOState.LOW.value])
+            value = random.choice([GPIOPortState.HIGH.value, GPIOPortState.LOW.value])
             return ReadGpioPortResponse(state=value)
 
         except Exception as exp:
@@ -384,7 +385,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Validate the GPIO state
-            if request.state not in [state for state in GPIOState]:
+            if request.state not in [state.value for state in GPIOPortState]:
                 context.abort(
                     grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO state: {request.state}"
                 )
@@ -599,7 +600,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             Session object associated with the session name, or None if not found.
         """
         for session in self.sessions.values():
-            if session.session_name == session_name and not session.register_data:
+            if session.session_name == session_name:
                 return session
 
         return None
