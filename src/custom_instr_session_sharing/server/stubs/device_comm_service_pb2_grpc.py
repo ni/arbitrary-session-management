@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import device_comm_service_pb2 as device__comm__service__pb2
+import stubs.device_comm_service_pb2 as device__comm__service__pb2
 
 GRPC_GENERATED_VERSION = '1.73.1'
 GRPC_VERSION = grpc.__version__
