@@ -1,4 +1,4 @@
-"""A user-defined device communication for device wake up while managing sessions."""
+"""A user-defined device communication service for device wake up while managing sessions."""
 
 import json
 import logging
@@ -7,9 +7,8 @@ import threading
 import uuid
 from collections.abc import Callable
 from concurrent import futures
-from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, Optional, TypeVar
+from typing import Any, Optional, TypeVar
 
 import grpc
 import pandas as pd
@@ -435,8 +434,8 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             session.register_data = {}
             return StatusResponse(status=Status.SUCCESS.name)
 
-        except Exception as e:
-            context.abort(grpc.StatusCode.INTERNAL, f"Error while closing file: {e}")
+        except Exception as exp:
+            context.abort(grpc.StatusCode.INTERNAL, f"Error while closing file: {exp}")
 
     def clean_up(self) -> None:
         """Clean up all active file sessions."""

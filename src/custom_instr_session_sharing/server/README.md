@@ -28,20 +28,20 @@ The Device Communication Service is designed to run as a standalone gRPC server 
 start.bat
 ```
 
-This sets up the virtual environment for server, install necessary depencies and then launches the server. For customizing the server's config details, a .serviceconfig file is used. This file can be used to supply configuration information when registering your service with the Discovery Service. A sample [.serviceconfig](device_comm_service.serviceconfig) is provided for reference
+This sets up the virtual environment for server, install necessary dependencies and then launches the server. For customizing the server's config details, a .serviceconfig file is used. This file can be used to supply configuration information when registering your service with the Discovery Service. A sample [.serviceconfig](device_comm_service.serviceconfig) is provided for reference
 
 ```json
 {
-    "services": [
+  "services": [
     {
-        "displayName": "Device Communication Service",    // Human-readable service name
-        "version": "1.0.0",                              // Service version
-        "serviceClass": "ni.devices.DeviceCommService",   // Format: <organization>.<functionality>.<name>
-        "descriptionUrl": "",                            // URL for service documentation (optional)
-        "providedInterface": "ni.devices.v1.comm",       // Format: <organization>.<functionality>.<version>.<name>
-        "path": "start.bat"                              // Service startup script/command
+      "displayName": "Device Communication Service",          // Human-readable name for the service                    
+      "version": "1.0.0",                                     // Service version
+      "serviceClass": "ni.DeviceControl.CommService",         // Format: <organization>.<functionality>.<name>
+      "descriptionUrl": "",                                   // URL with additional service documentation (optional)
+      "providedInterface": "ni.DeviceControl.v1.CommService", // Format: <organization>.<functionality>.<version>.<name>
+      "path": "start.bat"                                     // Script or command to start the service
     }
-    ]
+  ]
 }
 ```
 

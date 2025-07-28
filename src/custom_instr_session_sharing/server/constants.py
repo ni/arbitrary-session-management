@@ -1,4 +1,4 @@
-"""This module defines constants and enumerations for GPIO operations."""
+"""This module defines constants and enumerations for device communication."""
 
 from enum import Enum, IntEnum
 from dataclasses import dataclass, field
