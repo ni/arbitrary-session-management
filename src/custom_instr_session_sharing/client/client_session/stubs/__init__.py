@@ -1,0 +1,1 @@
+"""Module containing gRPC stubs for the Device Communication Service."""

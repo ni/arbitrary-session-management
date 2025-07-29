@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package DeviceCommunication;
+
+// Protocol enumeration for device communication
+enum Protocol {
+    UNKNOWN_PROTOCOL = 0;
+    SPI = 1;
+    I2C = 2;
+    UART = 3;
+}
+
+// Service definition for device communication
+service DeviceCommunication {
+    rpc Initialize (InitializeRequest) returns (InitializeResponse) {}
+    rpc Close (CloseRequest) returns (StatusResponse) {}
+    rpc WriteRegister (WriteRegisterRequest) returns (StatusResponse) {}
+    rpc ReadRegister (ReadRegisterRequest) returns (ReadRegisterResponse) {}
+    rpc WriteGpioChannel (WriteGpioChannelRequest) returns (StatusResponse) {}
+    rpc ReadGpioChannel (ReadGpioChannelRequest) returns (ReadGpioChannelResponse) {}
+    rpc WriteGpioPort (WriteGpioPortRequest) returns (StatusResponse) {}
+    rpc ReadGpioPort (ReadGpioPortRequest) returns (ReadGpioPortResponse) {}
+}
+
+// Request/Response messages
+
+message InitializeRequest {
+    string device_id = 1;
+    Protocol protocol = 2;
+    bool reset = 3;
+    string register_map = 4;
+    // Defines how the session should be initialized.
+    SessionInitializationBehavior initialization_behavior = 5;
+}
+
+
+message InitializeResponse{
+    string session_name = 1;
+    bool new_session = 2;
+
+}
+
+message WriteRegisterRequest {
+    string session_name = 1;
+    string register_name = 2;
+    int32 value = 3;
+}
+
+message ReadRegisterRequest {
+    string session_name = 1;
+    string register_name = 2;
+}
+
+message ReadRegisterResponse {
+    int32 value = 1;
+}
+
+message WriteGpioChannelRequest {
+    string session_name = 1;
+    int32 port = 2;
+    int32 channel = 3;
+    bool state = 4;
+}
+
+message ReadGpioChannelRequest {
+    string session_name = 1;
+    int32 port = 2;
+    int32 channel = 3;
+}
+
+message ReadGpioChannelResponse {
+    bool state = 1;
+}
+
+message WriteGpioPortRequest {
+    string session_name = 1;
+    int32 port = 2;
+    int32 mask = 3;
+    int32 state = 4;
+}
+
+message ReadGpioPortRequest {
+    string session_name = 1;
+    int32 port = 2;
+    int32 mask = 3;
+}
+
+message ReadGpioPortResponse {
+    int32 state = 1;
+}
+
+message CloseRequest{
+    string session_name = 1;
+
+}
+
+message StatusResponse {
+    
+}
+
+enum SessionInitializationBehavior {
+  // Automatically decide whether to initialize new or attach.
+  SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED = 0;
+  SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW = 1;
+  SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING = 2;
+}
