@@ -209,7 +209,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         try:
             session.register_data[request.register_name] = request.value  # type: ignore
-            return StatusResponse(status=Status.SUCCESS.name)
+            return StatusResponse()
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing register: {exp}")
@@ -292,7 +292,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate successful write to GPIO channel
-            return StatusResponse(status=Status.SUCCESS.name)
+            return StatusResponse()
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing to GPIO channel: {exp}")
@@ -385,7 +385,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate successful write to GPIO port
-            return StatusResponse(status=Status.SUCCESS.name)
+            return StatusResponse()
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing to GPIO port: {exp}")
@@ -401,7 +401,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns INTERNAL error for other errors.
 
         Args:
-            request: CloseFileRequest containing the session name to close.
+            request: CloseRequest containing the session name to close.
             context: gRPC context object for the request.
 
         Returns:
@@ -427,7 +427,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             session.register_data = {}
-            return StatusResponse(status=Status.SUCCESS.name)
+            return StatusResponse()
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error while closing file: {exp}")

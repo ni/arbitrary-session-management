@@ -297,16 +297,8 @@ global___CloseRequest = CloseRequest
 class StatusResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    STATUS_FIELD_NUMBER: builtins.int
-    ERROR_MESSAGE_FIELD_NUMBER: builtins.int
-    status: builtins.str
-    error_message: builtins.str
     def __init__(
         self,
-        *,
-        status: builtins.str = ...,
-        error_message: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["error_message", b"error_message", "status", b"status"]) -> None: ...
 
 global___StatusResponse = StatusResponse

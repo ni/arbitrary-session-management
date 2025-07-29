@@ -94,9 +94,9 @@ message CloseRequest{
 
 }
 
+// Empty reponse for successful operations, whereas err messages are handled by gRPC objects.
 message StatusResponse {
-    string status = 1;
-    string error_message = 2;
+    
 }
 
 enum SessionInitializationBehavior {
