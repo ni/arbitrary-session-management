@@ -15,10 +15,7 @@ import pandas as pd
 from constants import (
     GPIOChannel,
     GPIOChannelState,
-    GPIOMask,
     GPIOPort,
-    GPIOPortState,
-    Protocol,
     Session,
     Status,
 )
@@ -28,6 +25,7 @@ from ni_measurement_plugin_sdk_service.discovery import (
 )
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 from stubs.device_comm_service_pb2 import (
+    Protocol,
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -131,18 +129,16 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 grpc.StatusCode.INVALID_ARGUMENT,
                 "Register map must contain 'register_name' and 'default_value' columns.",
             )
-        except Exception as e:
-            context.abort(grpc.StatusCode.INTERNAL, f"Error reading register map file: {str(e)}")
+        except Exception as exp:
+            context.abort(grpc.StatusCode.INTERNAL, f"Error reading register map file: {str(exp)}")
         handler = initialization_behaviour.get(request.initialization_behavior)
 
         if handler is None:
             context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
-        protocol: Protocol = request.protocol  # type: ignore[arg-type]
-
         return handler(  # type: ignore[misc]
             device_id=request.device_id,
-            protocol=protocol,  # type: ignore[arg-type]
+            protocol=request.protocol,
             register_map=(request.register_map),
             register_data=filtered_register_data,
             reset=request.reset,
@@ -226,7 +222,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         """Read the state of a GPIO channel.
 
         Args:
-            request: ReadGpioChannelRequest containing the port and channel to read.
+            request: ReadGpioChannelRequest containing the channel to read.
             context: gRPC context object for the request.
 
         Returns:
@@ -265,7 +261,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         """Write the state to a GPIO channel.
 
         Args:
-            request: WriteGpioChannelRequest containing the port, channel, and state to write.
+            request: WriteGpioChannelRequest containing the channel and state to write.
             context: gRPC context object for the request.
 
         Returns:
@@ -334,13 +330,13 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Validate the GPIO mask
-            if request.mask not in [mask.value for mask in GPIOMask]:
+            if request.mask not in range(0, 256):  # Assuming mask is a byte (0x00 to 0xFF)
                 context.abort(
                     grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO mask: {request.mask}"
                 )
 
             # Simulate reading from GPIO port by returning random value between valid states
-            value = random.choice([GPIOPortState.HIGH.value, GPIOPortState.LOW.value])
+            value = random.choice(range(0, 256))
             return ReadGpioPortResponse(state=value)
 
         except Exception as exp:
@@ -378,16 +374,14 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                     grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO port: {request.port}"
                 )
 
-            # Validate the GPIO mask
-            if request.mask not in [mask.value for mask in GPIOMask]:
+            if request.port not in [port.value for port in GPIOPort]:
                 context.abort(
-                    grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO mask: {request.mask}"
+                    grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO port: {request.port}"
                 )
 
-            # Validate the GPIO state
-            if request.state not in [state.value for state in GPIOPortState]:
+            if request.mask not in range(0, 256):  # Assuming mask is a byte (0x00 to 0xFF)
                 context.abort(
-                    grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO state: {request.state}"
+                    grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO mask: {request.mask}"
                 )
 
             # Simulate successful write to GPIO port
@@ -510,6 +504,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map: Path to the register map file.
+            register_data: Dictionary containing register names and their default values.
             reset: Flag indicating whether to reset the device.
             context: gRPC context object for the request.
 
@@ -571,6 +566,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         Args:
             device_id: Unique identifier for the device.
+            protocol: Communication protocol to be used for the session.
+            register_map: Path to the register map file.
+            register_data: Dictionary containing register names and their default values.
+            reset: Flag indicating whether to reset the device.
             context: gRPC context object for the request.
 
         Returns:

@@ -27,27 +27,11 @@ class GPIOChannel(IntEnum):
     CH7 = 7
 
 
-class GPIOPortState(Enum):
-    """GPIO states."""
-
-    LOW = 0
-    HIGH = 1
-
-
 class GPIOChannelState(Enum):
     """GPIO channel states."""
 
     LOW = False
     HIGH = True
-
-
-class GPIOMask(Enum):
-    """GPIO masks."""
-
-    ALL = 0xFF
-    NONE = 0x00
-    LOWER_NIBBLE = 0x0F
-    UPPER_NIBBLE = 0xF0
 
 
 class Protocol(Enum):

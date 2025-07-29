@@ -23,16 +23,18 @@ class _Protocol:
 
 class _ProtocolEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Protocol.ValueType], builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-    SPI: _Protocol.ValueType  # 0
-    I2C: _Protocol.ValueType  # 1
-    UART: _Protocol.ValueType  # 2
+    UNKNOWN_PROTOCOL: _Protocol.ValueType  # 0
+    SPI: _Protocol.ValueType  # 1
+    I2C: _Protocol.ValueType  # 2
+    UART: _Protocol.ValueType  # 3
 
 class Protocol(_Protocol, metaclass=_ProtocolEnumTypeWrapper):
     """Protocol enumeration for device communication"""
 
-SPI: Protocol.ValueType  # 0
-I2C: Protocol.ValueType  # 1
-UART: Protocol.ValueType  # 2
+UNKNOWN_PROTOCOL: Protocol.ValueType  # 0
+SPI: Protocol.ValueType  # 1
+I2C: Protocol.ValueType  # 2
+UART: Protocol.ValueType  # 3
 global___Protocol = Protocol
 
 class _SessionInitializationBehavior:
