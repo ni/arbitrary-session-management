@@ -42,18 +42,6 @@ class Protocol(Enum):
     UART = "UART"
 
 
-class Status(Enum):
-    """Status of the operation."""
-
-    SUCCESS = 0
-    FAILURE = 1
-    NOT_FOUND = 2
-    PERMISSION_DENIED = 3
-    INVALID_ARGUMENT = 4
-    ALREADY_EXISTS = 5
-    INTERNAL_ERROR = 6
-
-
 @dataclass
 class Session:
     """A session that contains device communication details."""

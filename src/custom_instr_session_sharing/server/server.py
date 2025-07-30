@@ -17,7 +17,6 @@ from constants import (
     GPIOChannelState,
     GPIOPort,
     Session,
-    Status,
 )
 from ni_measurement_plugin_sdk_service.discovery import (
     DiscoveryClient,
@@ -25,13 +24,13 @@ from ni_measurement_plugin_sdk_service.discovery import (
 )
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 from stubs.device_comm_service_pb2 import (
-    Protocol,
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
     CloseRequest,
     InitializeRequest,
     InitializeResponse,
+    Protocol,
     ReadGpioChannelRequest,
     ReadGpioChannelResponse,
     ReadGpioPortRequest,
@@ -138,7 +137,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         return handler(  # type: ignore[misc]
             device_id=request.device_id,
-            protocol=request.protocol,
+            protocol=request.protocol,  # type: ignore[arg-type]
             register_map=(request.register_map),
             register_data=filtered_register_data,
             reset=request.reset,
