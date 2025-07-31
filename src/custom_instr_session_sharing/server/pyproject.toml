@@ -1,0 +1,42 @@
+# This project requires Poetry >= 2.0.0
+[project]
+name = "device-communication-service"
+version = "1.0.0"
+description = "A user-defined service to perform device wake up operations while managing sessions efficiently."
+authors = [{ name = "NI", email = "opensource@ni.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "grpcio-tools (>=1.71.0,<2.0.0)",
+    "ni-measurement-plugin-sdk-service (>=2.3.0,<3.0.0)",
+]
+
+[tool.poetry.group.dev.dependencies]
+ni-python-styleguide = "^0.4.6"
+mypy = "^1.15.0"
+bandit = "^1.8.3"
+mypy-protobuf = "^3.6.0"
+
+[tool.mypy]
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["^stubs/.*"]
+
+[tool.bandit]
+exclude_dirs = [".venv"]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ni-python-styleguide]
+extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
+
+[tool.black]
+extend_exclude = '\.tox/|_pb2(_grpc)?\.(py|pyi)$'
+line-length = 100
