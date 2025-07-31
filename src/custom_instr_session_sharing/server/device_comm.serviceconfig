@@ -1,0 +1,12 @@
+{
+  "services": [
+    {
+      "displayName": "Device communication Service",
+      "version": "1.0.0",
+      "serviceClass": "ni.DeviceControl.CommService",
+      "descriptionUrl": "",
+      "providedInterface": "ni.device_control.v1.service",
+      "path": "start.bat"
+    }
+  ]
+}
