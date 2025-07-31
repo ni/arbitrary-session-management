@@ -123,7 +123,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 # Read the CSV file and filter the register data
                 reader = csv.DictReader(file)
                 filtered_register_data = {
-                    row["register_name"]: int(row["default_value"])
+                    row["register_name"]: int(row["default_value"])  # value must be an integer in default_value row.
                     for row in reader
                     if "register_name" in row and "default_value" in row
                 }

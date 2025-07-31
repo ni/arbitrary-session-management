@@ -43,7 +43,7 @@ message InitializeResponse{
 message WriteRegisterRequest {
     string session_name = 1;
     string register_name = 2;
-    int32 value = 3;
+    uint32 value = 3;
 }
 
 message ReadRegisterRequest {
@@ -52,7 +52,7 @@ message ReadRegisterRequest {
 }
 
 message ReadRegisterResponse {
-    int32 value = 1;
+    uint32 value = 1;
 }
 
 message WriteGpioChannelRequest {
@@ -76,7 +76,7 @@ message WriteGpioPortRequest {
     string session_name = 1;
     uint32 port = 2;
     uint32 mask = 3;
-    int32 state = 4;
+    uint32 state = 4;
 }
 
 message ReadGpioPortRequest {
@@ -86,7 +86,7 @@ message ReadGpioPortRequest {
 }
 
 message ReadGpioPortResponse {
-    int32 state = 1;
+    uint32 state = 1;
 }
 
 message CloseRequest{
