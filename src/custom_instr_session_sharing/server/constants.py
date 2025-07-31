@@ -4,6 +4,8 @@ from dataclasses import dataclass, field
 from enum import Enum, IntEnum
 from typing import Dict
 
+from stubs.device_comm_service_pb2 import Protocol
+
 
 class GPIOPort(IntEnum):
     """Enumeration for GPIO ports."""
@@ -32,14 +34,6 @@ class GPIOChannelState(Enum):
 
     LOW = False
     HIGH = True
-
-
-class Protocol(Enum):
-    """Communication protocols supported by the service."""
-
-    SPI = "SPI"
-    I2C = "I2C"
-    UART = "UART"
 
 
 @dataclass

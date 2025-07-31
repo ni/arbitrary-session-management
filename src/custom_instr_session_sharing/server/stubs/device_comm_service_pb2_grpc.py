@@ -5,7 +5,7 @@ import warnings
 
 import stubs.device_comm_service_pb2 as device__comm__service__pb2
 
-GRPC_GENERATED_VERSION = '1.73.1'
+GRPC_GENERATED_VERSION = '1.74.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -40,11 +40,6 @@ class DeviceCommunicationStub(object):
                 request_serializer=device__comm__service__pb2.InitializeRequest.SerializeToString,
                 response_deserializer=device__comm__service__pb2.InitializeResponse.FromString,
                 _registered_method=True)
-        self.Close = channel.unary_unary(
-                '/DeviceCommunication.DeviceCommunication/Close',
-                request_serializer=device__comm__service__pb2.CloseRequest.SerializeToString,
-                response_deserializer=device__comm__service__pb2.StatusResponse.FromString,
-                _registered_method=True)
         self.WriteRegister = channel.unary_unary(
                 '/DeviceCommunication.DeviceCommunication/WriteRegister',
                 request_serializer=device__comm__service__pb2.WriteRegisterRequest.SerializeToString,
@@ -75,6 +70,11 @@ class DeviceCommunicationStub(object):
                 request_serializer=device__comm__service__pb2.ReadGpioPortRequest.SerializeToString,
                 response_deserializer=device__comm__service__pb2.ReadGpioPortResponse.FromString,
                 _registered_method=True)
+        self.Close = channel.unary_unary(
+                '/DeviceCommunication.DeviceCommunication/Close',
+                request_serializer=device__comm__service__pb2.CloseRequest.SerializeToString,
+                response_deserializer=device__comm__service__pb2.StatusResponse.FromString,
+                _registered_method=True)
 
 
 class DeviceCommunicationServicer(object):
@@ -82,49 +82,66 @@ class DeviceCommunicationServicer(object):
     """
 
     def Initialize(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def Close(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Initializes the device communication session for DUT validation.
+        Status Codes for errors:
+        - INVALID_ARGUMENT: Invalid arguments for Device id, Protocol, Register map path or Invalid Session Initialization Behavior.
+        - PERMISSION_DENIED: Permission denied for the register map path.
+        - INTERNAL: Register Map path is invalid or inaccessible or any other unexpected behavior.
+        - ALREADY_EXISTS: Device Session has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
+        - NOT_FOUND: Session does not exist for SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def WriteRegister(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Writes a value to a specified register on the DUT.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReadRegister(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Reads a value from a specified register on the DUT.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def WriteGpioChannel(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Writes a value to a specific GPIO channel
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReadGpioChannel(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Reads the value of a specific GPIO channel
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def WriteGpioPort(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Writes a value to an entire GPIO port.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReadGpioPort(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Reads the value of an entire GPIO port.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Close(self, request, context):
+        """Closes the device handle of the session.
+        Status Codes for errors:
+        NOT_FOUND: Session does not exist.
+        INTERNAL: Unexpected internal error.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -136,11 +153,6 @@ def add_DeviceCommunicationServicer_to_server(servicer, server):
                     servicer.Initialize,
                     request_deserializer=device__comm__service__pb2.InitializeRequest.FromString,
                     response_serializer=device__comm__service__pb2.InitializeResponse.SerializeToString,
-            ),
-            'Close': grpc.unary_unary_rpc_method_handler(
-                    servicer.Close,
-                    request_deserializer=device__comm__service__pb2.CloseRequest.FromString,
-                    response_serializer=device__comm__service__pb2.StatusResponse.SerializeToString,
             ),
             'WriteRegister': grpc.unary_unary_rpc_method_handler(
                     servicer.WriteRegister,
@@ -172,6 +184,11 @@ def add_DeviceCommunicationServicer_to_server(servicer, server):
                     request_deserializer=device__comm__service__pb2.ReadGpioPortRequest.FromString,
                     response_serializer=device__comm__service__pb2.ReadGpioPortResponse.SerializeToString,
             ),
+            'Close': grpc.unary_unary_rpc_method_handler(
+                    servicer.Close,
+                    request_deserializer=device__comm__service__pb2.CloseRequest.FromString,
+                    response_serializer=device__comm__service__pb2.StatusResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'DeviceCommunication.DeviceCommunication', rpc_method_handlers)
@@ -201,33 +218,6 @@ class DeviceCommunication(object):
             '/DeviceCommunication.DeviceCommunication/Initialize',
             device__comm__service__pb2.InitializeRequest.SerializeToString,
             device__comm__service__pb2.InitializeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def Close(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/DeviceCommunication.DeviceCommunication/Close',
-            device__comm__service__pb2.CloseRequest.SerializeToString,
-            device__comm__service__pb2.StatusResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -390,6 +380,33 @@ class DeviceCommunication(object):
             '/DeviceCommunication.DeviceCommunication/ReadGpioPort',
             device__comm__service__pb2.ReadGpioPortRequest.SerializeToString,
             device__comm__service__pb2.ReadGpioPortResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Close(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/DeviceCommunication.DeviceCommunication/Close',
+            device__comm__service__pb2.CloseRequest.SerializeToString,
+            device__comm__service__pb2.StatusResponse.FromString,
             options,
             channel_credentials,
             insecure,

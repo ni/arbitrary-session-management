@@ -1,11 +1,11 @@
 """A user-defined device communication service for device wake up while managing sessions."""
 
+import csv
 import json
 import logging
 import random
 import threading
 import uuid
-import csv
 from collections.abc import Callable
 from concurrent import futures
 from pathlib import Path
@@ -106,24 +106,26 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         }
 
         # Validate the request inputs.
-        if not request.register_map.endswith(".csv"):
+        if not request.register_map_path.endswith(".csv"):
             context.abort(
                 grpc.StatusCode.INVALID_ARGUMENT,
                 f"Invalid register map file format. Register map must be a .csv file.",
             )
 
-        if not Path(request.register_map).exists():
+        if not Path(request.register_map_path).exists():
             context.abort(
                 grpc.StatusCode.NOT_FOUND,
-                f"Register map file '{request.register_map}' does not exist.",
+                f"Register map file '{request.register_map_path}' does not exist.",
             )
 
         try:
-            with open(request.register_map, "r") as file:
+            with open(request.register_map_path, "r") as file:
                 # Read the CSV file and filter the register data
                 reader = csv.DictReader(file)
                 filtered_register_data = {
-                    row["register_name"]: int(row["default_value"])  # value must be an integer in default_value row.
+                    row["register_name"]: int(
+                        row["default_value"]
+                    )  # value must be an integer in default_value row.
                     for row in reader
                     if "register_name" in row and "default_value" in row
                 }
@@ -142,7 +144,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         return handler(  # type: ignore[misc]
             device_id=request.device_id,
             protocol=request.protocol,  # type: ignore[arg-type]
-            register_map=(request.register_map),
+            register_map_path=(request.register_map_path),
             register_data=filtered_register_data,
             reset=request.reset,
             context=context,
@@ -447,7 +449,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         device_id: str,
         protocol: Protocol,
-        register_map: str,
+        register_map_path: str,
         register_data: dict[str, Any],
         reset: bool,
         context: grpc.ServicerContext,
@@ -460,7 +462,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
-            register_map: Path to the register map file.
+            register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
             reset: Flag indicating whether to reset the device.
             context: gRPC context object for the request.
@@ -480,7 +482,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         return self._create_new_session(
             device_id=device_id,
             protocol=protocol,
-            register_map=register_map,
+            register_map_path=register_map_path,
             register_data=register_data,
             reset=reset,
             context=context,
@@ -490,7 +492,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         device_id: str,
         protocol: Protocol,
-        register_map: str,
+        register_map_path: str,
         register_data: dict[str, Any],
         reset: bool,
         context: grpc.ServicerContext,
@@ -506,7 +508,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
-            register_map: Path to the register map file.
+            register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
             reset: Flag indicating whether to reset the device.
             context: gRPC context object for the request.
@@ -526,7 +528,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 self.sessions[device_id] = Session(
                     session_name=session_name,
                     protocol=protocol,  # type: ignore[arg-type]
-                    register_map_path=str(register_map),
+                    register_map_path=str(register_map_path),
                     register_data=register_data,
                     reset=reset,
                 )
@@ -535,29 +537,32 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         except FileNotFoundError:
             context.abort(
-                grpc.StatusCode.NOT_FOUND, f"The specified path '{register_map}' does not exist."
+                grpc.StatusCode.NOT_FOUND,
+                f"The specified path '{register_map_path}' does not exist.",
             )
 
         except PermissionError:
             context.abort(
                 grpc.StatusCode.PERMISSION_DENIED,
-                f"Permission denied while accessing '{register_map}'.",
+                f"Permission denied while accessing '{register_map_path}'.",
             )
 
         except OSError as e:
-            context.abort(grpc.StatusCode.INTERNAL, f"Failed to open file '{register_map}': {e}")
+            context.abort(
+                grpc.StatusCode.INTERNAL, f"Failed to open file '{register_map_path}': {e}"
+            )
 
         except Exception as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
-                f"An error occurred while opening the file '{register_map}': {e}",
+                f"An error occurred while opening the file '{register_map_path}': {e}",
             )
 
     def _attach_existing_session(  # type: ignore[return]
         self,
         device_id: str,
         protocol: Protocol,
-        register_map: str,
+        register_map_path: str,
         register_data: dict[str, Any],
         reset: bool,
         context: grpc.ServicerContext,
@@ -570,7 +575,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
-            register_map: Path to the register map file.
+            register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
             reset: Flag indicating whether to reset the device.
             context: gRPC context object for the request.
