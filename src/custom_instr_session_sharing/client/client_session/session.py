@@ -8,10 +8,6 @@ from types import TracebackType
 from typing import Optional, Type
 
 import grpc
-from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
-from ni_measurement_plugin_sdk_service.session_management import \
-    SessionInitializationBehavior
-
 from client_session.stubs.device_comm_service_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -22,17 +18,20 @@ from client_session.stubs.device_comm_service_pb2 import (
     Protocol,
     ReadGpioChannelRequest,
     ReadGpioChannelResponse,
-    ReadRegisterRequest,
-    ReadRegisterResponse,
     ReadGpioPortRequest,
     ReadGpioPortResponse,
+    ReadRegisterRequest,
+    ReadRegisterResponse,
     StatusResponse,
     WriteGpioChannelRequest,
     WriteGpioPortRequest,
-    WriteRegisterRequest
+    WriteRegisterRequest,
 )
-from client_session.stubs.device_comm_service_pb2_grpc import \
-    DeviceCommunicationStub
+from client_session.stubs.device_comm_service_pb2_grpc import DeviceCommunicationStub
+from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
+from ni_measurement_plugin_sdk_service.session_management import (
+    SessionInitializationBehavior,
+)
 
 # These constants help to get the JSON Logger Service Location from the Discovery Service.
 # These values must match those defined in the .serviceconfig file of the Device Communication server.
@@ -65,7 +64,7 @@ class DeviceCommunicationClient:
         self,
         device_id: str,
         protocol: Protocol,
-        register_map: str,
+        register_map_path: str,
         reset: bool,
         initialization_behavior: SessionInitializationBehavior = SessionInitializationBehavior.AUTO,
         discovery_client: DiscoveryClient = DiscoveryClient(),
@@ -86,7 +85,7 @@ class DeviceCommunicationClient:
             response = self.initialize(
                 device_id=device_id,
                 protocol=protocol,
-                register_map=register_map,
+                register_map_path=register_map_path,
                 reset=reset,
                 initialization_behavior=initialization_behavior,
             )
@@ -145,7 +144,7 @@ class DeviceCommunicationClient:
         self,
         device_id: str,
         protocol: Protocol,
-        register_map: str,
+        register_map_path: str,
         initialization_behavior: int,
         reset: bool = False,
     ) -> InitializeResponse:
@@ -154,7 +153,7 @@ class DeviceCommunicationClient:
         Args:
             device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
-            register_map: Path to the register map file.
+            register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
             reset: Flag indicating whether to reset the device.
             initialization_behavior: The initialization behavior to use.
@@ -171,7 +170,7 @@ class DeviceCommunicationClient:
         request = InitializeRequest(
             device_id=device_id,
             protocol=protocol,
-            register_map=register_map,
+            register_map_path=register_map_path,
             initialization_behavior=initialization_behavior,
             reset=reset,
         )
@@ -181,19 +180,19 @@ class DeviceCommunicationClient:
             raise
 
     def read_register(self, session_name: str, register_name: str) -> ReadRegisterResponse:
-        """ Read a value from a register.
+        """Read a value from a register.
 
-        Args:       
+        Args:
             session_name: The name of the session.
-            register_name: The name of the register to read.    
-    
+            register_name: The name of the register to read.
+
         Returns:
                 The value read from the register."""
         request = ReadRegisterRequest(
             session_name=session_name,
             register_name=register_name,
         )
-        try: 
+        try:
             return self._get_stub().ReadRegister(request=request)
         except grpc.RpcError as error:
             logging.error(f"Failed to read register '{register_name}': {error}", exc_info=True)
@@ -201,9 +200,9 @@ class DeviceCommunicationClient:
 
     def write_register(self, session_name: str, register_name: str, value: int) -> StatusResponse:
         """Write a value to a register.
-        
+
         Args:
-            session_name: The name of the session.          
+            session_name: The name of the session.
             register_name: The name of the register to write.
             value: The value to write to the register.
 
@@ -243,8 +242,8 @@ class DeviceCommunicationClient:
 
     def write_gpio_channel(self, session_name: str, channel: int, state: bool) -> StatusResponse:
         """Write a state to a GPIO channel.
-        
-        Args:   
+
+        Args:
             session_name: The name of the session.
             channel: The GPIO channel number.
             state: The state to write to the GPIO channel (True for high, False for low).
@@ -265,7 +264,7 @@ class DeviceCommunicationClient:
 
     def read_gpio_port(self, session_name: str, port: int, mask: int) -> ReadGpioPortResponse:
         """Read a GPIO port state.
-                
+
         Args:
             session_name: The name of the session.
             port: The GPIO port number.
@@ -281,10 +280,14 @@ class DeviceCommunicationClient:
         try:
             return self._get_stub().ReadGpioPort(request=request)
         except grpc.RpcError as error:
-            logging.error(f"Failed to read GPIO port {port} with mask {mask}: {error}", exc_info=True)
+            logging.error(
+                f"Failed to read GPIO port {port} with mask {mask}: {error}", exc_info=True
+            )
             raise
 
-    def write_gpio_port(self, session_name: str, port: int, mask: int, state: int) -> StatusResponse:
+    def write_gpio_port(
+        self, session_name: str, port: int, mask: int, state: int
+    ) -> StatusResponse:
         """Write a state to a GPIO port.
 
         Args:
@@ -304,7 +307,9 @@ class DeviceCommunicationClient:
         try:
             return self._get_stub().WriteGpioPort(request=request)
         except grpc.RpcError as error:
-            logging.error(f"Failed to write GPIO port {port} with mask {mask}: {error}", exc_info=True)
+            logging.error(
+                f"Failed to write GPIO port {port} with mask {mask}: {error}", exc_info=True
+            )
             raise
 
     def close(self) -> StatusResponse:
