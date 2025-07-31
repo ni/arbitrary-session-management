@@ -90,10 +90,12 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         """Initialize a device communication session based on the initialization behavior.
 
         Calls the appropriate handler based on the initialization behavior specified in the request.
-        Returns an INVALID_ARGUMENT error if the file path or initialization behavior is invalid.
+        Returns an INVALID_ARGUMENT error if the device ID, protocol, register map path, reset,
+        or initialization behavior is invalid.
 
         Args:
-            request: InitializeFileRequest containing the file path and initialization behavior.
+            request: InitializeRequest containing the device ID, protocol, register map path, reset and
+                initialization behavior.
             context: gRPC context object for the request.
 
         Returns:
@@ -157,12 +159,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
     ) -> ReadRegisterResponse:
         """Read the data present in the register along with the session.
 
-        If the session does not exist or is closed, it returns NOT_FOUND error.
-        If the file is not accessible, it returns PERMISSION_DENIED error.
-        If the file is not writable or for any other errors, it returns INTERNAL error.
+        If the session does not exist or closed or register name is invalid, it returns NOT_FOUND error.
+        Returns INTERNAL error for other errors.
 
         Args:
-            request: ReadRegisterRequest containing the register address to read.
+            request: ReadRegisterRequest containing the register name to read.
             context: gRPC context object for the request.
 
         Returns:
@@ -185,6 +186,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
             value = session.register_data[request.register_name]  # type: ignore
             return ReadRegisterResponse(value=value)
+        except KeyError:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND, f"Register '{request.register_name}' not found."
+            )
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading register: {exp}")
@@ -196,8 +201,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
     ) -> StatusResponse:
         """Write a value to a register.
 
+        If the session does not exist or closed or register name is invalid, it returns NOT_FOUND error.
+        Returns INTERNAL error for other errors.
+
         Args:
-            request: WriteRegisterRequest containing the session name, register address, and value.
+            request: WriteRegisterRequest containing the session name, register name, and value.
             context: gRPC context object for the request.
 
         Returns:
@@ -216,6 +224,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             session.register_data[request.register_name] = request.value  # type: ignore
             return StatusResponse()
 
+        except KeyError:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND, f"Register '{request.register_name}' not found."
+            )
+
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing register: {exp}")
 
@@ -225,6 +238,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         context: grpc.ServicerContext,
     ) -> ReadGpioChannelResponse:
         """Read the state of a GPIO channel.
+
+        If the session does not exist or closed, it returns NOT_FOUND error.
+        If the GPIO channel is invalid, it returns INVALID_ARGUMENT error.
+        Returns INTERNAL error for other errors.
 
         Args:
             request: ReadGpioChannelRequest containing the channel to read.
@@ -264,6 +281,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         context: grpc.ServicerContext,
     ) -> StatusResponse:
         """Write the state to a GPIO channel.
+
+        If the session does not exist or closed, it returns NOT_FOUND error.
+        If the GPIO channel or state is invalid, it returns INVALID_ARGUMENT error.
+        Returns INTERNAL error for other errors.
 
         Args:
             request: WriteGpioChannelRequest containing the channel and state to write.
@@ -308,6 +329,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         context: grpc.ServicerContext,
     ) -> ReadGpioPortResponse:
         """Read the state of a GPIO port.
+
+        If the session does not exist or closed, it returns NOT_FOUND error.
+        If the GPIO port or mask is invalid, it returns INVALID_ARGUMENT error.
+        Returns INTERNAL error for other errors.
 
         Args:
             request: ReadGpioPortRequest containing the port and mask to read.
@@ -354,6 +379,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
     ) -> StatusResponse:
         """Write the state to a GPIO port.
 
+        If the session does not exist or closed, it returns NOT_FOUND error.
+        If the GPIO port or mask or state is invalid, it returns INVALID_ARGUMENT error.
+        Returns INTERNAL error for other errors.
+
         Args:
             request: WriteGpioPortRequest containing the port, mask, and state to write.
             context: gRPC context object for the request.
@@ -378,15 +407,16 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 context.abort(
                     grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO port: {request.port}"
                 )
-
-            if request.port not in [port.value for port in GPIOPort]:
-                context.abort(
-                    grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO port: {request.port}"
-                )
-
+            # Validate the GPIO mask
             if request.mask not in range(0, 256):  # Assuming mask is a byte (0x00 to 0xFF)
                 context.abort(
                     grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO mask: {request.mask}"
+                )
+
+            # Validate the GPIO state
+            if request.state not in range(0, 256):
+                context.abort(
+                    grpc.StatusCode.INVALID_ARGUMENT, f"Invalid GPIO state: {request.state}"
                 )
 
             # Simulate successful write to GPIO port
@@ -501,8 +531,8 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         If the session does not exist, it creates a new session.
         Returns an ALREADY_EXISTS error if the session already exists and is open.
-        Returns NOT_FOUND error if the file path does not exist.
-        Returns PERMISSION_DENIED error if the file path is not accessible.
+        Returns NOT_FOUND error if the register map path does not exist.
+        Returns PERMISSION_DENIED error if the register map path is not accessible.
         Returns INTERNAL error for other errors.
 
         Args:
