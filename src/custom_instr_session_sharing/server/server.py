@@ -94,8 +94,8 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         or initialization behavior is invalid.
 
         Args:
-            request: InitializeRequest containing the device ID, protocol, register map path, reset and
-                initialization behavior.
+            request: InitializeRequest containing the device ID, protocol, register map path, reset
+            and initialization behavior.
             context: gRPC context object for the request.
 
         Returns:
@@ -131,13 +131,16 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                     for row in reader
                     if "register_name" in row and "default_value" in row
                 }
+
         except KeyError:
             context.abort(
                 grpc.StatusCode.INVALID_ARGUMENT,
                 "Register map must contain 'register_name' and 'default_value' columns.",
             )
+
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading register map file: {str(exp)}")
+
         handler = initialization_behaviour.get(request.initialization_behavior)
 
         if handler is None:
@@ -159,7 +162,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
     ) -> ReadRegisterResponse:
         """Read the data present in the register along with the session.
 
-        If the session does not exist or closed or register name is invalid, it returns NOT_FOUND error.
+        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: E501
         Returns INTERNAL error for other errors.
 
         Args:
@@ -186,6 +189,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
             value = session.register_data[request.register_name]  # type: ignore
             return ReadRegisterResponse(value=value)
+
         except KeyError:
             context.abort(
                 grpc.StatusCode.NOT_FOUND, f"Register '{request.register_name}' not found."
@@ -201,7 +205,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
     ) -> StatusResponse:
         """Write a value to a register.
 
-        If the session does not exist or closed or register name is invalid, it returns NOT_FOUND error.
+        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: E505
         Returns INTERNAL error for other errors.
 
         Args:
