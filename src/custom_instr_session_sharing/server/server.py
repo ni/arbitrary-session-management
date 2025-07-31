@@ -5,13 +5,13 @@ import logging
 import random
 import threading
 import uuid
+import csv
 from collections.abc import Callable
 from concurrent import futures
 from pathlib import Path
 from typing import Any, Optional, TypeVar
 
 import grpc
-import pandas as pd
 from constants import (
     GPIOChannel,
     GPIOChannelState,
@@ -119,10 +119,14 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             )
 
         try:
-            register_data = pd.read_csv(request.register_map)
-            filtered_register_data = dict(
-                zip(register_data["register_name"], register_data["default_value"])
-            )
+            with open(request.register_map, "r") as file:
+                # Read the CSV file and filter the register data
+                reader = csv.DictReader(file)
+                filtered_register_data = {
+                    row["register_name"]: int(row["default_value"])
+                    for row in reader
+                    if "register_name" in row and "default_value" in row
+                }
         except KeyError:
             context.abort(
                 grpc.StatusCode.INVALID_ARGUMENT,

@@ -295,6 +295,8 @@ global___CloseRequest = CloseRequest
 
 @typing.final
 class StatusResponse(google.protobuf.message.Message):
+    """Empty reponse for successful operations, whereas err messages are handled by gRPC objects."""
+
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     def __init__(

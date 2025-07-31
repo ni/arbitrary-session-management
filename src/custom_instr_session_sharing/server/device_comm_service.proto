@@ -57,15 +57,15 @@ message ReadRegisterResponse {
 
 message WriteGpioChannelRequest {
     string session_name = 1;
-    int32 port = 2;
-    int32 channel = 3;
+    uint32 port = 2;
+    uint32 channel = 3;
     bool state = 4;
 }
 
 message ReadGpioChannelRequest {
     string session_name = 1;
-    int32 port = 2;
-    int32 channel = 3;
+    uint32 port = 2;
+    uint32 channel = 3;
 }
 
 message ReadGpioChannelResponse {
@@ -74,15 +74,15 @@ message ReadGpioChannelResponse {
 
 message WriteGpioPortRequest {
     string session_name = 1;
-    int32 port = 2;
-    int32 mask = 3;
+    uint32 port = 2;
+    uint32 mask = 3;
     int32 state = 4;
 }
 
 message ReadGpioPortRequest {
     string session_name = 1;
-    int32 port = 2;
-    int32 mask = 3;
+    uint32 port = 2;
+    uint32 mask = 3;
 }
 
 message ReadGpioPortResponse {
