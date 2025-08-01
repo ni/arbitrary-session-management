@@ -472,7 +472,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             context.abort(grpc.StatusCode.INTERNAL, f"Error while closing file: {exp}")
 
     def clean_up(self) -> None:
-        """Clean up all active file sessions."""
+        """Clean up all active device communication sessions."""
         with self.lock:
             for session in self.sessions.values():
                 if not session.register_data:
