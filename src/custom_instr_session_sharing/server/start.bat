@@ -1,5 +1,5 @@
 @echo off
-REM The discovery service uses this script to start the JSON logger service.
+REM The discovery service uses this script to start the Device Communication service.
 REM You can customize this script for your Python setup.
 
 REM Set up the project environment and install dependencies if not already done

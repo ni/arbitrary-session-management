@@ -469,10 +469,12 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             return StatusResponse()
 
         except Exception as exp:
-            context.abort(grpc.StatusCode.INTERNAL, f"Error while closing file: {exp}")
+            context.abort(
+                grpc.StatusCode.INTERNAL, f"Error while closing device communication session: {exp}"
+            )
 
     def clean_up(self) -> None:
-        """Clean up all active file sessions."""
+        """Clean up all active device communication sessions."""
         with self.lock:
             for session in self.sessions.values():
                 if not session.register_data:
@@ -583,13 +585,13 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         except OSError as e:
             context.abort(
-                grpc.StatusCode.INTERNAL, f"Failed to open file '{register_map_path}': {e}"
+                grpc.StatusCode.INTERNAL, f"Failed to open register map file '{register_map_path}': {e}"
             )
 
         except Exception as e:
             context.abort(
                 grpc.StatusCode.INTERNAL,
-                f"An error occurred while opening the file '{register_map_path}': {e}",
+                f"An error occurred while creating the device communication session: {e}",
             )
 
     def _attach_existing_session(  # type: ignore[return]
