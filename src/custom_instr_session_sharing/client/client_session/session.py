@@ -72,7 +72,10 @@ class DeviceCommunicationClient:
         """Initialize the DeviceCommunicationClient.
 
         Args:
-            file_path: The absolute path of the file.
+            device_id: The absolute path of the file.
+            protocol: The communication protocol to be used.
+            register_map_path: The path to the register map file.
+            reset: Whether to reset the device communication client.
             initialization_behavior: The initialization behavior to use. Defaults to AUTO.
             discovery_client: Client to the discovery service. Defaults to DiscoveryClient().
         """
@@ -113,13 +116,13 @@ class DeviceCommunicationClient:
     ) -> None:
         """Exit the context manager.
 
-        This method closes the file session if the initialization behavior is AUTO
+        This method closes the device communication session if the initialization behavior is AUTO
         only if the session is newly created.
-        If the initialization behavior is INITIALIZE_NEW, it will close the file session.
-        If the initialization behavior is ATTACH_TO_EXISTING, it will not close the file session.
+        If the initialization behavior is INITIALIZE_NEW, it will close the device communication session.
+        If the initialization behavior is ATTACH_TO_EXISTING, it will not close the device communication session.
         If the initialization behavior is INITIALIZE_NEW_THEN_DETACH,
-        it will not close the file session.
-        If the initialization behavior is ATTACH_TO_EXISTING_THEN_CLOSE, it closes the file session.
+        it will not close the device communication session.
+        If the initialization behavior is ATTACH_TO_EXISTING_THEN_CLOSE, it closes the device communication session.
 
         Args:
             exc_type: Type of the exception raised, if any.
@@ -145,7 +148,7 @@ class DeviceCommunicationClient:
         device_id: str,
         protocol: Protocol,
         register_map_path: str,
-        initialization_behavior: int,
+        initialization_behavior: SessionInitializationBehavior,
         reset: bool = False,
     ) -> InitializeResponse:
         """Initialize a device communication session.
@@ -154,14 +157,13 @@ class DeviceCommunicationClient:
             device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
-            register_data: Dictionary containing register names and their default values.
-            reset: Flag indicating whether to reset the device.
             initialization_behavior: The initialization behavior to use.
                 - AUTO: Automatically determine the initialization behavior.
                 - INITIALIZE_NEW: Create a new file session.
                 - ATTACH_TO_EXISTING: Attach to an existing file session.
                 - INITIALIZE_NEW_THEN_DETACH: Create a new file session and detach from it.
                 - ATTACH_TO_EXISTING_THEN_CLOSE: Attach to an existing file session and close it.
+            reset: Whether to reset the device communication client. Defaults to False.
 
         Returns:
             The response containing name of the session that was initialized and a boolean value
@@ -240,12 +242,19 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to read GPIO channel {channel}: {error}", exc_info=True)
             raise
 
-    def write_gpio_channel(self, session_name: str, channel: int, state: bool) -> StatusResponse:
+    def write_gpio_channel(
+            self,
+            session_name: str,
+            channel: int,
+            port: int,
+            state: bool,
+    ) -> StatusResponse:
         """Write a state to a GPIO channel.
 
         Args:
             session_name: The name of the session.
             channel: The GPIO channel number.
+            port: The GPIO port number.
             state: The state to write to the GPIO channel (True for high, False for low).
 
         Returns:
@@ -253,6 +262,7 @@ class DeviceCommunicationClient:
         """
         request = WriteGpioChannelRequest(
             session_name=session_name,
+            port=port,
             channel=channel,
             state=state,
         )
@@ -336,8 +346,8 @@ class DeviceCommunicationClient:
         Returns:
             The stub for the DeviceCommunicationService.
         """
-        with self._stub_lock:
-            if self._stub is None:
+        if self._stub is None:
+            with self._stub_lock:
                 try:
                     service_location = self._discovery_client.resolve_service(
                         provided_interface=GRPC_SERVICE_INTERFACE_NAME,

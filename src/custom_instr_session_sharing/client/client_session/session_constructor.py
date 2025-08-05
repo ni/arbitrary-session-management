@@ -17,6 +17,9 @@ class DeviceCommunicationSessionConstructor:
 
     def __init__(
         self,
+        register_map_path: str,
+        protocol: Protocol,
+        reset: bool = False,
         initialization_behavior: SessionInitializationBehavior = SessionInitializationBehavior.AUTO,
     ) -> None:
         """Initialize the DeviceCommunicationSessionConstructor.
@@ -24,10 +27,16 @@ class DeviceCommunicationSessionConstructor:
         This class is used to construct a device communication session.
 
         Args:
+            register_map_path: The path to the register map.
+            protocol: The communication protocol to be used.
+            reset: Whether to reset the device communication client. Defaults to False.
             initialization_behavior: Initialization behavior for the device communication session.
                 Defaults to SessionInitializationBehavior.AUTO.
         """
         self.initialization_behavior = initialization_behavior
+        self.register_map_path = register_map_path
+        self.protocol = protocol
+        self.reset = reset
 
     def __call__(
         self,
