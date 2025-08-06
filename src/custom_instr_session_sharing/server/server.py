@@ -13,13 +13,13 @@ from pathlib import Path
 from typing import Any, Optional, TypeVar
 
 import grpc
+from constants import GPIOChannel, GPIOChannelState, GPIOPort, Session
 from ni_measurement_plugin_sdk_service.discovery import (
     DiscoveryClient,
     ServiceLocation,
 )
-from constants import Session, GPIOChannelState, GPIOChannel, GPIOPort
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
-from stubs.device_comm_service_pb2 import (
+from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -38,7 +38,7 @@ from stubs.device_comm_service_pb2 import (
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from stubs.device_comm_service_pb2_grpc import (
+from stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
     DeviceCommunicationServicer,
     add_DeviceCommunicationServicer_to_server,
 )
@@ -68,6 +68,7 @@ def get_service_config(file_name: str = "device_comm.serviceconfig") -> dict[str
 
 def validate_session(func: F) -> Callable[..., Any]:
     """Decorator to validate the existence of a session before processing a request."""
+
     @wraps(func)
     def wrapper(self, request, context, *args, **kwargs):
         """Wrapper function to validate the session."""
@@ -80,8 +81,8 @@ def validate_session(func: F) -> Callable[..., Any]:
                 f"No active session for '{request.session_name}'",
             )
         return func(self, request, context, session=session, *args, **kwargs)
-    return wrapper
 
+    return wrapper
 
 
 class DeviceCommServicer(DeviceCommunicationServicer):
@@ -178,7 +179,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
     ) -> ReadRegisterResponse:
         """Read the data present in the register along with the session.
 
-        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: E501
+        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: W505
         Returns INTERNAL error for other errors.
 
         Args:
@@ -215,7 +216,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
     ) -> StatusResponse:
         """Write a value to a register.
 
-        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: E505
+        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: W505
         Returns INTERNAL error for other errors.
 
         Args:
@@ -256,7 +257,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             ReadGpioChannelResponse with the state of the GPIO channel.
         """
-
 
         # Implementation of reading from GPIO channel goes here
         # Simulate reading from GPIO channel by returning random value
@@ -349,8 +349,8 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO port by returning random value between valid states
-            value = random.choice(range(0, 256)) 
-            return ReadGpioPortResponse(state=value) #binary representation of GPIO port state
+            value = random.choice(range(0, 256))
+            return ReadGpioPortResponse(state=value)  # binary representation of GPIO port state
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading GPIO port: {exp}")
@@ -556,7 +556,8 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         except OSError as e:
             context.abort(
-                grpc.StatusCode.INTERNAL, f"Failed to open register map file '{register_map_path}': {e}"
+                grpc.StatusCode.INTERNAL,
+                f"Failed to open register map file '{register_map_path}': {e}",
             )
 
         except Exception as e:
