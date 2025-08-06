@@ -5,10 +5,9 @@ from __future__ import annotations
 import logging
 import threading
 from types import TracebackType
-from typing import Optional, Type
-
+from typing import Optional, Type 
 import grpc
-from client_session.stubs.device_comm_service_pb2 import (
+from stubs.device_comm_service_pb2 import ( # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -27,7 +26,7 @@ from client_session.stubs.device_comm_service_pb2 import (
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from client_session.stubs.device_comm_service_pb2_grpc import DeviceCommunicationStub
+from stubs.device_comm_service_pb2_grpc import DeviceCommunicationStub # type: ignore[import-untyped]
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
 from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
@@ -358,3 +357,7 @@ class DeviceCommunicationClient:
                     raise
 
         return self._stub
+
+
+
+client = DeviceCommunicationClient(device_id="device_123", protocol="SPI", register_map_path="c:/Users/Public/Documents/National Instruments/Semi Device Control (64-bit)/Examples/Create register map using CSV/Csv source files/ProductName_RegisterMap.csv", reset=False)
