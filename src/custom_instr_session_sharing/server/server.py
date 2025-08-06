@@ -8,20 +8,16 @@ import threading
 import uuid
 from collections.abc import Callable
 from concurrent import futures
+from functools import wraps
 from pathlib import Path
 from typing import Any, Optional, TypeVar
 
 import grpc
-from constants import (
-    GPIOChannel,
-    GPIOChannelState,
-    GPIOPort,
-    Session,
-)
 from ni_measurement_plugin_sdk_service.discovery import (
     DiscoveryClient,
     ServiceLocation,
 )
+from constants import Session, GPIOChannelState, GPIOChannel, GPIOPort
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 from stubs.device_comm_service_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
@@ -68,6 +64,24 @@ def get_service_config(file_name: str = "device_comm.serviceconfig") -> dict[str
         config = json.load(f)
         service_config = config["services"][0]
         return service_config
+
+
+def validate_session(func: F) -> Callable[..., Any]:
+    """Decorator to validate the existence of a session before processing a request."""
+    @wraps(func)
+    def wrapper(self, request, context, *args, **kwargs):
+        """Wrapper function to validate the session."""
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
+
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+        return func(self, request, context, session=session, *args, **kwargs)
+    return wrapper
+
 
 
 class DeviceCommServicer(DeviceCommunicationServicer):
@@ -125,11 +139,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 # Read the CSV file and filter the register data
                 reader = csv.DictReader(file)
                 filtered_register_data = {
-                    row["register_name"]: int(
-                        row["default_value"]
-                    )  # value must be an integer in default_value row.
+                    row["Register Name"]: int(
+                        row["Default Data"]
+                    )  # value must be an integer in Default Data row.
                     for row in reader
-                    if "register_name" in row and "default_value" in row
+                    if "Register Name" in row and "Default Data" in row
                 }
 
         except KeyError:
@@ -155,10 +169,12 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             context=context,
         )
 
+    @validate_session
     def ReadRegister(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: ReadRegisterRequest,
         context: grpc.ServicerContext,
+        session: Session = None,  # type: ignore[valid-type] - session is validated by decorator
     ) -> ReadRegisterResponse:
         """Read the data present in the register along with the session.
 
@@ -172,14 +188,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             ReadRegisterResponse indicating the success of the operation.
         """
-        with self.lock:
-            session = self._get_session_by_name(request.session_name)
-
-        if session is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.session_name}'",
-            )
 
         try:
             if request.register_name not in session.register_data:  # type: ignore
@@ -198,10 +206,12 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading register: {exp}")
 
+    @validate_session
     def WriteRegister(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: WriteRegisterRequest,
         context: grpc.ServicerContext,
+        session: Session = None,  # type: ignore[valid-type] - session is validated by decorator
     ) -> StatusResponse:
         """Write a value to a register.
 
@@ -215,15 +225,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             StatusResponse indicating the success of the operation.
         """
-        with self.lock:
-            session = self._get_session_by_name(request.session_name)
-
-        if session is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.session_name}'",
-            )
-
         try:
             session.register_data[request.register_name] = request.value  # type: ignore
             return StatusResponse()
@@ -236,6 +237,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing register: {exp}")
 
+    @validate_session
     def ReadGpioChannel(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: ReadGpioChannelRequest,
@@ -254,14 +256,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             ReadGpioChannelResponse with the state of the GPIO channel.
         """
-        with self.lock:
-            session = self._get_session_by_name(request.session_name)
 
-        if session is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.session_name}'",
-            )
 
         # Implementation of reading from GPIO channel goes here
         # Simulate reading from GPIO channel by returning random value
@@ -279,6 +274,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading GPIO channel: {exp}")
 
+    @validate_session
     def WriteGpioChannel(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: WriteGpioChannelRequest,
@@ -297,15 +293,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             StatusResponse indicating the success of the operation.
         """
-        with self.lock:
-            session = self._get_session_by_name(request.session_name)
-
-        if session is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.session_name}'",
-            )
-
         # Implementation of writing to GPIO channel goes here
         # Simulate writing to GPIO channel by returning success
         try:
@@ -327,6 +314,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing to GPIO channel: {exp}")
 
+    @validate_session
     def ReadGpioPort(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: ReadGpioPortRequest,
@@ -345,15 +333,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             ReadGpioPortResponse with the state of the GPIO port.
         """
-        with self.lock:
-            session = self._get_session_by_name(request.session_name)
-
-        if session is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.session_name}'",
-            )
-
         # Implementation of reading from GPIO port goes here
         # Simulate reading from GPIO port by returning random value
         try:
@@ -370,12 +349,13 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO port by returning random value between valid states
-            value = random.choice(range(0, 256))
-            return ReadGpioPortResponse(state=value)
+            value = random.choice(range(0, 256)) 
+            return ReadGpioPortResponse(state=value) #binary representation of GPIO port state
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading GPIO port: {exp}")
 
+    @validate_session
     def WriteGpioPort(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: WriteGpioPortRequest,
@@ -394,15 +374,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             StatusResponse indicating the success of the operation.
         """
-        with self.lock:
-            session = self._get_session_by_name(request.session_name)
-
-        if session is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.session_name}'",
-            )
-
         # Implementation of writing to GPIO port goes here
         # Simulate writing to GPIO port by returning success
         try:
