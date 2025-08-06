@@ -82,12 +82,12 @@ class DeviceCommunicationClient:
         self._discovery_client = discovery_client
         self._stub: Optional[DeviceCommunicationStub] = None
         self._stub_lock = threading.Lock()
-        self._initialization_behavior = initialization_behavior
+        self._initialization_behavior = _SERVER_INITIALIZATION_BEHAVIOR_MAP[initialization_behavior]
 
         try:
             response = self.initialize(
                 device_id=device_id,
-                protocol=protocol,
+                protocol=protocol,  # type: ignore[arg-type]
                 register_map_path=register_map_path,
                 reset=reset,
                 initialization_behavior=initialization_behavior,
@@ -129,19 +129,22 @@ class DeviceCommunicationClient:
             exc_val: Value of the exception raised, if any.
             traceback: Traceback of the exception raised, if any.
         """
-        try:
-            if self._initialization_behavior in (
-                SessionInitializationBehavior.INITIALIZE_SERVER_SESSION,
-                SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE,
-            ) or (
-                self._initialization_behavior == SessionInitializationBehavior.AUTO
-                and self._new_session
-            ):
-                self.close()
+        if hasattr(self, "_session_name") and self._session_name:
+            try:
+                if self._initialization_behavior in (
+                    SessionInitializationBehavior.INITIALIZE_SERVER_SESSION,
+                    SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE,
+                ) or (
+                    self._initialization_behavior == SessionInitializationBehavior.AUTO
+                    and self._new_session
+                ):
+                    self.close()
 
-        except grpc.RpcError as error:
-            logging.error(f"Failed to close device communication session: {error}", exc_info=True)
-            raise
+            except grpc.RpcError as error:
+                logging.error(
+                    f"Failed to close device communication session: {error}", exc_info=True
+                )
+                raise
 
     def initialize(
         self,
@@ -171,9 +174,9 @@ class DeviceCommunicationClient:
         """
         request = InitializeRequest(
             device_id=device_id,
-            protocol=protocol,
+            protocol=protocol,  # type: ignore[arg-type]
             register_map_path=register_map_path,
-            initialization_behavior=initialization_behavior,
+            initialization_behavior=_SERVER_INITIALIZATION_BEHAVIOR_MAP[initialization_behavior],
             reset=reset,
         )
         try:
