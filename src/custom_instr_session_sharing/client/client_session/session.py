@@ -33,8 +33,8 @@ from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
 )
 
-# These constants help to get the JSON Logger Service Location from the Discovery Service.
-# These values must match those defined in the .serviceconfig file of the Device Communication server.
+# These constants help to get the Device Comm Service Location from the Discovery Service.
+# These values must match those defined in the .serviceconfig file of the Device Comm server.
 GRPC_SERVICE_INTERFACE_NAME = "ni.device_control.v1.service"
 GRPC_SERVICE_CLASS = "ni.DeviceControl.CommService"
 
@@ -118,7 +118,7 @@ class DeviceCommunicationClient:
 
         This method closes the device communication session if the initialization behavior is AUTO
         only if the session is newly created.
-        If the initialization behavior is INITIALIZE_NEW, it will close the device communication session.
+        If the initialization behavior is INITIALIZE_NEW, it will close the device communication session. # noqa: W505
         If the initialization behavior is ATTACH_TO_EXISTING, it will not close the device communication session.
         If the initialization behavior is INITIALIZE_NEW_THEN_DETACH,
         it will not close the device communication session.
@@ -182,17 +182,17 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to initialize session: {error}", exc_info=True)
             raise
 
-    def read_register(self, session_name: str, register_name: str) -> ReadRegisterResponse:
+    def read_register(self, register_name: str) -> ReadRegisterResponse:
         """Read a value from a register.
 
         Args:
-            session_name: The name of the session.
             register_name: The name of the register to read.
 
         Returns:
-                The value read from the register."""
+                The value read from the register.
+        """
         request = ReadRegisterRequest(
-            session_name=session_name,
+            session_name=self._session_name,
             register_name=register_name,
         )
         try:
@@ -201,11 +201,10 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to read register '{register_name}': {error}", exc_info=True)
             raise
 
-    def write_register(self, session_name: str, register_name: str, value: int) -> StatusResponse:
+    def write_register(self, register_name: str, value: int) -> StatusResponse:
         """Write a value to a register.
 
         Args:
-            session_name: The name of the session.
             register_name: The name of the register to write.
             value: The value to write to the register.
 
@@ -213,7 +212,6 @@ class DeviceCommunicationClient:
             The empty response from the server if the request is successful.
         """
         request = WriteRegisterRequest(
-            session_name=session_name,
             register_name=register_name,
             value=value,
         )
@@ -223,18 +221,17 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to write register '{register_name}': {error}", exc_info=True)
             raise
 
-    def read_gpio_channel(self, session_name: str, channel: int) -> ReadGpioChannelResponse:
+    def read_gpio_channel(self, channel: int) -> ReadGpioChannelResponse:
         """Read a GPIO channel state.
 
         Args:
-            session_name: The name of the session.
             channel: The GPIO channel number.
 
         Returns:
             The state of the GPIO channel as a boolean value.
         """
         request = ReadGpioChannelRequest(
-            session_name=session_name,
+            session_name=self._session_name,
             channel=channel,
         )
         try:
@@ -244,16 +241,14 @@ class DeviceCommunicationClient:
             raise
 
     def write_gpio_channel(
-            self,
-            session_name: str,
-            channel: int,
-            port: int,
-            state: bool,
+        self,
+        channel: int,
+        port: int,
+        state: bool,
     ) -> StatusResponse:
         """Write a state to a GPIO channel.
 
         Args:
-            session_name: The name of the session.
             channel: The GPIO channel number.
             port: The GPIO port number.
             state: The state to write to the GPIO channel (True for high, False for low).
@@ -262,7 +257,7 @@ class DeviceCommunicationClient:
             The empty response from the server if the request is successful.
         """
         request = WriteGpioChannelRequest(
-            session_name=session_name,
+            session_name=self._session_name,
             port=port,
             channel=channel,
             state=state,
@@ -273,18 +268,18 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to write GPIO channel {channel}: {error}", exc_info=True)
             raise
 
-    def read_gpio_port(self, session_name: str, port: int, mask: int) -> ReadGpioPortResponse:
+    def read_gpio_port(self, port: int, mask: int) -> ReadGpioPortResponse:
         """Read a GPIO port state.
 
         Args:
-            session_name: The name of the session.
             port: The GPIO port number.
             mask: The mask to apply to the port state.
 
         Returns:
-            The state of the GPIO port as an integer value."""
+            The state of the GPIO port as an integer value.
+        """
         request = ReadGpioPortRequest(
-            session_name=session_name,
+            session_name=self._session_name,
             port=port,
             mask=mask,
         )
@@ -296,21 +291,19 @@ class DeviceCommunicationClient:
             )
             raise
 
-    def write_gpio_port(
-        self, session_name: str, port: int, mask: int, state: int
-    ) -> StatusResponse:
+    def write_gpio_port(self, port: int, mask: int, state: int) -> StatusResponse:
         """Write a state to a GPIO port.
 
         Args:
-            session_name: The name of the session.
             port: The GPIO port number.
             mask: The mask to apply to the port state.
             state: The state to write to the GPIO port.
+
         Returns:
             The empty response from the server if the request is successful.
         """
         request = WriteGpioPortRequest(
-            session_name=session_name,
+            session_name=self._session_name,
             port=port,
             mask=mask,
             state=state,
