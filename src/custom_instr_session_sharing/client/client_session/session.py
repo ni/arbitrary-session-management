@@ -178,7 +178,8 @@ class DeviceCommunicationClient:
         )
         try:
             return self._get_stub().Initialize(request)
-        except grpc.RpcError:
+        except grpc.RpcError as error:
+            logging.error(f"Failed to initialize session: {error}", exc_info=True)
             raise
 
     def read_register(self, session_name: str, register_name: str) -> ReadRegisterResponse:
@@ -331,6 +332,7 @@ class DeviceCommunicationClient:
             StatusResponse indicating the result of the close operation.
         """
         request = CloseRequest(session_name=self._session_name)
+
         try:
             return self._get_stub().Close(request=request)
         except grpc.RpcError as error:
@@ -346,8 +348,8 @@ class DeviceCommunicationClient:
         Returns:
             The stub for the DeviceCommunicationService.
         """
-        if self._stub is None:
-            with self._stub_lock:
+        with self._stub_lock:
+            if self._stub is None:
                 try:
                     service_location = self._discovery_client.resolve_service(
                         provided_interface=GRPC_SERVICE_INTERFACE_NAME,
