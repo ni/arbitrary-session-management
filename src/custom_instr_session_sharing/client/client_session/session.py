@@ -71,6 +71,20 @@ def convert_to_eight_bit_binary(value: int) -> str:
     return format(value, "08b")
 
 
+def convert_from_eight_bit_binary(binary_str: str) -> int:
+    """Convert an 8-bit binary string to its integer representation.
+
+    Args:
+        binary_str : A string representing an 8-bit binary number.
+
+    Returns:
+        An integer between 0 and 255 inclusive.
+    """
+    if len(binary_str) != 8 or not all(bit in '01' for bit in binary_str):
+        raise ValueError("Input must be an 8-bit binary string containing only 0s and 1s.")
+    return int(binary_str, 2)
+
+
 class DeviceCommunicationClient:
     """Client for the Device Communication Service."""
 
@@ -219,19 +233,19 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to read register '{register_name}': {error}", exc_info=True)
             raise
 
-    def write_register(self, register_name: str, value: int) -> StatusResponse:
+    def write_register(self, register_name: str, value: str) -> StatusResponse:
         """Write a value to a register.
 
         Args:
             register_name: The name of the register to write.
-            value: The value to write to the register.
+            value: The value to write to the register in binary format.
 
         Returns:
             The empty response from the server if the request is successful.
         """
         request = WriteRegisterRequest(
             register_name=register_name,
-            value=value,
+            value=convert_from_eight_bit_binary(value),
         )
         try:
             return self._get_stub().WriteRegister(request=request)
@@ -310,13 +324,13 @@ class DeviceCommunicationClient:
             )
             raise
 
-    def write_gpio_port(self, port: int, mask: int, state: int) -> StatusResponse:
+    def write_gpio_port(self, port: int, mask: int, state: str) -> StatusResponse:
         """Write a state to a GPIO port.
 
         Args:
             port: The GPIO port number.
             mask: The mask to apply to the port state.
-            state: The state to write to the GPIO port.
+            state: The state to write to the GPIO port in binary format.
 
         Returns:
             The empty response from the server if the request is successful.
@@ -325,7 +339,7 @@ class DeviceCommunicationClient:
             session_name=self._session_name,
             port=port,
             mask=mask,
-            state=state,
+            state=convert_from_eight_bit_binary(state),
         )
         try:
             return self._get_stub().WriteGpioPort(request=request)
