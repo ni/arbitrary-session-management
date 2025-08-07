@@ -23,9 +23,7 @@ from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     ReadGpioChannelRequest,
     ReadGpioChannelResponse,
     ReadGpioPortRequest,
-    ReadGpioPortResponse,
     ReadRegisterRequest,
-    ReadRegisterResponse,
     StatusResponse,
     WriteGpioChannelRequest,
     WriteGpioPortRequest,
@@ -57,6 +55,20 @@ _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
     # the desired close behavior to achieve session sharing as needed.
     SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
 }
+
+
+def convert_to_eight_bit_binary(value: int) -> str:
+    """Convert an integer to its 8-bit binary string representation.
+
+    Args:
+        value : An integer between 0 and 255 inclusive.
+
+    Returns:
+        A string representing the 8-bit binary format of the input integer.
+    """
+    if not (0 <= value <= 255):
+        raise ValueError("Input must be between 0 and 255 for 8-bit representation.")
+    return format(value, "08b")
 
 
 class DeviceCommunicationClient:
@@ -187,21 +199,22 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to initialize session: {error}", exc_info=True)
             raise
 
-    def read_register(self, register_name: str) -> ReadRegisterResponse:
+    def read_register(self, register_name: str) -> str:
         """Read a value from a register.
 
         Args:
             register_name: The name of the register to read.
 
         Returns:
-                The value read from the register.
+                The value read from the register in binary format.
         """
         request = ReadRegisterRequest(
             session_name=self._session_name,
             register_name=register_name,
         )
         try:
-            return self._get_stub().ReadRegister(request=request)
+            reg_value = self._get_stub().ReadRegister(request=request).value
+            return convert_to_eight_bit_binary(reg_value)
         except grpc.RpcError as error:
             logging.error(f"Failed to read register '{register_name}': {error}", exc_info=True)
             raise
@@ -273,7 +286,7 @@ class DeviceCommunicationClient:
             logging.error(f"Failed to write GPIO channel {channel}: {error}", exc_info=True)
             raise
 
-    def read_gpio_port(self, port: int, mask: int) -> ReadGpioPortResponse:
+    def read_gpio_port(self, port: int, mask: int) -> str:
         """Read a GPIO port state.
 
         Args:
@@ -281,7 +294,7 @@ class DeviceCommunicationClient:
             mask: The mask to apply to the port state.
 
         Returns:
-            The state of the GPIO port as an integer value.
+            The state of the GPIO port as an binary integer value.
         """
         request = ReadGpioPortRequest(
             session_name=self._session_name,
@@ -289,7 +302,8 @@ class DeviceCommunicationClient:
             mask=mask,
         )
         try:
-            return self._get_stub().ReadGpioPort(request=request)
+            port_value = self._get_stub().ReadGpioPort(request=request).value
+            return convert_to_eight_bit_binary(port_value)
         except grpc.RpcError as error:
             logging.error(
                 f"Failed to read GPIO port {port} with mask {mask}: {error}", exc_info=True
@@ -360,11 +374,3 @@ class DeviceCommunicationClient:
                     raise
 
         return self._stub
-
-
-client = DeviceCommunicationClient(
-    device_id="device_123",
-    protocol="SPI",
-    register_map_path="c:/Users/Public/Documents/National Instruments/Semi Device Control (64-bit)/Examples/Create register map using CSV/Csv source files/ProductName_RegisterMap.csv",
-    reset=False,
-)
