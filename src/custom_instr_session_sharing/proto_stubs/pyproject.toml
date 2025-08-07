@@ -3,7 +3,6 @@ name = "proto-stubs"
 version = "1.0.0"
 description = "gRPC stubs for device communication service"
 authors = ["NI <opensource@ni.com>"]
-
 packages = [
     { include = "stubs" }
 ]

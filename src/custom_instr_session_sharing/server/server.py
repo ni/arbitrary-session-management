@@ -185,6 +185,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: ReadRegisterRequest containing the register name to read.
             context: gRPC context object for the request.
+            session: Session information of the RPC call.
 
         Returns:
             ReadRegisterResponse indicating the success of the operation.
@@ -222,6 +223,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: WriteRegisterRequest containing the session name, register name, and value.
             context: gRPC context object for the request.
+            session: Session information of the RPC call.
 
         Returns:
             StatusResponse indicating the success of the operation.
@@ -243,6 +245,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: ReadGpioChannelRequest,
         context: grpc.ServicerContext,
+        session: Session = None,
     ) -> ReadGpioChannelResponse:
         """Read the state of a GPIO channel.
 
@@ -253,6 +256,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: ReadGpioChannelRequest containing the channel to read.
             context: gRPC context object for the request.
+            session: Session information of the RPC call.
 
         Returns:
             ReadGpioChannelResponse with the state of the GPIO channel.
@@ -279,6 +283,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: WriteGpioChannelRequest,
         context: grpc.ServicerContext,
+        session: Session = None,
     ) -> StatusResponse:
         """Write the state to a GPIO channel.
 
@@ -289,6 +294,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: WriteGpioChannelRequest containing the channel and state to write.
             context: gRPC context object for the request.
+            session: Session information of the RPC call.
 
         Returns:
             StatusResponse indicating the success of the operation.
@@ -319,6 +325,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: ReadGpioPortRequest,
         context: grpc.ServicerContext,
+        session: Session = None,
     ) -> ReadGpioPortResponse:
         """Read the state of a GPIO port.
 
@@ -329,6 +336,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: ReadGpioPortRequest containing the port and mask to read.
             context: gRPC context object for the request.
+            session: Session information of the RPC call.
 
         Returns:
             ReadGpioPortResponse with the state of the GPIO port.
@@ -360,6 +368,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: WriteGpioPortRequest,
         context: grpc.ServicerContext,
+        session: Session = None,
     ) -> StatusResponse:
         """Write the state to a GPIO port.
 
@@ -370,6 +379,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: WriteGpioPortRequest containing the port, mask, and state to write.
             context: gRPC context object for the request.
+            session: Session information of the RPC call.
 
         Returns:
             StatusResponse indicating the success of the operation.
