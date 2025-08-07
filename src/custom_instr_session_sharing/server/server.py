@@ -190,7 +190,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             ReadRegisterResponse indicating the success of the operation.
         """
-
         try:
             if request.register_name not in session.register_data:  # type: ignore
                 context.abort(
@@ -261,7 +260,6 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             ReadGpioChannelResponse with the state of the GPIO channel.
         """
-
         # Implementation of reading from GPIO channel goes here
         # Simulate reading from GPIO channel by returning random value
         try:
