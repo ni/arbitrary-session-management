@@ -314,7 +314,7 @@ class DeviceCommunicationClient:
             mask=mask,
         )
         try:
-            port_value = self._get_stub().ReadGpioPort(request=request).value
+            port_value = self._get_stub().ReadGpioPort(request=request).state
             return convert_to_eight_bit_binary(port_value)
         except grpc.RpcError as error:
             logging.error(
