@@ -408,10 +408,12 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing to GPIO port: {exp}")
 
+    @validate_session
     def Close(  # type: ignore[return] # noqa: N802 function name should be lowercase
         self,
         request: CloseRequest,
         context: grpc.ServicerContext,
+        session: Session = None,
     ) -> StatusResponse:
         """Close the file associated with the session.
 
@@ -421,21 +423,14 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: CloseRequest containing the session name to close.
             context: gRPC context object for the request.
+            session: Session information of the RPC call
 
         Returns:
             StatusResponse: indicating the success of the operation.
         """
-        with self.lock:
-            resource_name = self._get_resource_name_by_session(request.session_name)
-
-        if resource_name is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"Session '{request.session_name}' not found.",
-            )
-
         try:
             with self.lock:
+                resource_name = self._get_resource_name_by_session(request.session_name)
                 session = self.sessions.pop(resource_name)  # type: ignore[arg-type]
 
             if not session.register_data:
