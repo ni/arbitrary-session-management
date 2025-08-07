@@ -206,7 +206,7 @@ class DeviceCommunicationClient:
             register_name: The name of the register to read.
 
         Returns:
-                The value read from the register in binary format.
+            The value read from the register in binary format.
         """
         request = ReadRegisterRequest(
             session_name=self._session_name,
