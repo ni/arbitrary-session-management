@@ -246,6 +246,7 @@ class DeviceCommunicationClient:
         request = WriteRegisterRequest(
             register_name=register_name,
             value=convert_from_eight_bit_binary(value),
+            session_name=self._session_name,
         )
         try:
             return self._get_stub().WriteRegister(request=request)
