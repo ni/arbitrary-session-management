@@ -70,7 +70,7 @@ def validate_session(func: F) -> Callable[..., Any]:
     """Decorator to validate the existence of a session before processing a request."""
 
     @wraps(func)
-    def wrapper(self, request, context, *args, **kwargs):
+    def wrapper(self, request: Any, context: Any, *args, **kwargs):
         """Wrapper function to validate the session."""
         with self.lock:
             session = self._get_session_by_name(request.session_name)
@@ -105,11 +105,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         """Initialize a device communication session based on the initialization behavior.
 
         Calls the appropriate handler based on the initialization behavior specified in the request.
-        Returns an INVALID_ARGUMENT error if the device ID, protocol, register map path, reset,
+        Returns an INVALID_ARGUMENT error if the custom instrument ID, protocol, register map path, reset, # noqa: W505
         or initialization behavior is invalid.
 
         Args:
-            request: InitializeRequest containing the device ID, protocol, register map path, reset
+            request: InitializeRequest containing the custom instrument ID, protocol, register map path, reset
             and initialization behavior.
             context: gRPC context object for the request.
 
@@ -150,7 +150,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except KeyError:
             context.abort(
                 grpc.StatusCode.INVALID_ARGUMENT,
-                "Register map must contain 'register_name' and 'default_value' columns.",
+                "Register map must contain 'Register Name' and 'Default Data' columns.",
             )
 
         except Exception as exp:
@@ -162,7 +162,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
         return handler(  # type: ignore[misc]
-            device_id=request.device_id,
+            resource_name=request.resource_name,
             protocol=request.protocol,  # type: ignore[arg-type]
             register_map_path=(request.register_map_path),
             register_data=filtered_register_data,
@@ -418,9 +418,9 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             StatusResponse: indicating the success of the operation.
         """
         with self.lock:
-            device_id = self._get_device_id_by_session_name(request.session_name)
+            resource_name = self._get_resource_name_by_session(request.session_name)
 
-        if device_id is None:
+        if resource_name is None:
             context.abort(
                 grpc.StatusCode.NOT_FOUND,
                 f"Session '{request.session_name}' not found.",
@@ -428,7 +428,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         try:
             with self.lock:
-                session = self.sessions.pop(device_id)  # type: ignore[arg-type]
+                session = self.sessions.pop(resource_name)  # type: ignore[arg-type]
 
             if not session.register_data:
                 context.abort(
@@ -454,7 +454,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
     def _auto_initialize_session(
         self,
-        device_id: str,
+        resource_name: str,
         protocol: Protocol,
         register_map_path: str,
         register_data: dict[str, Any],
@@ -467,7 +467,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         If the session does not exist or is closed, it creates a new session.
 
         Args:
-            device_id: Unique identifier for the device.
+            resource_name: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -478,7 +478,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             InitializeResponse with session name and new session status.
         """
         with self.lock:
-            session = self.sessions.get(device_id)
+            session = self.sessions.get(resource_name)
 
         if session and not session.register_data:
             return InitializeResponse(
@@ -487,7 +487,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             )
 
         return self._create_new_session(
-            device_id=device_id,
+            resource_name=resource_name,
             protocol=protocol,
             register_map_path=register_map_path,
             register_data=register_data,
@@ -497,7 +497,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
     def _create_new_session(  # type: ignore[return]
         self,
-        device_id: str,
+        resource_name: str,
         protocol: Protocol,
         register_map_path: str,
         register_data: dict[str, Any],
@@ -513,7 +513,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns INTERNAL error for other errors.
 
         Args:
-            device_id: Unique identifier for the device.
+            resource_name: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -523,16 +523,16 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             StatusResponse with session name and new session status.
         """
-        if device_id in self.sessions and not self.sessions[device_id].register_data:
+        if resource_name in self.sessions and not self.sessions[resource_name].register_data:
             context.abort(
                 grpc.StatusCode.ALREADY_EXISTS,
-                f"Session for '{device_id}' already exists and is open.",
+                f"Session for '{resource_name}' already exists and is open.",
             )
 
         try:
             session_name: str = str(uuid.uuid4())
             with self.lock:
-                self.sessions[device_id] = Session(
+                self.sessions[resource_name] = Session(
                     session_name=session_name,
                     protocol=protocol,  # type: ignore[arg-type]
                     register_map_path=str(register_map_path),
@@ -568,7 +568,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
     def _attach_existing_session(  # type: ignore[return]
         self,
-        device_id: str,
+        resource_name: str,
         protocol: Protocol,
         register_map_path: str,
         register_data: dict[str, Any],
@@ -581,7 +581,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         If the session does not exist or is closed, it returns NOT_FOUND error.
 
         Args:
-            device_id: Unique identifier for the device.
+            resource_name: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -592,7 +592,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             InitializeResponse with session name and new session status.
         """
         with self.lock:
-            session = self.sessions.get(device_id)
+            session = self.sessions.get(resource_name)
 
         if session and not session.register_data:
             return InitializeResponse(
@@ -602,7 +602,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         context.abort(
             grpc.StatusCode.NOT_FOUND,
-            f"Session for '{device_id}' does not exist or is closed.",
+            f"Session for '{resource_name}' does not exist or is closed.",
         )
 
     def _get_session_by_name(self, session_name: str) -> Optional[Session]:
@@ -620,18 +620,18 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         return None
 
-    def _get_device_id_by_session_name(self, session_name: str) -> Optional[str]:
-        """Retrieve the device ID associated with a session name.
+    def _get_resource_name_by_session(self, session_name: str) -> Optional[str]:
+        """Retrieve the instrument resource name associated with a session name.
 
         Args:
             session_name: Session name.
 
         Returns:
-            Device ID associated with the session name, or None if not found.
+            Instrument resource name associated with the session name, or None if not found.
         """
-        for device_id, session in self.sessions.items():
+        for resource_name, session in self.sessions.items():
             if session.session_name == session_name:
-                return device_id
+                return resource_name
 
         return None
 

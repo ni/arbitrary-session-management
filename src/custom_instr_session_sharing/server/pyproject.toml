@@ -10,9 +10,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-grpcio-tools = ">=1.71.0,<2.0.0"
-mypy-protobuf = ">=3.6.0,<4.0.0"
-stubs = { path = "../proto_stubs", develop = true }
+proto-stubs = { path = "../proto_stubs", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 ni-python-styleguide = "^0.4.6"

@@ -620,6 +620,24 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=8.3.4)", "pytest-
 type = ["mypy (>=1.14.1)"]
 
 [[package]]
+name = "proto-stubs"
+version = "1.0.0"
+description = "gRPC stubs for device communication service"
+optional = false
+python-versions = "^3.9"
+groups = ["main"]
+files = []
+develop = true
+
+[package.dependencies]
+grpcio-tools = ">=1.71.0,<2.0.0"
+mypy-protobuf = ">=3.6.0,<4.0.0"
+
+[package.source]
+type = "directory"
+url = "../proto_stubs"
+
+[[package]]
 name = "protobuf"
 version = "6.31.1"
 description = ""
@@ -897,20 +915,6 @@ files = [
 pbr = ">=2.0.0"
 
 [[package]]
-name = "stubs"
-version = "0.0.0"
-description = ""
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "../proto_stubs"
-
-[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -1005,4 +1009,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "1c44fd2d9f958dc81957ab0f73c43de9c10f3816ce77d6262ca8ea36a834919f"
+content-hash = "2ce7659635c5ad8dbb1c9835d44814ac75739fc76652bba294ddce19d015c030"
