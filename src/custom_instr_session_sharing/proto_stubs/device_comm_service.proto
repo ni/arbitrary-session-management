@@ -91,8 +91,8 @@ service DeviceCommunication {
 // Request/Response messages
 
 message InitializeRequest {
-    // Device ID for the DUT being validated.
-    string device_id = 1;
+    // Resource name of the custom instrument.
+    string instrument_resource_name = 1;
     // Defines which protocol is used for device wake up.
     Protocol protocol = 2;
     // Reset option to re-load the register map data

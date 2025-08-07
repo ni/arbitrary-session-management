@@ -24,43 +24,43 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x64\x65vice_comm_service.proto\x12\x13\x44\x65viceCommunication\"\xd6\x01\n\x11InitializeRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\t\x12/\n\x08protocol\x18\x02 \x01(\x0e\x32\x1d.DeviceCommunication.Protocol\x12\r\n\x05reset\x18\x03 \x01(\x08\x12\x19\n\x11register_map_path\x18\x04 \x01(\t\x12S\n\x17initialization_behavior\x18\x05 \x01(\x0e\x32\x32.DeviceCommunication.SessionInitializationBehavior\"?\n\x12InitializeResponse\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x13\n\x0bnew_session\x18\x02 \x01(\x08\"R\n\x14WriteRegisterRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x15\n\rregister_name\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\r\"B\n\x13ReadRegisterRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x15\n\rregister_name\x18\x02 \x01(\t\"%\n\x14ReadRegisterResponse\x12\r\n\x05value\x18\x01 \x01(\r\"]\n\x17WriteGpioChannelRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0f\n\x07\x63hannel\x18\x03 \x01(\r\x12\r\n\x05state\x18\x04 \x01(\x08\"M\n\x16ReadGpioChannelRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0f\n\x07\x63hannel\x18\x03 \x01(\r\"(\n\x17ReadGpioChannelResponse\x12\r\n\x05state\x18\x01 \x01(\x08\"W\n\x14WriteGpioPortRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0c\n\x04mask\x18\x03 \x01(\r\x12\r\n\x05state\x18\x04 \x01(\r\"G\n\x13ReadGpioPortRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0c\n\x04mask\x18\x03 \x01(\r\"%\n\x14ReadGpioPortResponse\x12\r\n\x05state\x18\x01 \x01(\r\"$\n\x0c\x43loseRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"\x10\n\x0eStatusResponse*<\n\x08Protocol\x12\x14\n\x10UNKNOWN_PROTOCOL\x10\x00\x12\x07\n\x03SPI\x10\x01\x12\x07\n\x03I2C\x10\x02\x12\x08\n\x04UART\x10\x03*\xbc\x01\n\x1dSessionInitializationBehavior\x12/\n+SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED\x10\x00\x12\x32\n.SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW\x10\x01\x12\x36\n2SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING\x10\x02\x32\xb6\x06\n\x13\x44\x65viceCommunication\x12_\n\nInitialize\x12&.DeviceCommunication.InitializeRequest\x1a\'.DeviceCommunication.InitializeResponse\"\x00\x12\x61\n\rWriteRegister\x12).DeviceCommunication.WriteRegisterRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x12\x65\n\x0cReadRegister\x12(.DeviceCommunication.ReadRegisterRequest\x1a).DeviceCommunication.ReadRegisterResponse\"\x00\x12g\n\x10WriteGpioChannel\x12,.DeviceCommunication.WriteGpioChannelRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x12n\n\x0fReadGpioChannel\x12+.DeviceCommunication.ReadGpioChannelRequest\x1a,.DeviceCommunication.ReadGpioChannelResponse\"\x00\x12\x61\n\rWriteGpioPort\x12).DeviceCommunication.WriteGpioPortRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x12\x65\n\x0cReadGpioPort\x12(.DeviceCommunication.ReadGpioPortRequest\x1a).DeviceCommunication.ReadGpioPortResponse\"\x00\x12Q\n\x05\x43lose\x12!.DeviceCommunication.CloseRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x64\x65vice_comm_service.proto\x12\x13\x44\x65viceCommunication\"\xe5\x01\n\x11InitializeRequest\x12 \n\x18instrument_resource_name\x18\x01 \x01(\t\x12/\n\x08protocol\x18\x02 \x01(\x0e\x32\x1d.DeviceCommunication.Protocol\x12\r\n\x05reset\x18\x03 \x01(\x08\x12\x19\n\x11register_map_path\x18\x04 \x01(\t\x12S\n\x17initialization_behavior\x18\x05 \x01(\x0e\x32\x32.DeviceCommunication.SessionInitializationBehavior\"?\n\x12InitializeResponse\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x13\n\x0bnew_session\x18\x02 \x01(\x08\"R\n\x14WriteRegisterRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x15\n\rregister_name\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\r\"B\n\x13ReadRegisterRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x15\n\rregister_name\x18\x02 \x01(\t\"%\n\x14ReadRegisterResponse\x12\r\n\x05value\x18\x01 \x01(\r\"]\n\x17WriteGpioChannelRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0f\n\x07\x63hannel\x18\x03 \x01(\r\x12\r\n\x05state\x18\x04 \x01(\x08\"M\n\x16ReadGpioChannelRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0f\n\x07\x63hannel\x18\x03 \x01(\r\"(\n\x17ReadGpioChannelResponse\x12\r\n\x05state\x18\x01 \x01(\x08\"W\n\x14WriteGpioPortRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0c\n\x04mask\x18\x03 \x01(\r\x12\r\n\x05state\x18\x04 \x01(\r\"G\n\x13ReadGpioPortRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0c\n\x04mask\x18\x03 \x01(\r\"%\n\x14ReadGpioPortResponse\x12\r\n\x05state\x18\x01 \x01(\r\"$\n\x0c\x43loseRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"\x10\n\x0eStatusResponse*<\n\x08Protocol\x12\x14\n\x10UNKNOWN_PROTOCOL\x10\x00\x12\x07\n\x03SPI\x10\x01\x12\x07\n\x03I2C\x10\x02\x12\x08\n\x04UART\x10\x03*\xbc\x01\n\x1dSessionInitializationBehavior\x12/\n+SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED\x10\x00\x12\x32\n.SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW\x10\x01\x12\x36\n2SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING\x10\x02\x32\xb6\x06\n\x13\x44\x65viceCommunication\x12_\n\nInitialize\x12&.DeviceCommunication.InitializeRequest\x1a\'.DeviceCommunication.InitializeResponse\"\x00\x12\x61\n\rWriteRegister\x12).DeviceCommunication.WriteRegisterRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x12\x65\n\x0cReadRegister\x12(.DeviceCommunication.ReadRegisterRequest\x1a).DeviceCommunication.ReadRegisterResponse\"\x00\x12g\n\x10WriteGpioChannel\x12,.DeviceCommunication.WriteGpioChannelRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x12n\n\x0fReadGpioChannel\x12+.DeviceCommunication.ReadGpioChannelRequest\x1a,.DeviceCommunication.ReadGpioChannelResponse\"\x00\x12\x61\n\rWriteGpioPort\x12).DeviceCommunication.WriteGpioPortRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x12\x65\n\x0cReadGpioPort\x12(.DeviceCommunication.ReadGpioPortRequest\x1a).DeviceCommunication.ReadGpioPortResponse\"\x00\x12Q\n\x05\x43lose\x12!.DeviceCommunication.CloseRequest\x1a#.DeviceCommunication.StatusResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'device_comm_service_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_PROTOCOL']._serialized_start=996
-  _globals['_PROTOCOL']._serialized_end=1056
-  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_start=1059
-  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_end=1247
+  _globals['_PROTOCOL']._serialized_start=1011
+  _globals['_PROTOCOL']._serialized_end=1071
+  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_start=1074
+  _globals['_SESSIONINITIALIZATIONBEHAVIOR']._serialized_end=1262
   _globals['_INITIALIZEREQUEST']._serialized_start=51
-  _globals['_INITIALIZEREQUEST']._serialized_end=265
-  _globals['_INITIALIZERESPONSE']._serialized_start=267
-  _globals['_INITIALIZERESPONSE']._serialized_end=330
-  _globals['_WRITEREGISTERREQUEST']._serialized_start=332
-  _globals['_WRITEREGISTERREQUEST']._serialized_end=414
-  _globals['_READREGISTERREQUEST']._serialized_start=416
-  _globals['_READREGISTERREQUEST']._serialized_end=482
-  _globals['_READREGISTERRESPONSE']._serialized_start=484
-  _globals['_READREGISTERRESPONSE']._serialized_end=521
-  _globals['_WRITEGPIOCHANNELREQUEST']._serialized_start=523
-  _globals['_WRITEGPIOCHANNELREQUEST']._serialized_end=616
-  _globals['_READGPIOCHANNELREQUEST']._serialized_start=618
-  _globals['_READGPIOCHANNELREQUEST']._serialized_end=695
-  _globals['_READGPIOCHANNELRESPONSE']._serialized_start=697
-  _globals['_READGPIOCHANNELRESPONSE']._serialized_end=737
-  _globals['_WRITEGPIOPORTREQUEST']._serialized_start=739
-  _globals['_WRITEGPIOPORTREQUEST']._serialized_end=826
-  _globals['_READGPIOPORTREQUEST']._serialized_start=828
-  _globals['_READGPIOPORTREQUEST']._serialized_end=899
-  _globals['_READGPIOPORTRESPONSE']._serialized_start=901
-  _globals['_READGPIOPORTRESPONSE']._serialized_end=938
-  _globals['_CLOSEREQUEST']._serialized_start=940
-  _globals['_CLOSEREQUEST']._serialized_end=976
-  _globals['_STATUSRESPONSE']._serialized_start=978
-  _globals['_STATUSRESPONSE']._serialized_end=994
-  _globals['_DEVICECOMMUNICATION']._serialized_start=1250
-  _globals['_DEVICECOMMUNICATION']._serialized_end=2072
+  _globals['_INITIALIZEREQUEST']._serialized_end=280
+  _globals['_INITIALIZERESPONSE']._serialized_start=282
+  _globals['_INITIALIZERESPONSE']._serialized_end=345
+  _globals['_WRITEREGISTERREQUEST']._serialized_start=347
+  _globals['_WRITEREGISTERREQUEST']._serialized_end=429
+  _globals['_READREGISTERREQUEST']._serialized_start=431
+  _globals['_READREGISTERREQUEST']._serialized_end=497
+  _globals['_READREGISTERRESPONSE']._serialized_start=499
+  _globals['_READREGISTERRESPONSE']._serialized_end=536
+  _globals['_WRITEGPIOCHANNELREQUEST']._serialized_start=538
+  _globals['_WRITEGPIOCHANNELREQUEST']._serialized_end=631
+  _globals['_READGPIOCHANNELREQUEST']._serialized_start=633
+  _globals['_READGPIOCHANNELREQUEST']._serialized_end=710
+  _globals['_READGPIOCHANNELRESPONSE']._serialized_start=712
+  _globals['_READGPIOCHANNELRESPONSE']._serialized_end=752
+  _globals['_WRITEGPIOPORTREQUEST']._serialized_start=754
+  _globals['_WRITEGPIOPORTREQUEST']._serialized_end=841
+  _globals['_READGPIOPORTREQUEST']._serialized_start=843
+  _globals['_READGPIOPORTREQUEST']._serialized_end=914
+  _globals['_READGPIOPORTRESPONSE']._serialized_start=916
+  _globals['_READGPIOPORTRESPONSE']._serialized_end=953
+  _globals['_CLOSEREQUEST']._serialized_start=955
+  _globals['_CLOSEREQUEST']._serialized_end=991
+  _globals['_STATUSRESPONSE']._serialized_start=993
+  _globals['_STATUSRESPONSE']._serialized_end=1009
+  _globals['_DEVICECOMMUNICATION']._serialized_start=1265
+  _globals['_DEVICECOMMUNICATION']._serialized_end=2087
 # @@protoc_insertion_point(module_scope)

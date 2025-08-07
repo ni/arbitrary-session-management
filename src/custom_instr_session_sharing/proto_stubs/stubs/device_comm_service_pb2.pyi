@@ -6,7 +6,7 @@ This file is where the request and response messages for the
 Device Communication service are defined. It includes the service definition, request and response
 messages, and enumerations for session initialization behavior.
 
-The Device Communication service provides methods to open a  handle of a session.
+The Device Communication service provides methods to open a handle of a session.
 
 The user can create a similar file for their services by following the structure of this file.
 It is recommended to have Initialize or similar rpc call 
@@ -77,13 +77,13 @@ class InitializeRequest(google.protobuf.message.Message):
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    DEVICE_ID_FIELD_NUMBER: builtins.int
+    INSTRUMENT_RESOURCE_NAME_FIELD_NUMBER: builtins.int
     PROTOCOL_FIELD_NUMBER: builtins.int
     RESET_FIELD_NUMBER: builtins.int
     REGISTER_MAP_PATH_FIELD_NUMBER: builtins.int
     INITIALIZATION_BEHAVIOR_FIELD_NUMBER: builtins.int
-    device_id: builtins.str
-    """Device ID for the DUT being validated."""
+    instrument_resource_name: builtins.str
+    """Resource name of the custom instrument."""
     protocol: global___Protocol.ValueType
     """Defines which protocol is used for device wake up."""
     reset: builtins.bool
@@ -95,13 +95,13 @@ class InitializeRequest(google.protobuf.message.Message):
     def __init__(
         self,
         *,
-        device_id: builtins.str = ...,
+        instrument_resource_name: builtins.str = ...,
         protocol: global___Protocol.ValueType = ...,
         reset: builtins.bool = ...,
         register_map_path: builtins.str = ...,
         initialization_behavior: global___SessionInitializationBehavior.ValueType = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["device_id", b"device_id", "initialization_behavior", b"initialization_behavior", "protocol", b"protocol", "register_map_path", b"register_map_path", "reset", b"reset"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["initialization_behavior", b"initialization_behavior", "instrument_resource_name", b"instrument_resource_name", "protocol", b"protocol", "register_map_path", b"register_map_path", "reset", b"reset"]) -> None: ...
 
 global___InitializeRequest = InitializeRequest
 
