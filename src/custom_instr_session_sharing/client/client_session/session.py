@@ -275,14 +275,12 @@ class DeviceCommunicationClient:
     def write_gpio_channel(
         self,
         channel: int,
-        port: int,
         state: bool,
     ) -> StatusResponse:
         """Write a state to a GPIO channel.
 
         Args:
             channel: The GPIO channel number.
-            port: The GPIO port number.
             state: The state to write to the GPIO channel (True for high, False for low).
 
         Returns:
@@ -290,7 +288,6 @@ class DeviceCommunicationClient:
         """
         request = WriteGpioChannelRequest(
             session_name=self._session_name,
-            port=port,
             channel=channel,
             state=state,
         )
