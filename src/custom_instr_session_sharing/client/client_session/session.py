@@ -100,7 +100,7 @@ class DeviceCommunicationClient:
         """Initialize the DeviceCommunicationClient.
 
         Args:
-            device_id: The absolute path of the file.
+            device_id: Unique identifier of the device.
             protocol: The communication protocol to be used.
             register_map_path: The path to the register map file.
             reset: Whether to reset the device communication client.
@@ -190,10 +190,10 @@ class DeviceCommunicationClient:
             register_map_path: Path to the register map file.
             initialization_behavior: The initialization behavior to use.
                 - AUTO: Automatically determine the initialization behavior.
-                - INITIALIZE_NEW: Create a new file session.
-                - ATTACH_TO_EXISTING: Attach to an existing file session.
-                - INITIALIZE_NEW_THEN_DETACH: Create a new file session and detach from it.
-                - ATTACH_TO_EXISTING_THEN_CLOSE: Attach to an existing file session and close it.
+                - INITIALIZE_NEW: Create a new device communication session.
+                - ATTACH_TO_EXISTING: Attach to an existing device communication session.
+                - INITIALIZE_NEW_THEN_DETACH: Create a new device communication session and detach from it. # noqa: W505
+                - ATTACH_TO_EXISTING_THEN_CLOSE: Attach to an existing device communication session and close it.
             reset: Whether to reset the device communication client. Defaults to False.
 
         Returns:
