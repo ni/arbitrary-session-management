@@ -415,7 +415,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         context: grpc.ServicerContext,
         session: Session,
     ) -> StatusResponse:
-        """Close the file associated with the session.
+        """Close the resource associated with the session.
 
         Returns NOT_FOUND error if the session does not exist or is already closed.
         Returns INTERNAL error for other errors.
