@@ -70,7 +70,7 @@ def validate_session(func: F) -> Callable[..., Any]:
     """Decorator to validate the existence of a session before processing a request."""
 
     @wraps(func)
-    def wrapper(self, request: Any, context: Any, *args, **kwargs):
+    def wrapper(self: Any, request: Any, context: Any, *args: Any, **kwargs: Any) -> Any:
         """Wrapper function to validate the session."""
         with self.lock:
             session = self._get_session_by_name(request.session_name)
@@ -175,7 +175,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: ReadRegisterRequest,
         context: grpc.ServicerContext,
-        session: Session = None,  # type: ignore[valid-type] - session is validated by decorator
+        session: Session,
     ) -> ReadRegisterResponse:
         """Read the data present in the register along with the session.
 
@@ -212,7 +212,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: WriteRegisterRequest,
         context: grpc.ServicerContext,
-        session: Session = None,  # type: ignore[valid-type] - session is validated by decorator
+        session: Session,
     ) -> StatusResponse:
         """Write a value to a register.
 
@@ -244,7 +244,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: ReadGpioChannelRequest,
         context: grpc.ServicerContext,
-        session: Session = None,
+        session: Session,
     ) -> ReadGpioChannelResponse:
         """Read the state of a GPIO channel.
 
@@ -281,7 +281,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: WriteGpioChannelRequest,
         context: grpc.ServicerContext,
-        session: Session = None,
+        session: Session,
     ) -> StatusResponse:
         """Write the state to a GPIO channel.
 
@@ -323,7 +323,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: ReadGpioPortRequest,
         context: grpc.ServicerContext,
-        session: Session = None,
+        session: Session,
     ) -> ReadGpioPortResponse:
         """Read the state of a GPIO port.
 
@@ -366,7 +366,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: WriteGpioPortRequest,
         context: grpc.ServicerContext,
-        session: Session = None,
+        session: Session,
     ) -> StatusResponse:
         """Write the state to a GPIO port.
 
@@ -413,7 +413,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         self,
         request: CloseRequest,
         context: grpc.ServicerContext,
-        session: Session = None,
+        session: Session,
     ) -> StatusResponse:
         """Close the file associated with the session.
 
@@ -470,7 +470,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         If the session does not exist or is closed, it creates a new session.
 
         Args:
-            resource_name: Unique identifier for the device.
+            resource_name: Custom instrument resource name.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -516,7 +516,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns INTERNAL error for other errors.
 
         Args:
-            resource_name: Unique identifier for the device.
+            resource_name: Custom instrument resource name.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -584,7 +584,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         If the session does not exist or is closed, it returns NOT_FOUND error.
 
         Args:
-            resource_name: Unique identifier for the device.
+            resource_name: Custom instrument resource name.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
