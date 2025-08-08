@@ -1,0 +1,11 @@
+[tool.poetry]
+name = "proto-stubs"
+version = "1.0.0"
+description = "gRPC stubs for device communication service"
+authors = [{ name = "NI", email = "opensource@ni.com" }]
+packages = [
+    { include = "stubs" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
