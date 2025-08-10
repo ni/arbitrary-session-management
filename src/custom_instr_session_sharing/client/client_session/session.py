@@ -57,7 +57,7 @@ _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
 }
 
 
-def convert_to_eight_bit_binary(value: int) -> str:
+def convert_decimal_to_binary(value: int) -> str:
     """Convert an integer to its 8-bit binary string representation.
 
     Args:
@@ -71,7 +71,7 @@ def convert_to_eight_bit_binary(value: int) -> str:
     return format(value, "08b")
 
 
-def convert_from_eight_bit_binary(binary_str: str) -> int:
+def convert_binary_to_decimal(binary_str: str) -> int:
     """Convert an 8-bit binary string to its integer representation.
 
     Args:
@@ -101,8 +101,8 @@ class DeviceCommunicationClient:
 
         Args:
             device_id: Unique identifier of the device.
-            protocol: The communication protocol to be used.
-            register_map_path: The path to the register map file.
+            protocol: Communication protocol to be used.
+            register_map_path: Path to the register map file.
             reset: Whether to reset the device communication client.
             initialization_behavior: The initialization behavior to use. Defaults to AUTO.
             discovery_client: Client to the discovery service. Defaults to DiscoveryClient().
@@ -214,13 +214,13 @@ class DeviceCommunicationClient:
             raise
 
     def read_register(self, register_name: str) -> str:
-        """Read a value from a register.
+        """Read the value from a register.
 
         Args:
-            register_name: The name of the register to read.
+            register_name: Name of the register to read.
 
         Returns:
-            The value read from the register in binary format.
+            Value read from the register as a 8-bit binary string.
         """
         request = ReadRegisterRequest(
             session_name=self._session_name,
@@ -228,24 +228,24 @@ class DeviceCommunicationClient:
         )
         try:
             reg_value = self._get_stub().ReadRegister(request=request).value
-            return convert_to_eight_bit_binary(reg_value)
+            return convert_decimal_to_binary(reg_value)
         except grpc.RpcError as error:
             logging.error(f"Failed to read register '{register_name}': {error}", exc_info=True)
             raise
 
     def write_register(self, register_name: str, value: str) -> StatusResponse:
-        """Write a value to a register.
+        """Write the value to a register.
 
         Args:
-            register_name: The name of the register to write.
-            value: The value to write to the register in binary format.
+            register_name: Name of the register to write.
+            value: value to be written to the register as an 8-bit binary string.
 
         Returns:
             The empty response from the server if the request is successful.
         """
         request = WriteRegisterRequest(
             register_name=register_name,
-            value=convert_from_eight_bit_binary(value),
+            value=convert_binary_to_decimal(value),
             session_name=self._session_name,
         )
         try:
@@ -255,13 +255,13 @@ class DeviceCommunicationClient:
             raise
 
     def read_gpio_channel(self, channel: int) -> ReadGpioChannelResponse:
-        """Read a GPIO channel state.
+        """Read the state of a GPIO channel.
 
         Args:
-            channel: The GPIO channel number.
+            channel: The GPIO channel number to read.
 
         Returns:
-            The state of the GPIO channel as a boolean value.
+            State of the GPIO channel as a boolean value.
         """
         request = ReadGpioChannelRequest(
             session_name=self._session_name,
@@ -278,10 +278,10 @@ class DeviceCommunicationClient:
         channel: int,
         state: bool,
     ) -> StatusResponse:
-        """Write a state to a GPIO channel.
+        """Write the state to a GPIO channel.
 
         Args:
-            channel: The GPIO channel number.
+            channel: The GPIO channel number to write.
             state: The state to write to the GPIO channel (True for high, False for low).
 
         Returns:
@@ -299,14 +299,14 @@ class DeviceCommunicationClient:
             raise
 
     def read_gpio_port(self, port: int, mask: int) -> str:
-        """Read a GPIO port state.
+        """Read the state of a GPIO channel.
 
         Args:
-            port: The GPIO port number.
+            port: The GPIO port number to read.
             mask: The mask to apply to the port state.
 
         Returns:
-            The state of the GPIO port as an binary integer value.
+            The state of the GPIO port as an 8-bit binary string.
         """
         request = ReadGpioPortRequest(
             session_name=self._session_name,
@@ -315,7 +315,7 @@ class DeviceCommunicationClient:
         )
         try:
             port_value = self._get_stub().ReadGpioPort(request=request).state
-            return convert_to_eight_bit_binary(port_value)
+            return convert_decimal_to_binary(port_value)
         except grpc.RpcError as error:
             logging.error(
                 f"Failed to read GPIO port {port} with mask {mask}: {error}", exc_info=True
@@ -323,12 +323,12 @@ class DeviceCommunicationClient:
             raise
 
     def write_gpio_port(self, port: int, mask: int, state: str) -> StatusResponse:
-        """Write a state to a GPIO port.
+        """Write the state to a GPIO port.
 
         Args:
-            port: The GPIO port number.
+            port: The GPIO port number to write.
             mask: The mask to apply to the port state.
-            state: The state to write to the GPIO port in binary format.
+            state: The state to write to the GPIO port as an 8-bit binary string.
 
         Returns:
             The empty response from the server if the request is successful.
@@ -337,7 +337,7 @@ class DeviceCommunicationClient:
             session_name=self._session_name,
             port=port,
             mask=mask,
-            state=convert_from_eight_bit_binary(state),
+            state=convert_binary_to_decimal(state),
         )
         try:
             return self._get_stub().WriteGpioPort(request=request)
