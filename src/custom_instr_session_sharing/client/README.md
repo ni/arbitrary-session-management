@@ -44,5 +44,5 @@ To enable reuse of the client across multiple plugins, it is recommended to pack
 - Import the client module in your Measurement Plugin:
 
    ```python
-   from client_session.session_constructor import DeviceCommunicationSessionConstructor, INSTRUMENT_TYPE
+   from device_communication_client.session_constructor import DeviceCommunicationSessionConstructor, INSTRUMENT_TYPE
    ```
