@@ -1,6 +1,6 @@
 """File containing class for constructing device communication session."""
 
-from client_session.session import DeviceCommunicationClient
+from device_communication_client.session import DeviceCommunicationClient
 from device_comm_proto_stubs.device_comm_service_pb2 import (
     Protocol,  # type: ignore[import-untyped]
 )
