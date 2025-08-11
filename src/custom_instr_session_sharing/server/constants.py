@@ -4,7 +4,9 @@ from dataclasses import dataclass, field
 from enum import Enum, IntEnum
 from typing import Dict
 
-from device_comm_proto_stubs.device_comm_service_pb2 import Protocol  # type: ignore[import-untyped]
+from device_comm_proto_stubs.device_comm_service_pb2 import (
+    Protocol,  # type: ignore[import-untyped]
+)
 
 
 class GPIOPort(IntEnum):
@@ -17,7 +19,7 @@ class GPIOPort(IntEnum):
 
 
 class GPIOChannel(IntEnum):
-    """Enum that represents available GPIO channel numbers"""
+    """Enum that represents available GPIO channel numbers."""
 
     CH0 = 0
     CH1 = 1

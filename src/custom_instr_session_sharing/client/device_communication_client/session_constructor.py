@@ -53,7 +53,7 @@ class DeviceCommunicationSessionConstructor:
             The DeviceCommunicationClient object.
         """
         client = DeviceCommunicationClient(
-            device_id=session_info.resource_name,
+            resource_name=session_info.resource_name,
             register_map_path=self.register_map_path,
             protocol=self.protocol,
             reset=self.reset,

@@ -14,11 +14,6 @@ from typing import Any, Optional, TypeVar
 
 import grpc
 from constants import GPIOChannel, GPIOChannelState, GPIOPort, Session
-from ni_measurement_plugin_sdk_service.discovery import (
-    DiscoveryClient,
-    ServiceLocation,
-)
-from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -42,6 +37,11 @@ from device_comm_proto_stubs.device_comm_service_pb2_grpc import (  # type: igno
     DeviceCommunicationServicer,
     add_DeviceCommunicationServicer_to_server,
 )
+from ni_measurement_plugin_sdk_service.discovery import (
+    DiscoveryClient,
+    ServiceLocation,
+)
+from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 
 F = TypeVar("F", bound=Callable[..., Any])
 

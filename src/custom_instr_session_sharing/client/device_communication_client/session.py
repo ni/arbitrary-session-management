@@ -90,7 +90,7 @@ class DeviceCommunicationClient:
 
     def __init__(
         self,
-        device_id: str,
+        resource_name: str,
         protocol: Protocol,
         register_map_path: str,
         reset: bool,
@@ -100,7 +100,7 @@ class DeviceCommunicationClient:
         """Initialize the DeviceCommunicationClient.
 
         Args:
-            device_id: Unique identifier of the device.
+            resource_name: Custom instrument resource name.
             protocol: Communication protocol to be used.
             register_map_path: Path to the register map file.
             reset: Whether to reset the device communication client.
@@ -114,7 +114,7 @@ class DeviceCommunicationClient:
 
         try:
             response = self.initialize(
-                device_id=device_id,
+                resource_name=resource_name,
                 protocol=protocol,  # type: ignore[arg-type]
                 register_map_path=register_map_path,
                 reset=reset,
@@ -176,7 +176,7 @@ class DeviceCommunicationClient:
 
     def initialize(
         self,
-        device_id: str,
+        resource_name: str,
         protocol: Protocol,
         register_map_path: str,
         initialization_behavior: SessionInitializationBehavior,
@@ -185,7 +185,7 @@ class DeviceCommunicationClient:
         """Initialize a device communication session.
 
         Args:
-            device_id: Unique identifier for the device.
+            resource_name: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             initialization_behavior: The initialization behavior to use.
@@ -201,7 +201,7 @@ class DeviceCommunicationClient:
             stating whether a new session was created.
         """
         request = InitializeRequest(
-            device_id=device_id,
+            resource_name=resource_name,
             protocol=protocol,  # type: ignore[arg-type]
             register_map_path=register_map_path,
             initialization_behavior=_SERVER_INITIALIZATION_BEHAVIOR_MAP[initialization_behavior],
