@@ -1,1 +1,0 @@
-"""Device Communication Service Stubs."""
