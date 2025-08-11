@@ -19,7 +19,7 @@ from ni_measurement_plugin_sdk_service.discovery import (
     ServiceLocation,
 )
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
-from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
+from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -38,7 +38,7 @@ from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
+from device_comm_proto_stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
     DeviceCommunicationServicer,
     add_DeviceCommunicationServicer_to_server,
 )
@@ -105,11 +105,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         """Initialize a device communication session based on the initialization behavior.
 
         Calls the appropriate handler based on the initialization behavior specified in the request.
-        Returns an INVALID_ARGUMENT error if the custom instrument ID, protocol, register map path, reset, # noqa: W505
+        Returns an INVALID_ARGUMENT error if the custom instrument resource name, protocol, register map path, reset, # noqa: W505
         or initialization behavior is invalid.
 
         Args:
-            request: InitializeRequest containing the custom instrument ID, protocol, register map path, reset
+            request: InitializeRequest containing the custom instrument resource name, protocol, register map path, reset
             and initialization behavior.
             context: gRPC context object for the request.
 
@@ -214,7 +214,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         context: grpc.ServicerContext,
         session: Session,
     ) -> StatusResponse:
-        """Write a value to a register.
+        """Write the value to a register.
 
         If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: W505
         Returns INTERNAL error for other errors.
@@ -524,7 +524,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             context: gRPC context object for the request.
 
         Returns:
-            StatusResponse with session name and new session status.
+            InitializeResponse with session name and new session status.
         """
         if resource_name in self.sessions and not self.sessions[resource_name].register_data:
             context.abort(

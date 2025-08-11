@@ -1,6 +1,6 @@
 # This project requires Poetry >= 2.0.0
 [project]
-name = "device-communication-service"
+name = "device_communication_service"
 version = "1.0.0"
 description = "A user-defined service to perform device wake up operations while managing sessions efficiently."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
@@ -10,7 +10,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-proto-stubs = { path = "../proto_stubs", develop = true }
+device-comm-proto-stubs = { path = "../device_comm_proto_stubs", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 ni-python-styleguide = "^0.4.6"
