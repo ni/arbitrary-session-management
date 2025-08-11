@@ -8,10 +8,6 @@ from types import TracebackType
 from typing import Optional, Type
 
 import grpc
-from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
-from ni_measurement_plugin_sdk_service.session_management import (
-    SessionInitializationBehavior,
-)
 from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -32,6 +28,10 @@ from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[im
 from device_comm_proto_stubs.device_comm_service_pb2_grpc import (
     DeviceCommunicationStub,  # type: ignore[import-untyped]
 )
+from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
+from ni_measurement_plugin_sdk_service.session_management import (
+    SessionInitializationBehavior,
+)
 
 # These constants help to get the Device Comm Service Location from the Discovery Service.
 # These values must match those defined in the .serviceconfig file of the Device Comm server.
@@ -46,7 +46,7 @@ _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
     SessionInitializationBehavior.AUTO: SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
     SessionInitializationBehavior.INITIALIZE_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SessionInitializationBehavior.ATTACH_TO_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
-    # This behavior is not supported by the server, so it is mapped to the server's INITIALIZE_NEW behavior.
+    # This behavior is not supported by the server, so it is mapped to the server's INITIALIZE_NEW behavior. # noqa: W505
     # The DeviceCommunicationClient's __exit__ method handles the desired close behavior
     # to achieve session sharing as needed.
     SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -80,7 +80,7 @@ def convert_binary_to_decimal(binary_str: str) -> int:
     Returns:
         An integer between 0 and 255 inclusive.
     """
-    if len(binary_str) != 8 or not all(bit in '01' for bit in binary_str):
+    if len(binary_str) != 8 or not all(bit in "01" for bit in binary_str):
         raise ValueError("Input must be an 8-bit binary string containing only 0s and 1s.")
     return int(binary_str, 2)
 

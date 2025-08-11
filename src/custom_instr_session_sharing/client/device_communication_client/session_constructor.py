@@ -1,7 +1,9 @@
 """File containing class for constructing device communication session."""
 
 from client_session.session import DeviceCommunicationClient
-from device_comm_proto_stubs.device_comm_service_pb2 import Protocol # type: ignore[import-untyped]
+from device_comm_proto_stubs.device_comm_service_pb2 import (
+    Protocol,  # type: ignore[import-untyped]
+)
 from ni_measurement_plugin_sdk_service.session_management import (
     SessionInformation,
     SessionInitializationBehavior,
