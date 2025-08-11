@@ -238,7 +238,7 @@ class DeviceCommunicationClient:
 
         Args:
             register_name: Name of the register to write.
-            value: value to be written to the register as an 8-bit binary string.
+            value: Value to be written to the register as an 8-bit binary string.
 
         Returns:
             The empty response from the server if the request is successful.
