@@ -12,7 +12,7 @@ from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
 from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
 )
-from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
+from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -29,7 +29,7 @@ from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from stubs.device_comm_service_pb2_grpc import (
+from device_comm_proto_stubs.device_comm_service_pb2_grpc import (
     DeviceCommunicationStub,  # type: ignore[import-untyped]
 )
 
@@ -46,7 +46,7 @@ _SERVER_INITIALIZATION_BEHAVIOR_MAP = {
     SessionInitializationBehavior.AUTO: SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
     SessionInitializationBehavior.INITIALIZE_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SessionInitializationBehavior.ATTACH_TO_SERVER_SESSION: SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
-    # This behavior is not supported by the server, so it is mapped to the server's NEW behavior.
+    # This behavior is not supported by the server, so it is mapped to the server's INITIALIZE_NEW behavior.
     # The DeviceCommunicationClient's __exit__ method handles the desired close behavior
     # to achieve session sharing as needed.
     SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH: SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -129,8 +129,8 @@ class DeviceCommunicationClient:
             )
             raise
 
-    # This method is used to allow the client to be used as a context manager (with statement).
-    # which will automatically close the device communication session when the with block is exited.
+    # This method allows the client to be used as a context manager (with statement),
+    # automatically closing the device communication session when the block is exited.
     # This is useful for ensuring that resources are cleaned up properly.
     def __enter__(self) -> DeviceCommunicationClient:
         """Enter the context manager and return the DeviceCommunicationClient."""
