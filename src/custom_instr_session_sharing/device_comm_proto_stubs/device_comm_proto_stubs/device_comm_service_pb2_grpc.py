@@ -84,7 +84,7 @@ class DeviceCommunicationServicer(object):
     def Initialize(self, request, context):
         """Initializes the device communication session for DUT validation.
         Status Codes for errors:
-        - INVALID_ARGUMENT: Invalid arguments for Device id, Protocol, Register map path or Invalid Session Initialization Behavior.
+        - INVALID_ARGUMENT: Invalid arguments for Resource name, Protocol, Register map path, reset or Invalid Session Initialization Behavior.
         - PERMISSION_DENIED: Permission denied for the register map path.
         - INTERNAL: Register Map path is invalid or inaccessible or any other unexpected behavior.
         - ALREADY_EXISTS: Device Session has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
@@ -96,6 +96,10 @@ class DeviceCommunicationServicer(object):
 
     def WriteRegister(self, request, context):
         """Writes a value to a specified register on the DUT.
+        Status Codes for errors:
+        NOT_FOUND: Session does not exist.
+        INVALID_ARGUMENT: Invalid arguments for Register name
+        INTERNAL: Unexpected internal error.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -103,6 +107,10 @@ class DeviceCommunicationServicer(object):
 
     def ReadRegister(self, request, context):
         """Reads a value from a specified register on the DUT.
+        Status Codes for errors:
+        NOT_FOUND: Session does not exist.
+        INVALID_ARGUMENT: Invalid arguments for Register name
+        INTERNAL: Unexpected internal error.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -110,6 +118,10 @@ class DeviceCommunicationServicer(object):
 
     def WriteGpioChannel(self, request, context):
         """Writes a value to a specific GPIO channel
+        Status Codes for errors:
+        NOT_FOUND: Session does not exist.
+        INVALID_ARGUMENT: Invalid arguments for GPIO channel, state
+        INTERNAL: Unexpected internal error.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -117,6 +129,10 @@ class DeviceCommunicationServicer(object):
 
     def ReadGpioChannel(self, request, context):
         """Reads the value of a specific GPIO channel
+        Status Codes for errors:
+        NOT_FOUND: Session does not exist.
+        INVALID_ARGUMENT: Invalid arguments for GPIO channel
+        INTERNAL: Unexpected internal error.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -124,6 +140,10 @@ class DeviceCommunicationServicer(object):
 
     def WriteGpioPort(self, request, context):
         """Writes a value to an entire GPIO port.
+        Status Codes for errors:
+        NOT_FOUND: Session does not exist.
+        INVALID_ARGUMENT: Invalid arguments for GPIO Port, State, Mask.
+        INTERNAL: Unexpected internal error.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -131,6 +151,10 @@ class DeviceCommunicationServicer(object):
 
     def ReadGpioPort(self, request, context):
         """Reads the value of an entire GPIO port.
+        Status Codes for errors:
+        NOT_FOUND: Session does not exist.
+        INVALID_ARGUMENT: Invalid arguments for GPIO Port, Mask.
+        INTERNAL: Unexpected internal error.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

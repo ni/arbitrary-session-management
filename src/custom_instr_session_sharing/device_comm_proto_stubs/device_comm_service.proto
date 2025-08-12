@@ -32,7 +32,7 @@ service DeviceCommunication {
 
     // Initializes the device communication session for DUT validation.
     // Status Codes for errors:
-    // - INVALID_ARGUMENT: Invalid arguments for Device id, Protocol, Register map path, reset or Invalid Session Initialization Behavior.
+    // - INVALID_ARGUMENT: Invalid arguments for Resource name, Protocol, Register map path, reset or Invalid Session Initialization Behavior.
     // - PERMISSION_DENIED: Permission denied for the register map path.
     // - INTERNAL: Register Map path is invalid or inaccessible or any other unexpected behavior.
     // - ALREADY_EXISTS: Device Session has already been initialized and cannot be initialized again for SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW.
@@ -91,8 +91,8 @@ service DeviceCommunication {
 // Request/Response messages
 
 message InitializeRequest {
-    // Device ID for the DUT being validated.
-    string device_id = 1;
+    // Custom Instrument resource name.
+    string resource_name = 1;
     // Defines which protocol is used for device wake up.
     Protocol protocol = 2;
     // Reset option to re-load the register map data
@@ -166,7 +166,7 @@ message CloseRequest{
 
 // Empty reponse for successful operations, whereas err messages are handled by gRPC objects.
 message StatusResponse {
-    
+
 }
 
 enum SessionInitializationBehavior {
