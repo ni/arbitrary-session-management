@@ -5,7 +5,7 @@
 			<ChannelGroup name="CommonDCPowerChannelGroup" />
 		</NIDCPowerInstrument>
 		<NIDmmInstrument name="DMM1" />
-		<Instrument name="&lt;AddCustomInstrumentName&gt;" instrumentTypeId="DeviceCommunicationService">
+		<Instrument name="CustomInstrument" instrumentTypeId="DeviceCommunicationService">
 			<Channel id="0" />
 		</Instrument>
 	</Instruments>
@@ -21,6 +21,6 @@
 	<Connections>
 		<Connection pin="DCPowerPin" siteNumber="0" instrument="DCPower1" channel="0" />
 		<Connection pin="DMMPin" siteNumber="0" instrument="DMM1" channel="0" />
-		<Connection pin="CustomInstrumentPin" siteNumber="0" instrument="&lt;AddCustomInstrumentName&gt;" channel="0" />
+		<Connection pin="CustomInstrumentPin" siteNumber="0" instrument="CustomInstrument" channel="0" />
 	</Connections>
 </PinMap>
