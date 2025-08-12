@@ -483,7 +483,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         with self.lock:
             session = self.sessions.get(resource_name)
 
-        if session and not session.register_data:
+        if session and session.register_data:
             return InitializeResponse(
                 session_name=session.session_name,
                 new_session=False,
@@ -526,7 +526,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             InitializeResponse with session name and new session status.
         """
-        if resource_name in self.sessions and not self.sessions[resource_name].register_data:
+        if resource_name in self.sessions and self.sessions[resource_name].register_data:
             context.abort(
                 grpc.StatusCode.ALREADY_EXISTS,
                 f"Session for '{resource_name}' already exists and is open.",
@@ -597,7 +597,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         with self.lock:
             session = self.sessions.get(resource_name)
 
-        if session and not session.register_data:
+        if session and session.register_data:
             return InitializeResponse(
                 session_name=session.session_name,
                 new_session=False,
