@@ -118,9 +118,7 @@ class DeviceCommunicationClient:
                 protocol=protocol,  # type: ignore[arg-type]
                 register_map_path=register_map_path,
                 reset=reset,
-                initialization_behavior=_SERVER_INITIALIZATION_BEHAVIOR_MAP[
-                    initialization_behavior
-                ],
+                initialization_behavior=initialization_behavior,
             )
             self._session_name = response.session_name
             self._new_session = response.new_session
@@ -206,7 +204,7 @@ class DeviceCommunicationClient:
             resource_name=resource_name,
             protocol=protocol,  # type: ignore[arg-type]
             register_map_path=register_map_path,
-            initialization_behavior=initialization_behavior,
+            initialization_behavior=_SERVER_INITIALIZATION_BEHAVIOR_MAP[initialization_behavior],
             reset=reset,
         )
         try:
