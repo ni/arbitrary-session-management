@@ -270,7 +270,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO channel by returning random HIGH or LOW state
-            value = random.choice([GPIOChannelState.HIGH.value, GPIOChannelState.LOW.value])
+            value = random.choice([GPIOChannelState.HIGH.value, GPIOChannelState.LOW.value]) # nosec
             return ReadGpioChannelResponse(state=value)
 
         except Exception as exp:
@@ -355,7 +355,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO port by returning random value between valid states
-            value = random.choice(range(0, 256))
+            value = random.choice(range(0, 256)) # nosec
             return ReadGpioPortResponse(state=value)  # binary representation of GPIO port state
 
         except Exception as exp:
