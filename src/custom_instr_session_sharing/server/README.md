@@ -31,6 +31,8 @@ The Device Communication Service is designed to run as a standalone gRPC server 
 start.bat
 ```
 
+### Customizing Configuration
+
 The server uses a `.serviceconfig` file for configuration. You can modify this file to change service registration details. A sample device_comm.serviceconfig is provided for reference:
 
 ```json

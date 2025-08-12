@@ -185,7 +185,7 @@ class DeviceCommunicationClient:
         """Initialize a device communication session.
 
         Args:
-            resource_name: Unique identifier for the device.
+            resource_name: Custom instrument resource name.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             initialization_behavior: The initialization behavior to use.
