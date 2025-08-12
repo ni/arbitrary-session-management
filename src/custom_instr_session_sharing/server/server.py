@@ -356,7 +356,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
             # Simulate reading from GPIO port by returning random value between valid states
             value = random.choice(range(0, 256)) # nosec
-            return ReadGpioPortResponse(state=value)  # binary representation of GPIO port state
+            return ReadGpioPortResponse(state=value)
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading GPIO port: {exp}")
@@ -426,7 +426,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             session: Session information of the RPC call
 
         Returns:
-            StatusResponse: indicating the success of the operation.
+            StatusResponse indicating the success of the operation.
         """
         try:
             with self.lock:
@@ -548,7 +548,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except FileNotFoundError:
             context.abort(
                 grpc.StatusCode.NOT_FOUND,
-                f"The specified path '{register_map_path}' does not exist.",
+                f"The specified register map path '{register_map_path}' does not exist.",
             )
 
         except PermissionError:
