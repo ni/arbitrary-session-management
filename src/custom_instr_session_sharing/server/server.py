@@ -8,18 +8,22 @@ import threading
 import uuid
 from collections.abc import Callable
 from concurrent import futures
-from functools import wraps
 from pathlib import Path
 from typing import Any, Optional, TypeVar
 
 import grpc
-from constants import GPIOChannel, GPIOChannelState, GPIOPort, Session
+from constants import (
+    GPIOChannel,
+    GPIOChannelState,
+    GPIOPort,
+    Session,
+)
 from ni_measurement_plugin_sdk_service.discovery import (
     DiscoveryClient,
     ServiceLocation,
 )
 from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
-from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2 import (
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -38,7 +42,7 @@ from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2_grpc import (
     DeviceCommunicationServicer,
     add_DeviceCommunicationServicer_to_server,
 )
@@ -66,25 +70,6 @@ def get_service_config(file_name: str = "device_comm.serviceconfig") -> dict[str
         return service_config
 
 
-def validate_session(func: F) -> Callable[..., Any]:
-    """Decorator to validate the existence of a session before processing a request."""
-
-    @wraps(func)
-    def wrapper(self: Any, request: Any, context: Any, *args: Any, **kwargs: Any) -> Any:
-        """Wrapper function to validate the session."""
-        with self.lock:
-            session = self._get_session_by_name(request.session_name)
-
-        if session is None:
-            context.abort(
-                grpc.StatusCode.NOT_FOUND,
-                f"No active session for '{request.session_name}'",
-            )
-        return func(self, request, context, session=session, *args, **kwargs)
-
-    return wrapper
-
-
 class DeviceCommServicer(DeviceCommunicationServicer):
     """Device Communication Service that maintains sessions for device communication APIs.
 
@@ -105,11 +90,11 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         """Initialize a device communication session based on the initialization behavior.
 
         Calls the appropriate handler based on the initialization behavior specified in the request.
-        Returns an INVALID_ARGUMENT error if the custom instrument ID, protocol, register map path, reset, # noqa: W505
+        Returns an INVALID_ARGUMENT error if the device ID, protocol, register map path, reset,
         or initialization behavior is invalid.
 
         Args:
-            request: InitializeRequest containing the custom instrument ID, protocol, register map path, reset
+            request: InitializeRequest containing the device ID, protocol, register map path, reset
             and initialization behavior.
             context: gRPC context object for the request.
 
@@ -140,17 +125,17 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 # Read the CSV file and filter the register data
                 reader = csv.DictReader(file)
                 filtered_register_data = {
-                    row["Register Name"]: int(
-                        row["Default Data"]
-                    )  # value must be an integer in Default Data row.
+                    row["register_name"]: int(
+                        row["default_value"]
+                    )  # value must be an integer in default_value row.
                     for row in reader
-                    if "Register Name" in row and "Default Data" in row
+                    if "register_name" in row and "default_value" in row
                 }
 
         except KeyError:
             context.abort(
                 grpc.StatusCode.INVALID_ARGUMENT,
-                "Register map must contain 'Register Name' and 'Default Data' columns.",
+                "Register map must contain 'register_name' and 'default_value' columns.",
             )
 
         except Exception as exp:
@@ -162,7 +147,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Invalid initialization behavior.")
 
         return handler(  # type: ignore[misc]
-            resource_name=request.resource_name,
+            device_id=request.device_id,
             protocol=request.protocol,  # type: ignore[arg-type]
             register_map_path=(request.register_map_path),
             register_data=filtered_register_data,
@@ -170,26 +155,32 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             context=context,
         )
 
-    @validate_session
     def ReadRegister(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: ReadRegisterRequest,
         context: grpc.ServicerContext,
-        session: Session,
     ) -> ReadRegisterResponse:
         """Read the data present in the register along with the session.
 
-        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: W505
+        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: E501
         Returns INTERNAL error for other errors.
 
         Args:
             request: ReadRegisterRequest containing the register name to read.
             context: gRPC context object for the request.
-            session: Session information of the RPC call.
 
         Returns:
             ReadRegisterResponse indicating the success of the operation.
         """
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
+
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+
         try:
             if request.register_name not in session.register_data:  # type: ignore
                 context.abort(
@@ -207,26 +198,32 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading register: {exp}")
 
-    @validate_session
     def WriteRegister(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: WriteRegisterRequest,
         context: grpc.ServicerContext,
-        session: Session,
     ) -> StatusResponse:
         """Write a value to a register.
 
-        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: W505
+        If the session does not exist or closed/register name is invalid, it returns NOT_FOUND error. # noqa: E505
         Returns INTERNAL error for other errors.
 
         Args:
             request: WriteRegisterRequest containing the session name, register name, and value.
             context: gRPC context object for the request.
-            session: Session information of the RPC call.
 
         Returns:
             StatusResponse indicating the success of the operation.
         """
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
+
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+
         try:
             session.register_data[request.register_name] = request.value  # type: ignore
             return StatusResponse()
@@ -239,12 +236,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing register: {exp}")
 
-    @validate_session
     def ReadGpioChannel(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: ReadGpioChannelRequest,
         context: grpc.ServicerContext,
-        session: Session,
     ) -> ReadGpioChannelResponse:
         """Read the state of a GPIO channel.
 
@@ -255,11 +250,19 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: ReadGpioChannelRequest containing the channel to read.
             context: gRPC context object for the request.
-            session: Session information of the RPC call.
 
         Returns:
             ReadGpioChannelResponse with the state of the GPIO channel.
         """
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
+
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+
         # Implementation of reading from GPIO channel goes here
         # Simulate reading from GPIO channel by returning random value
         try:
@@ -276,12 +279,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading GPIO channel: {exp}")
 
-    @validate_session
     def WriteGpioChannel(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: WriteGpioChannelRequest,
         context: grpc.ServicerContext,
-        session: Session,
     ) -> StatusResponse:
         """Write the state to a GPIO channel.
 
@@ -292,11 +293,19 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: WriteGpioChannelRequest containing the channel and state to write.
             context: gRPC context object for the request.
-            session: Session information of the RPC call.
 
         Returns:
             StatusResponse indicating the success of the operation.
         """
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
+
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+
         # Implementation of writing to GPIO channel goes here
         # Simulate writing to GPIO channel by returning success
         try:
@@ -318,12 +327,10 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing to GPIO channel: {exp}")
 
-    @validate_session
     def ReadGpioPort(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: ReadGpioPortRequest,
         context: grpc.ServicerContext,
-        session: Session,
     ) -> ReadGpioPortResponse:
         """Read the state of a GPIO port.
 
@@ -334,11 +341,19 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: ReadGpioPortRequest containing the port and mask to read.
             context: gRPC context object for the request.
-            session: Session information of the RPC call.
 
         Returns:
             ReadGpioPortResponse with the state of the GPIO port.
         """
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
+
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+
         # Implementation of reading from GPIO port goes here
         # Simulate reading from GPIO port by returning random value
         try:
@@ -356,17 +371,15 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
             # Simulate reading from GPIO port by returning random value between valid states
             value = random.choice(range(0, 256))
-            return ReadGpioPortResponse(state=value)  # binary representation of GPIO port state
+            return ReadGpioPortResponse(state=value)
 
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error reading GPIO port: {exp}")
 
-    @validate_session
     def WriteGpioPort(  # type: ignore[return]  # noqa: N802 - function name should be lowercase
         self,
         request: WriteGpioPortRequest,
         context: grpc.ServicerContext,
-        session: Session,
     ) -> StatusResponse:
         """Write the state to a GPIO port.
 
@@ -377,11 +390,19 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: WriteGpioPortRequest containing the port, mask, and state to write.
             context: gRPC context object for the request.
-            session: Session information of the RPC call.
 
         Returns:
             StatusResponse indicating the success of the operation.
         """
+        with self.lock:
+            session = self._get_session_by_name(request.session_name)
+
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"No active session for '{request.session_name}'",
+            )
+
         # Implementation of writing to GPIO port goes here
         # Simulate writing to GPIO port by returning success
         try:
@@ -408,14 +429,12 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         except Exception as exp:
             context.abort(grpc.StatusCode.INTERNAL, f"Error writing to GPIO port: {exp}")
 
-    @validate_session
     def Close(  # type: ignore[return] # noqa: N802 function name should be lowercase
         self,
         request: CloseRequest,
         context: grpc.ServicerContext,
-        session: Session,
     ) -> StatusResponse:
-        """Close the resource associated with the session.
+        """Close the file associated with the session.
 
         Returns NOT_FOUND error if the session does not exist or is already closed.
         Returns INTERNAL error for other errors.
@@ -423,15 +442,22 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Args:
             request: CloseRequest containing the session name to close.
             context: gRPC context object for the request.
-            session: Session information of the RPC call
 
         Returns:
             StatusResponse: indicating the success of the operation.
         """
+        with self.lock:
+            device_id = self._get_device_id_by_session_name(request.session_name)
+
+        if device_id is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND,
+                f"Session '{request.session_name}' not found.",
+            )
+
         try:
             with self.lock:
-                resource_name = self._get_resource_name_by_session(request.session_name)
-                session = self.sessions.pop(resource_name)  # type: ignore[arg-type]
+                session = self.sessions.pop(device_id)  # type: ignore[arg-type]
 
             if not session.register_data:
                 context.abort(
@@ -457,7 +483,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
     def _auto_initialize_session(
         self,
-        resource_name: str,
+        device_id: str,
         protocol: Protocol,
         register_map_path: str,
         register_data: dict[str, Any],
@@ -470,7 +496,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         If the session does not exist or is closed, it creates a new session.
 
         Args:
-            resource_name: Custom instrument resource name.
+            device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -481,7 +507,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             InitializeResponse with session name and new session status.
         """
         with self.lock:
-            session = self.sessions.get(resource_name)
+            session = self.sessions.get(device_id)
 
         if session and not session.register_data:
             return InitializeResponse(
@@ -490,7 +516,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             )
 
         return self._create_new_session(
-            resource_name=resource_name,
+            device_id=device_id,
             protocol=protocol,
             register_map_path=register_map_path,
             register_data=register_data,
@@ -500,7 +526,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
     def _create_new_session(  # type: ignore[return]
         self,
-        resource_name: str,
+        device_id: str,
         protocol: Protocol,
         register_map_path: str,
         register_data: dict[str, Any],
@@ -516,7 +542,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns INTERNAL error for other errors.
 
         Args:
-            resource_name: Custom instrument resource name.
+            device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -526,16 +552,16 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         Returns:
             StatusResponse with session name and new session status.
         """
-        if resource_name in self.sessions and not self.sessions[resource_name].register_data:
+        if device_id in self.sessions and not self.sessions[device_id].register_data:
             context.abort(
                 grpc.StatusCode.ALREADY_EXISTS,
-                f"Session for '{resource_name}' already exists and is open.",
+                f"Session for '{device_id}' already exists and is open.",
             )
 
         try:
             session_name: str = str(uuid.uuid4())
             with self.lock:
-                self.sessions[resource_name] = Session(
+                self.sessions[device_id] = Session(
                     session_name=session_name,
                     protocol=protocol,  # type: ignore[arg-type]
                     register_map_path=str(register_map_path),
@@ -559,8 +585,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         except OSError as e:
             context.abort(
-                grpc.StatusCode.INTERNAL,
-                f"Failed to open register map file '{register_map_path}': {e}",
+                grpc.StatusCode.INTERNAL, f"Failed to open register map file '{register_map_path}': {e}"
             )
 
         except Exception as e:
@@ -571,7 +596,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
     def _attach_existing_session(  # type: ignore[return]
         self,
-        resource_name: str,
+        device_id: str,
         protocol: Protocol,
         register_map_path: str,
         register_data: dict[str, Any],
@@ -584,7 +609,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         If the session does not exist or is closed, it returns NOT_FOUND error.
 
         Args:
-            resource_name: Custom instrument resource name.
+            device_id: Unique identifier for the device.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             register_data: Dictionary containing register names and their default values.
@@ -595,7 +620,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
             InitializeResponse with session name and new session status.
         """
         with self.lock:
-            session = self.sessions.get(resource_name)
+            session = self.sessions.get(device_id)
 
         if session and not session.register_data:
             return InitializeResponse(
@@ -605,7 +630,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         context.abort(
             grpc.StatusCode.NOT_FOUND,
-            f"Session for '{resource_name}' does not exist or is closed.",
+            f"Session for '{device_id}' does not exist or is closed.",
         )
 
     def _get_session_by_name(self, session_name: str) -> Optional[Session]:
@@ -623,18 +648,18 @@ class DeviceCommServicer(DeviceCommunicationServicer):
 
         return None
 
-    def _get_resource_name_by_session(self, session_name: str) -> Optional[str]:
-        """Retrieve the instrument resource name associated with a session name.
+    def _get_device_id_by_session_name(self, session_name: str) -> Optional[str]:
+        """Retrieve the device ID associated with a session name.
 
         Args:
             session_name: Session name.
 
         Returns:
-            Instrument resource name associated with the session name, or None if not found.
+            Device ID associated with the session name, or None if not found.
         """
-        for resource_name, session in self.sessions.items():
+        for device_id, session in self.sessions.items():
             if session.session_name == session_name:
-                return resource_name
+                return device_id
 
         return None
 

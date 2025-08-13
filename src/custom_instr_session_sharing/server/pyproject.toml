@@ -7,15 +7,17 @@ authors = [{ name = "NI", email = "opensource@ni.com" }]
 license = { text = "MIT" }
 readme = "README.md"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-proto-stubs = { path = "../proto_stubs", develop = true }
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "grpcio-tools (>=1.71.0,<2.0.0)",
+    "ni-measurement-plugin-sdk-service (>=2.3.0,<3.0.0)",
+]
 
 [tool.poetry.group.dev.dependencies]
 ni-python-styleguide = "^0.4.6"
 mypy = "^1.15.0"
 bandit = "^1.8.3"
+mypy-protobuf = "^3.6.0"
 
 [tool.mypy]
 disallow_untyped_defs = true

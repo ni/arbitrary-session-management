@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from enum import Enum, IntEnum
 from typing import Dict
 
-from stubs.device_comm_service_pb2 import Protocol  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2 import Protocol
 
 
 class GPIOPort(IntEnum):
