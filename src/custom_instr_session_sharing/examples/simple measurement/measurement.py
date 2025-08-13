@@ -27,7 +27,7 @@ REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
 @measurement_service.register_measurement
 @measurement_service.configuration("Array in", nims.DataType.DoubleArray1D, [0.0])
 @measurement_service.configuration(
-    "resource_name",
+    "Resource name",
     nims.DataType.IOResource,
     "CustomInstrument",
     instrument_type=INSTRUMENT_TYPE,
