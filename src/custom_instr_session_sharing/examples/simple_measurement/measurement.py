@@ -25,17 +25,17 @@ REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
 
 
 @measurement_service.register_measurement
-@measurement_service.configuration("Array in", nims.DataType.DoubleArray1D, [0.0])
+@measurement_service.configuration("Register In", nims.DataType.StringArray1D, ["11111111"])
 @measurement_service.configuration(
     "Resource name",
     nims.DataType.IOResource,
     "CustomInstrument",
     instrument_type=INSTRUMENT_TYPE,
 )
-@measurement_service.output("Array out", nims.DataType.DoubleArray1D)
-def measure(array_input, resource_name: str) -> tuple[nims.DataType.DoubleArray1D]:
+@measurement_service.output("Register Out", nims.DataType.StringArray1D)
+def measure(register_in: str, resource_name: str) -> nims.DataType.StringArray1D:
     """Initiate a measurement, ensuring necessary device communication to wake the device."""
-    array_output = array_input
+    register_out = []
     with measurement_service.context.reserve_session(resource_name) as device_session_reservation:
 
         # Defaults to AUTO initialization behavior.
@@ -50,17 +50,13 @@ def measure(array_input, resource_name: str) -> tuple[nims.DataType.DoubleArray1
             logging.info("Initializing the device communication session...")
             device_session = device_session_info.session
 
-            # Powering the DUT is required to ensure the readiness.
-            # Performing read & write operations to ensure the device wake up.
-            device_session.write_register(
-                register_name="CAL_RX1",
-                value="11111111",
-            )
-            device_session.read_register(
-                register_name="CAL_RX1",
-            )
+            for register_value in register_in:
+                # Ensure the device is powered on and ready for communication.
+                # Performing read & write operations to ensure the device wake up.
+                device_session.write_register(register_name=REGISTER_NAME,value=register_value)
+                register_out.append(device_session.read_register(register_name=REGISTER_NAME))
 
-    return (array_output,)
+    return (register_out,)
 
 
 @click.command
