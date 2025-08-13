@@ -1,5 +1,5 @@
 [project]
-name = "client-session"
+name = "device_communication_client"
 version = "1.0.0"
 description = "Device Communication client-side stubs, session and its constructor package."
 authors = [{ name = "NI", email = "opensource@ni.com" }]
@@ -9,9 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-grpcio-tools = ">=1.71.0,<2.0.0"
-mypy-protobuf = ">=3.6.0,<4.0.0"
-proto-stubs = { path = "../proto_stubs", develop = true }
+device_comm_proto_stubs = { path = "../device_comm_proto_stubs", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 ni-python-styleguide = "^0.4.6"

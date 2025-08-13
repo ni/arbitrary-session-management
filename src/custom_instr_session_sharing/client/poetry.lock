@@ -116,6 +116,24 @@ files = [
 packaging = "*"
 
 [[package]]
+name = "device-comm-proto-stubs"
+version = "1.0.0"
+description = "gRPC stubs for device communication service"
+optional = false
+python-versions = "^3.9"
+groups = ["main"]
+files = []
+develop = true
+
+[package.dependencies]
+grpcio-tools = ">=1.71.0,<2.0.0"
+mypy-protobuf = ">=3.6.0,<4.0.0"
+
+[package.source]
+type = "directory"
+url = "../device_comm_proto_stubs"
+
+[[package]]
 name = "flake8"
 version = "5.0.4"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -897,20 +915,6 @@ files = [
 pbr = ">=2.0.0"
 
 [[package]]
-name = "stubs"
-version = "0.0.0"
-description = ""
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "../proto_stubs"
-
-[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -980,14 +984,14 @@ files = [
 
 [[package]]
 name = "types-protobuf"
-version = "6.30.2.20250703"
+version = "6.30.2.20250809"
 description = "Typing stubs for protobuf"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "types_protobuf-6.30.2.20250703-py3-none-any.whl", hash = "sha256:fa5aff9036e9ef432d703abbdd801b436a249b6802e4df5ef74513e272434e57"},
-    {file = "types_protobuf-6.30.2.20250703.tar.gz", hash = "sha256:609a974754bbb71fa178fc641f51050395e8e1849f49d0420a6281ed8d1ddf46"},
+    {file = "types_protobuf-6.30.2.20250809-py3-none-any.whl", hash = "sha256:7afc2d3f569d281dd22f339179577243be60bf7d1dfb4bc13d0109859fb1f1be"},
+    {file = "types_protobuf-6.30.2.20250809.tar.gz", hash = "sha256:b04f2998edf0d81bd8600bbd5db0b2adf547837eef6362ba364925cee21a33b4"},
 ]
 
 [[package]]
@@ -1005,4 +1009,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "1c44fd2d9f958dc81957ab0f73c43de9c10f3816ce77d6262ca8ea36a834919f"
+content-hash = "857997edbc23408ec66484bb4bc300a5228398a651eeae07b82d8355ee96d14f"
