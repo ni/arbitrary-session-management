@@ -1,11 +1,14 @@
-"""Functions to set up and tear down sessions of JSON Logger in NI TestStand."""
+"""Functions to set up and tear down sessions of Device Communication in NI TestStand."""
 
 from typing import Any
 
 from _helpers import TestStandSupport
-from client_session.session_constructor import (  # type: ignore[import-untyped]
+from device_communication_client.session_constructor import (
     INSTRUMENT_TYPE,
     DeviceCommunicationSessionConstructor,
+)
+from device_comm_proto_stubs.device_comm_service_pb2 import (
+    Protocol,  # type: ignore[import-untyped]
 )
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
 from ni_measurement_plugin_sdk_service.grpc.channelpool import GrpcChannelPool
@@ -14,6 +17,9 @@ from ni_measurement_plugin_sdk_service.session_management import (
     SessionInitializationBehavior,
     SessionManagementClient,
 )
+
+REGISTER_MAP_PATH = "" # Fill with actual register map path.
+REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
 
 
 def create_device_comm_sessions(sequence_context: Any) -> None:
@@ -32,11 +38,11 @@ def create_device_comm_sessions(sequence_context: Any) -> None:
         session_management_client = SessionManagementClient(
             discovery_client=discovery_client, grpc_channel_pool=grpc_channel_pool
         )
-        # Prepare a session constructor with INITIALIZE and then DETACH behavior for the logger.
+        # Prepare a session constructor with INITIALIZE and then DETACH behavior for the device communication.
         session_constructor = DeviceCommunicationSessionConstructor(
-            register_map_path="C:/Users/Public/Documents/National Instruments/Semi Device Control (64-bit)/Examples/Create register map using CSV/Csv source files/ProductName_RegisterMap.csv",
+            register_map_path=REGISTER_MAP_PATH,
             initialization_behavior=SessionInitializationBehavior.INITIALIZE_SESSION_THEN_DETACH,
-            protocol="I2C",
+            protocol=Protocol.I2C,
             reset=False,
             
         )
@@ -65,27 +71,27 @@ def destroy_device_comm_sessions() -> None:
             discovery_client=discovery_client, grpc_channel_pool=grpc_channel_pool
         )
 
-        # Prepare a session constructor with ATTACH and then CLOSE behavior for the logger.
+        # Prepare a session constructor with ATTACH and then CLOSE behavior for the device communication.
         session_constructor = DeviceCommunicationSessionConstructor(
-            register_map_path="C:/Users/Public/Documents/National Instruments/Semi Device Control (64-bit)/Examples/Create register map using CSV/Csv source files/ProductName_RegisterMap.csv",
+            register_map_path=REGISTER_MAP_PATH,
             initialization_behavior=SessionInitializationBehavior.ATTACH_TO_SESSION_THEN_CLOSE,
-            protocol="I2C",
+            protocol=Protocol.I2C,
             reset=False
         )
 
-        # Reserve sessions for files in NI Session Management Service.
+        # Reserve sessions for device communication in NI Session Management Service.
         with session_management_client.reserve_all_registered_sessions(
             instrument_type_id=INSTRUMENT_TYPE
         ) as reservation:
             if not reservation.session_info:
                 return
 
-            # Attach to existing file sessions and close file sessions in JsonLoggerService.
+            # Attach to existing sessions and close sessions in DeviceCommunicationService.
             with reservation.initialize_sessions(
                 session_constructor=session_constructor,
                 instrument_type_id=INSTRUMENT_TYPE,
             ):
                 pass
 
-            # Unregister the file sessions from NI Session Management Service.
+            # Unregister the device communication sessions from NI Session Management Service.
             session_management_client.unregister_sessions(reservation.session_info)

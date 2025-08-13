@@ -88,26 +88,6 @@ files = [
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
-name = "client-session"
-version = "1.0.0"
-description = "Device Communication client-side stubs, session and its constructor package."
-optional = false
-python-versions = "^3.9"
-groups = ["main"]
-files = []
-develop = false
-
-[package.dependencies]
-grpcio-tools = ">=1.71.0,<2.0.0"
-mypy-protobuf = ">=3.6.0,<4.0.0"
-ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-proto-stubs = {path = "../proto_stubs", develop = true}
-
-[package.source]
-type = "directory"
-url = "../../client"
-
-[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -134,6 +114,42 @@ files = [
 
 [package.dependencies]
 packaging = "*"
+
+[[package]]
+name = "device-comm-proto-stubs"
+version = "1.0.0"
+description = "gRPC stubs for device communication service"
+optional = false
+python-versions = "^3.9"
+groups = ["main"]
+files = []
+develop = true
+
+[package.dependencies]
+grpcio-tools = ">=1.71.0,<2.0.0"
+mypy-protobuf = ">=3.6.0,<4.0.0"
+
+[package.source]
+type = "directory"
+url = "../../../../../../arbitrary-session-management/src/custom_instr_session_sharing/device_comm_proto_stubs"
+
+[[package]]
+name = "device-communication-client"
+version = "1.0.0"
+description = "Device Communication client-side stubs, session and its constructor package."
+optional = false
+python-versions = ">=3.9,<4.0"
+groups = ["main"]
+files = []
+develop = false
+
+[package.dependencies]
+device_comm_proto_stubs = {path = "../device_comm_proto_stubs", develop = true}
+ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
+
+[package.source]
+type = "directory"
+url = "../../../../../../arbitrary-session-management/src/custom_instr_session_sharing/client"
 
 [[package]]
 name = "flake8"
@@ -640,24 +656,6 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=8.3.4)", "pytest-
 type = ["mypy (>=1.14.1)"]
 
 [[package]]
-name = "proto-stubs"
-version = "1.0.0"
-description = "gRPC stubs for device communication service"
-optional = false
-python-versions = "^3.9"
-groups = ["main"]
-files = []
-develop = true
-
-[package.dependencies]
-grpcio-tools = ">=1.71.0,<2.0.0"
-mypy-protobuf = ">=3.6.0,<4.0.0"
-
-[package.source]
-type = "directory"
-url = "../../proto_stubs"
-
-[[package]]
 name = "protobuf"
 version = "6.31.1"
 description = ""
@@ -1029,4 +1027,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "1a79bc6be87fc3655e0af7b37f22682a2b2ba6564685ddfd4966154ec489a02f"
+content-hash = "3e5cbe4c6a4708b38442ab7068a7fb41d9f198ff96c75fb4ef09fdd88cb7e868"
