@@ -1,17 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PinMap xmlns="http://www.ni.com/TestStand/SemiconductorModule/PinMap.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.6">
+<PinMap xmlns="http://www.ni.com/TestStand/SemiconductorModule/PinMap.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1">
 	<Instruments>
-		<NIDCPowerInstrument name="DCPower1" numberOfChannels="4">
-			<ChannelGroup name="CommonDCPowerChannelGroup" />
-		</NIDCPowerInstrument>
-		<NIDmmInstrument name="DMM1" />
-		<Instrument name="CustomInstrument" instrumentTypeId="DeviceCommunicationService">
+		<Instrument name="&lt;NameofTheCustomInstrument&gt;" instrumentTypeId="DeviceCommunicationService">
 			<Channel id="0" />
 		</Instrument>
 	</Instruments>
 	<Pins>
-		<DUTPin name="DCPowerPin" />
-		<DUTPin name="DMMPin" />
 		<DUTPin name="CustomInstrumentPin" />
 	</Pins>
 	<PinGroups></PinGroups>
@@ -19,8 +13,6 @@
 		<Site siteNumber="0" />
 	</Sites>
 	<Connections>
-		<Connection pin="DCPowerPin" siteNumber="0" instrument="DCPower1" channel="0" />
-		<Connection pin="DMMPin" siteNumber="0" instrument="DMM1" channel="0" />
-		<Connection pin="CustomInstrumentPin" siteNumber="0" instrument="CustomInstrument" channel="0" />
+		<Connection pin="CustomInstrumentPin" siteNumber="0" instrument="&lt;NameofTheCustomInstrument&gt;" channel="0" />
 	</Connections>
 </PinMap>
