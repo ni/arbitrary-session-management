@@ -5,6 +5,7 @@ description = "Simple Measurement Plug-In example that performs the device commu
 authors = [
     {name = "NI", email ="opensource@ni.com"}
 ]
+package-mode = false
 readme = "README.md"
 requires-python = ">=3.9,<4.0"
 

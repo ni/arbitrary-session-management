@@ -1,12 +1,12 @@
 # TestStand Sequence: Session Sharing Demonstration
 
-The [DeviceCommunication sequence](DeviceCommunication.seq) demonstrates how multiple measurement plug-ins can share a device communication session using the **Device Communication Service**. While session reservation for NI instruments continues to rely on the NI Session Management Service, this example showcases shared access to arbitrary session (device communication session) managed by the service itself (Device Communication Service).
+The [DeviceCommunication sequence](DeviceCommExample.seq) demonstrates how multiple measurement plug-ins can share a device communication session using the **Device Communication Service**. While session reservation for NI instruments continues to rely on the NI Session Management Service, this example showcases shared access to arbitrary session (device communication session) managed by the service itself (Device Communication Service).
 
 ## Features
 
 - Demonstrates session sharing for the Device Communication Service across multiple measurement plug-ins.
 - Executes the measurement plug-ins by performing register read and write operations for device wake up.
-- Both plug-ins perform device communication using a shared instrument session.
+- Plug-ins perform device communication using a shared instrument session.
 - Cleans up all sessions after measurement execution.
 
 ## Required Software
