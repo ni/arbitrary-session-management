@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.9,<4.0"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = "^3.9"
 ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
 device-comm-proto-stubs = { path = "../device_comm_proto_stubs", develop = true }
 
