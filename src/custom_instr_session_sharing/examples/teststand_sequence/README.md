@@ -16,6 +16,7 @@ The [DeviceCommunication sequence](DeviceCommExample.seq) demonstrates how multi
 - [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 - [NI TestStand 2021 SP1 or later](https://www.ni.com/en/support/downloads/software-products/download.teststand.html?srsltid=AfmBOoo_2adp0yHttIHxht7_1p04xsEByXulfCtGh8yQi01DZ-yNxZFo#445937)
 - Device Communication Service (included in this repository under the `server` directory)
+- If the custom instrument's name isn't updated, the session will be generated in the name `CustomInstrument` in the server.
 
 >[!Note]
 >
