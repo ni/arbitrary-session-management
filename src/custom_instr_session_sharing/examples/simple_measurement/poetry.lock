@@ -44,7 +44,25 @@ files = [
 packaging = "*"
 
 [[package]]
-name = "device-comm-proto-stubs"
+name = "device-communication-client"
+version = "1.0.0"
+description = "Device Communication client-side stubs, session and its constructor package."
+optional = false
+python-versions = "^3.9"
+groups = ["main"]
+files = []
+develop = false
+
+[package.dependencies]
+device_communication_stubs = {path = "../stubs", develop = true}
+ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
+
+[package.source]
+type = "directory"
+url = "../../client"
+
+[[package]]
+name = "device-communication-stubs"
 version = "1.0.0"
 description = "gRPC stubs for device communication service"
 optional = false
@@ -59,25 +77,7 @@ mypy-protobuf = ">=3.6.0,<4.0.0"
 
 [package.source]
 type = "directory"
-url = "../../../../../../arbitrary-session-management/src/custom_instr_session_sharing/device_comm_proto_stubs"
-
-[[package]]
-name = "device-communication-client"
-version = "1.0.0"
-description = "Device Communication client-side stubs, session and its constructor package."
-optional = false
-python-versions = ">=3.9,<4.0"
-groups = ["main"]
-files = []
-develop = false
-
-[package.dependencies]
-device_comm_proto_stubs = {path = "../device_comm_proto_stubs", develop = true}
-ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-
-[package.source]
-type = "directory"
-url = "../../../../../../arbitrary-session-management/src/custom_instr_session_sharing/client"
+url = "../../stubs"
 
 [[package]]
 name = "grpcio"
@@ -378,4 +378,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "e4ba796c0d618108d3ef641bf6c928650442d3d454d3ee23c168c03f39bc5456"
+content-hash = "e88f0f94602d667ffacb106b55ed0a298deec39b37416f1a48cf83074fba02e7"

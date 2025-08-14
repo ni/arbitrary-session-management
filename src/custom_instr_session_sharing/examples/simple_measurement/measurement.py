@@ -10,7 +10,7 @@ from device_communication_client.session_constructor import (
     DeviceCommunicationSessionConstructor,  # type: ignore[import-untyped]
     INSTRUMENT_TYPE,
 )
-from device_comm_proto_stubs.device_comm_service_pb2 import (
+from stubs.device_comm_service_pb2 import (
     Protocol,  # type: ignore[import-untyped]
 )
 
@@ -20,13 +20,15 @@ measurement_service = nims.MeasurementService(
     service_config_path=service_directory / "SimpleMeasurement.serviceconfig",
     ui_file_paths=[service_directory / "SimpleMeasurement.measui"],
 )
-REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
 
+REGISTER_MAP_PATH = str(
+    pathlib.Path(service_directory).parent / "register_map" / "sample_register_map.csv"
+)  # Fill with the actual register map file.
+REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
 
 
 @measurement_service.register_measurement
 @measurement_service.configuration("Register Value In", nims.DataType.String, "11111111")
-@measurement_service.configuration("Register Map Path", nims.DataType.Path, "")
 @measurement_service.configuration(
     "Resource name",
     nims.DataType.IOResource,
@@ -34,14 +36,14 @@ REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
     instrument_type=INSTRUMENT_TYPE,
 )
 @measurement_service.output("Register Value Out", nims.DataType.String)
-def measure(register_value_in: str, register_map_path: str, resource_name: str) -> nims.DataType.String:
+def measure(register_value_in: str, resource_name: str) -> nims.DataType.String:
     """Initiate a measurement, ensuring necessary device communication to wake the device."""
     register_value_out = ""
     with measurement_service.context.reserve_session(resource_name) as device_session_reservation:
 
         # Defaults to AUTO initialization behavior.
         device_comm_session_constructor = DeviceCommunicationSessionConstructor(
-            register_map_path=register_map_path,
+            register_map_path=REGISTER_MAP_PATH,
             reset=False,
             protocol=Protocol.SPI,
         )
