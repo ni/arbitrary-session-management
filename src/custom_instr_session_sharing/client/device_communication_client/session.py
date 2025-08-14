@@ -8,7 +8,7 @@ from types import TracebackType
 from typing import Optional, Type
 
 import grpc
-from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -25,7 +25,7 @@ from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[im
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from device_comm_proto_stubs.device_comm_service_pb2_grpc import (
+from stubs.device_comm_service_pb2_grpc import (
     DeviceCommunicationStub,  # type: ignore[import-untyped]
 )
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient

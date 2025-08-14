@@ -14,7 +14,7 @@ from typing import Any, Optional, TypeVar
 
 import grpc
 from constants import GPIOChannel, GPIOChannelState, GPIOPort, Session
-from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -33,7 +33,7 @@ from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[im
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from device_comm_proto_stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
     DeviceCommunicationServicer,
     add_DeviceCommunicationServicer_to_server,
 )

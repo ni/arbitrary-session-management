@@ -11,7 +11,7 @@ requires-python = ">=3.9,<4.0"
 [tool.poetry.dependencies]
 python = "^3.9"
 ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-device_comm_proto_stubs = { path = "../device_comm_proto_stubs", develop = true }
+device_communication_stubs = { path = "../stubs", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 ni-python-styleguide = "^0.4.6"

@@ -14,7 +14,7 @@ This service runs as a standalone process and provides interfaces for clients to
 
 - [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
 - [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
-- [Device Communication Proto Stubs](https://github.com/ni/arbitrary-session-management/tree/main/src/custom_instr_session_sharing/device_comm_proto_stubs)
+- [Device Communication Stubs](../stubs)
 - [VS Code](https://code.visualstudio.com/download) (Optional)
 - [Instrument Studio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 
