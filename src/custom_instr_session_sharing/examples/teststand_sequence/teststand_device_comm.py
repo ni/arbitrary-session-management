@@ -1,14 +1,12 @@
 """Functions to set up and tear down sessions of Device Communication in NI TestStand."""
 
+import pathlib
 from typing import Any
 
-from _helpers import TestStandSupport
+from stubs.device_comm_service_pb2 import Protocol  # type: ignore[import-untyped]
 from device_communication_client.session_constructor import (
     INSTRUMENT_TYPE,
     DeviceCommunicationSessionConstructor,
-)
-from device_comm_proto_stubs.device_comm_service_pb2 import (
-    Protocol,  # type: ignore[import-untyped]
 )
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
 from ni_measurement_plugin_sdk_service.grpc.channelpool import GrpcChannelPool
@@ -18,8 +16,12 @@ from ni_measurement_plugin_sdk_service.session_management import (
     SessionManagementClient,
 )
 
-REGISTER_MAP_PATH = "" # Fill with actual register map path.
-REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
+from _helpers import TestStandSupport
+
+service_directory = pathlib.Path(__file__).parent
+REGISTER_MAP_PATH = str(
+    pathlib.Path(service_directory).parent / "register_map" / "sample_register_map.csv"
+)  # Fill with the actual register map file.
 
 
 def create_device_comm_sessions(sequence_context: Any) -> None:

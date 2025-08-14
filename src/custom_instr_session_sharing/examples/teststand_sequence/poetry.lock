@@ -116,7 +116,25 @@ files = [
 packaging = "*"
 
 [[package]]
-name = "device-comm-proto-stubs"
+name = "device-communication-client"
+version = "1.0.0"
+description = "Device Communication client-side stubs, session and its constructor package."
+optional = false
+python-versions = "^3.9"
+groups = ["main"]
+files = []
+develop = false
+
+[package.dependencies]
+device_communication_stubs = {path = "../stubs", develop = true}
+ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
+
+[package.source]
+type = "directory"
+url = "../../client"
+
+[[package]]
+name = "device-communication-stubs"
 version = "1.0.0"
 description = "gRPC stubs for device communication service"
 optional = false
@@ -131,25 +149,7 @@ mypy-protobuf = ">=3.6.0,<4.0.0"
 
 [package.source]
 type = "directory"
-url = "../../../../../../arbitrary-session-management/src/custom_instr_session_sharing/device_comm_proto_stubs"
-
-[[package]]
-name = "device-communication-client"
-version = "1.0.0"
-description = "Device Communication client-side stubs, session and its constructor package."
-optional = false
-python-versions = ">=3.9,<4.0"
-groups = ["main"]
-files = []
-develop = false
-
-[package.dependencies]
-device_comm_proto_stubs = {path = "../device_comm_proto_stubs", develop = true}
-ni-measurement-plugin-sdk-service = ">=2.3.0,<3.0.0"
-
-[package.source]
-type = "directory"
-url = "../../../../../../arbitrary-session-management/src/custom_instr_session_sharing/client"
+url = "../../stubs"
 
 [[package]]
 name = "flake8"
@@ -610,14 +610,14 @@ files = [
 
 [[package]]
 name = "pbr"
-version = "6.1.1"
+version = "7.0.0"
 description = "Python Build Reasonableness"
 optional = false
 python-versions = ">=2.6"
 groups = ["dev"]
 files = [
-    {file = "pbr-6.1.1-py2.py3-none-any.whl", hash = "sha256:38d4daea5d9fa63b3f626131b9d34947fd0c8be9b05a29276870580050a25a76"},
-    {file = "pbr-6.1.1.tar.gz", hash = "sha256:93ea72ce6989eb2eed99d0f75721474f69ad88128afdef5ac377eb797c4bf76b"},
+    {file = "pbr-7.0.0-py2.py3-none-any.whl", hash = "sha256:b447e63a2bc04fd975fc0480b8d5ebf979179e2c0ae203bf1eff9ea20073bc38"},
+    {file = "pbr-7.0.0.tar.gz", hash = "sha256:cf4127298723dafbce3afd13775ccf3885be5d3c8435751b867f9a6a10b71a39"},
 ]
 
 [package.dependencies]
@@ -1026,5 +1026,5 @@ files = [
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.9,<4.0"
-content-hash = "3e5cbe4c6a4708b38442ab7068a7fb41d9f198ff96c75fb4ef09fdd88cb7e868"
+python-versions = "^3.9"
+content-hash = "6b6579c7d58a872418ecccbb33da2f07451923b4af1701ddccf595d714270cd4"
