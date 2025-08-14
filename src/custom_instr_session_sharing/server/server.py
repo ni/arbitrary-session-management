@@ -451,7 +451,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
         """Clean up all active device communication sessions."""
         with self.lock:
             for session in self.sessions.values():
-                if not session.register_data:
+                if session.register_data:
                     session.register_data = {}
             self.sessions.clear()
 

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PinMap xmlns="http://www.ni.com/TestStand/SemiconductorModule/PinMap.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1">
+	<Instruments>
+		<Instrument name="&lt;NameofTheCustomInstrument&gt;" instrumentTypeId="DeviceCommunicationService">
+			<Channel id="0" />
+		</Instrument>
+	</Instruments>
+	<Pins>
+		<DUTPin name="CustomInstrumentPin" />
+	</Pins>
+	<PinGroups></PinGroups>
+	<Sites>
+		<Site siteNumber="0" />
+	</Sites>
+	<Connections>
+		<Connection pin="CustomInstrumentPin" siteNumber="0" instrument="&lt;NameofTheCustomInstrument&gt;" channel="0" />
+	</Connections>
+</PinMap>
