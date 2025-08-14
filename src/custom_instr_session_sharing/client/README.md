@@ -14,7 +14,7 @@ This client provides interfaces for users to initialize instrument and manage se
 
 - [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
 - [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
-- [Device Communication Proto Stubs](../device_comm_proto_stubs/)
+- [Device Communication Stubs](../stubs)
 - [VS Code](https://code.visualstudio.com/download) (Optional)
 - [Instrument Studio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 
