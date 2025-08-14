@@ -8,7 +8,7 @@ from types import TracebackType
 from typing import Optional, Type
 
 import grpc
-from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
     SESSION_INITIALIZATION_BEHAVIOR_UNSPECIFIED,
@@ -25,7 +25,7 @@ from device_comm_proto_stubs.device_comm_service_pb2 import (  # type: ignore[im
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from device_comm_proto_stubs.device_comm_service_pb2_grpc import (
+from stubs.device_comm_service_pb2_grpc import (
     DeviceCommunicationStub,  # type: ignore[import-untyped]
 )
 from ni_measurement_plugin_sdk_service.discovery import DiscoveryClient
@@ -90,7 +90,7 @@ class DeviceCommunicationClient:
 
     def __init__(
         self,
-        device_id: str,
+        resource_name: str,
         protocol: Protocol,
         register_map_path: str,
         reset: bool,
@@ -100,7 +100,7 @@ class DeviceCommunicationClient:
         """Initialize the DeviceCommunicationClient.
 
         Args:
-            device_id: Unique identifier of the device.
+            resource_name: Custom instrument resource name.
             protocol: Communication protocol to be used.
             register_map_path: Path to the register map file.
             reset: Whether to reset the device communication client.
@@ -110,11 +110,11 @@ class DeviceCommunicationClient:
         self._discovery_client = discovery_client
         self._stub: Optional[DeviceCommunicationStub] = None
         self._stub_lock = threading.Lock()
-        self._initialization_behavior = _SERVER_INITIALIZATION_BEHAVIOR_MAP[initialization_behavior]
+        self._initialization_behavior = initialization_behavior
 
         try:
             response = self.initialize(
-                device_id=device_id,
+                resource_name=resource_name,
                 protocol=protocol,  # type: ignore[arg-type]
                 register_map_path=register_map_path,
                 reset=reset,
@@ -176,7 +176,7 @@ class DeviceCommunicationClient:
 
     def initialize(
         self,
-        device_id: str,
+        resource_name: str,
         protocol: Protocol,
         register_map_path: str,
         initialization_behavior: SessionInitializationBehavior,
@@ -185,7 +185,7 @@ class DeviceCommunicationClient:
         """Initialize a device communication session.
 
         Args:
-            device_id: Unique identifier for the device.
+            resource_name: Custom instrument resource name.
             protocol: Communication protocol to be used for the session.
             register_map_path: Path to the register map file.
             initialization_behavior: The initialization behavior to use.
@@ -201,7 +201,7 @@ class DeviceCommunicationClient:
             stating whether a new session was created.
         """
         request = InitializeRequest(
-            device_id=device_id,
+            resource_name=resource_name,
             protocol=protocol,  # type: ignore[arg-type]
             register_map_path=register_map_path,
             initialization_behavior=_SERVER_INITIALIZATION_BEHAVIOR_MAP[initialization_behavior],

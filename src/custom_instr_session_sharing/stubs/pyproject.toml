@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "device_comm_proto_stubs"
+name = "device_communication_stubs"
 version = "1.0.0"
 description = "gRPC stubs for device communication service"
-packages = [{ include = "device_comm_proto_stubs" }]
+packages = [{ include = "stubs" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
