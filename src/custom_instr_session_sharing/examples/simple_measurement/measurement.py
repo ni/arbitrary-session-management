@@ -34,7 +34,7 @@ REGISTER_NAME = "CAL_RX0"  # Fill with actual register name.
     instrument_type=INSTRUMENT_TYPE,
 )
 @measurement_service.output("Register Value Out (Binary)", nims.DataType.String)
-def measure(register_value_in: str, resource_name: str) -> nims.DataType.String:  # type: ignore
+def measure(register_value_in: str, resource_name: str) -> tuple[str]:
     """Initiate a measurement, ensuring necessary device communication to wake the device."""
     register_value_out = ""
     with measurement_service.context.reserve_session(resource_name) as device_session_reservation:
