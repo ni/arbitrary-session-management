@@ -5,7 +5,7 @@ This measurement plug-in example demonstrates how to perform a measurement with 
 ## Features
 
 - Pin-aware implementation supporting the instrument sessions.
-- Performs device communication for the DUT wake up and do measurements via a custom `DeviceCommunicationService`.
+- Performs device communication operations such as read and write via a custom `DeviceCommunicationService`.
 - Includes InstrumentStudio and Measurement Plug-In UI Editor project files.
 
 ## Required Software

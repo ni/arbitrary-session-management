@@ -50,8 +50,7 @@ def measure(register_value_in: str, resource_name: str) -> tuple[str]:
         ) as device_session_info:
             logging.info("Initializing the device communication session...")
             device_session = device_session_info.session
-            # Ensure the device is powered on and ready for communication.
-            # Performing read & write operations to ensure the device wake up.
+            # Performing read & write operations with the DUT.
             device_session.write_register(register_name=REGISTER_NAME, value=register_value_in)
             register_value_out = device_session.read_register(register_name=REGISTER_NAME)
 
