@@ -5,7 +5,7 @@ The [DeviceCommunication sequence](DeviceCommExample.seq) demonstrates how multi
 ## Features
 
 - Demonstrates session sharing for the Device Communication Service across multiple measurement plug-ins.
-- Executes the measurement plug-ins by performing register read and write operations for device wake up.
+- Executes the measurement plug-ins by performing register read and write operations for device communication.
 - Plug-ins perform device communication using a shared instrument session.
 - Cleans up all sessions after measurement execution.
 
@@ -16,12 +16,12 @@ The [DeviceCommunication sequence](DeviceCommExample.seq) demonstrates how multi
 - [NI InstrumentStudio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 - [NI TestStand 2021 SP1 or later](https://www.ni.com/en/support/downloads/software-products/download.teststand.html?srsltid=AfmBOoo_2adp0yHttIHxht7_1p04xsEByXulfCtGh8yQi01DZ-yNxZFo#445937)
 - Device Communication Service (included in this repository under the `server` directory)
-- If the custom instrument's name isn't updated, the session will be generated in the name `CustomInstrument` in the server.
 
 >[!Note]
 >
 > - Ensure that the Python version you use is supported by your installed version of TestStand.
 > - Click [here](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA03q000000xDgrCAE&l=en-IN#:~:text=Supported%20Python%20Adapters%3A) to know which Python versions are compatible with your specific TestStand release.
+> - If the custom instrument's name isn't updated, the session will be generated in the name `<NameOfTheCustomInstrument>` in the server.
 
 
 
