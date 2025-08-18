@@ -9,7 +9,7 @@ This client provides interfaces for users to initialize instrument and manage se
 - Provides a simplified client interface to interact with the Device Communication Service.
 - Handles device configuration, command transmission, and retrieval of measurement data in a structured format.
 - Designed for easy reuse across examples involving various hardware in measurement plug-ins.
-- Handles binary data (as string) to numeric conversions for human readable data read/write operations.
+- Handles binary data (as string) to numeric conversions for human-readable data read/write operations.
 
 ## Required Software
 
