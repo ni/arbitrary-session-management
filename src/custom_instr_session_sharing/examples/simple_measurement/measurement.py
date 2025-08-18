@@ -5,14 +5,14 @@ import pathlib
 import sys
 
 import click
-import ni_measurement_plugin_sdk_service as nims 
+import ni_measurement_plugin_sdk_service as nims
 from device_communication_client.session_constructor import (
-    DeviceCommunicationSessionConstructor,  # type: ignore[import-untyped]
-    INSTRUMENT_TYPE,
+    DeviceCommunicationSessionConstructor,  # type: ignore
 )
-from stubs.device_comm_service_pb2 import (
-    Protocol,  # type: ignore[import-untyped]
+from device_communication_client.session_constructor import (
+    INSTRUMENT_TYPE, # type: ignore
 )
+from stubs.device_comm_service_pb2 import Protocol  # type: ignore
 
 script_or_exe = sys.executable if getattr(sys, "frozen", False) else __file__
 service_directory = pathlib.Path(script_or_exe).resolve().parent
@@ -24,7 +24,7 @@ measurement_service = nims.MeasurementService(
 REGISTER_MAP_PATH = str(
     pathlib.Path(service_directory).parent / "register_map" / "sample_register_map.csv"
 )  # Fill with the actual register map file.
-REGISTER_NAME = "CAL_RX0" # Fill with actual register name.
+REGISTER_NAME = "CAL_RX0"  # Fill with actual register name.
 
 
 @measurement_service.register_measurement
@@ -54,7 +54,7 @@ def measure(register_value_in: str, resource_name: str) -> nims.DataType.String:
             device_session = device_session_info.session
             # Ensure the device is powered on and ready for communication.
             # Performing read & write operations to ensure the device wake up.
-            device_session.write_register(register_name=REGISTER_NAME,value=register_value_in)
+            device_session.write_register(register_name=REGISTER_NAME, value=register_value_in)
             register_value_out = device_session.read_register(register_name=REGISTER_NAME)
 
     return (register_value_out,)
