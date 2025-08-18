@@ -21,8 +21,8 @@ measurement_service = nims.MeasurementService(
 
 REGISTER_MAP_PATH = str(
     pathlib.Path(service_directory).parent / "register_map" / "sample_register_map.csv"
-)  # Fill with the actual register map file.
-REGISTER_NAME = "CAL_RX0"  # Fill with actual register name.
+)
+REGISTER_NAME = "CAL_RX0"
 
 
 @measurement_service.register_measurement
