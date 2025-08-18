@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SourceFile Checksum="FCC1AC9779A864B5DEA0DFB6062C2F658EAC4611250A8AA3C27A3B0096857352A78D215A802A5AC3FB906A944148532C9A789627EC22FFE33D36839DEDC32D3E" xmlns="http://www.ni.com/PlatformFramework">
+	<SourceModelFeatureSet>
+		<ParsableNamespace AssemblyFileVersion="25.3.2.49833" FeatureSetName="Pin Map" Name="http://www.ni.com/InstrumentFramework/PinMap" OldestCompatibleVersion="21.3.0.0" Version="21.3.0.0" />
+		<ParsableNamespace AssemblyFileVersion="9.16.2.49833" FeatureSetName="Editor" Name="http://www.ni.com/PlatformFramework" OldestCompatibleVersion="8.1.0.49152" Version="8.1.0.49152" />
+		<ApplicationVersionInfo Build="25.3.2.49833" Name="InstrumentStudio" PersistenceVersion="22.1.0.0" Version="25.3.2.49833" />
+	</SourceModelFeatureSet>
+	<Project xmlns="http://www.ni.com/PlatformFramework">
+		<EnvoyManagerRootEnvoy Id="fea011780882440d96f394ce5dc6d88d" ModelDefinitionType="EnvoyManagerRootEnvoy" Name="RootEnvoy" />
+		<EmbeddedDefinitionReference Id="33c9765b33c74dc49234732417eeef8e" ModelDefinitionType="NationalInstruments.ProjectExplorer.Modeling.ProjectDataManager" Name="ProjectExplorer">
+			<ProjectExplorer />
+		</EmbeddedDefinitionReference>
+		<NameScopingEnvoy Id="1aeb8c7139e84404b8844d11550ae43e" ModelDefinitionType="DefaultTarget" Name="DefaultTarget">
+			<DefaultTarget />
+			<SourceFileReference Bindings="EnvoyManager" Id="e5345cca7f13431180a8e95b20d2be7a" ModelDefinitionType="NationalInstruments.InstrumentFramework.Document.SourceModel.UnifiedTask" Name="SimpleMeasurement.sfp" StoragePath="SimpleMeasurement.sfp" />
+			<FileReference Id="e853ac645a894d27b833ca98cbbb72b1" ModelDefinitionType="{http://www.ni.com/InstrumentFramework/PinMap}PinMapDefinition" Name="CustomInstrumentInfo.pinmap" StoragePath="..\..\..\..\..\..\Arbitrary session testing\arbitrary-session-management\src\custom_instr_session_sharing\examples\pinmap\CustomInstrumentInfo.pinmap" p4:IsActive="True" xmlns:p4="http://www.ni.com/InstrumentFramework/PinMap" />
+		</NameScopingEnvoy>
+	</Project>
+	<ProjectInformation xmlns="http://www.ni.com/PlatformFramework">
+		<p.ProjectProperties>
+			<Kind Name="plugin.reference">
+				<Item Name="SimpleMeasurement_Python" Value="1.0.0.0" />
+			</Kind>
+		</p.ProjectProperties>
+	</ProjectInformation>
+</SourceFile>
