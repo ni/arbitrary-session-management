@@ -6,11 +6,9 @@ import sys
 
 import click
 import ni_measurement_plugin_sdk_service as nims
-from device_communication_client.session_constructor import (
-    DeviceCommunicationSessionConstructor,  # type: ignore
-)
-from device_communication_client.session_constructor import (
-    INSTRUMENT_TYPE, # type: ignore
+from device_communication_client.session_constructor import ( # type: ignore
+    INSTRUMENT_TYPE,
+    DeviceCommunicationSessionConstructor,
 )
 from stubs.device_comm_service_pb2 import Protocol  # type: ignore
 
@@ -36,7 +34,7 @@ REGISTER_NAME = "CAL_RX0"  # Fill with actual register name.
     instrument_type=INSTRUMENT_TYPE,
 )
 @measurement_service.output("Register Value Out (Binary)", nims.DataType.String)
-def measure(register_value_in: str, resource_name: str) -> nims.DataType.String:
+def measure(register_value_in: str, resource_name: str) -> nims.DataType.String:  # type: ignore
     """Initiate a measurement, ensuring necessary device communication to wake the device."""
     register_value_out = ""
     with measurement_service.context.reserve_session(resource_name) as device_session_reservation:
