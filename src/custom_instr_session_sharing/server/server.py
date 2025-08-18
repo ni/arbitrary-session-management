@@ -14,6 +14,11 @@ from typing import Any, Optional, TypeVar
 
 import grpc
 from constants import GPIOChannel, GPIOChannelState, GPIOPort, Session
+from ni_measurement_plugin_sdk_service.discovery import (
+    DiscoveryClient,
+    ServiceLocation,
+)
+from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     SESSION_INITIALIZATION_BEHAVIOR_ATTACH_TO_EXISTING,
     SESSION_INITIALIZATION_BEHAVIOR_INITIALIZE_NEW,
@@ -37,11 +42,6 @@ from stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
     DeviceCommunicationServicer,
     add_DeviceCommunicationServicer_to_server,
 )
-from ni_measurement_plugin_sdk_service.discovery import (
-    DiscoveryClient,
-    ServiceLocation,
-)
-from ni_measurement_plugin_sdk_service.measurement.info import ServiceInfo
 
 F = TypeVar("F", bound=Callable[..., Any])
 
@@ -270,7 +270,9 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO channel by returning random HIGH or LOW state
-            value = random.choice([GPIOChannelState.HIGH.value, GPIOChannelState.LOW.value]) # nosec
+            value = random.choice(
+                [GPIOChannelState.HIGH.value, GPIOChannelState.LOW.value]
+            )  # nosec
             return ReadGpioChannelResponse(state=value)
 
         except Exception as exp:
@@ -355,7 +357,7 @@ class DeviceCommServicer(DeviceCommunicationServicer):
                 )
 
             # Simulate reading from GPIO port by returning random value between valid states
-            value = random.choice(range(0, 256)) # nosec
+            value = random.choice(range(0, 256))  # nosec
             return ReadGpioPortResponse(state=value)
 
         except Exception as exp:
