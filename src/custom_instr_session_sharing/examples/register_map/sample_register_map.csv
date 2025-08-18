@@ -1,41 +1,41 @@
-Device Name,Group Name,Group Address,Register Name,Register Address,Register Address Length,Register Data Length,Default Data,Private,Field Name,Description,Access,Register Offset,Field Offset,Length,Type,Values,IsIndirect
-SISOLA01,General,0x00,CAL_RX0,0x00,8,8,12,FALSE,CALPD0,Channel 0 Power Detector Correction Word,RW,6,0,2,Numeric,0;3;1,FALSE
-SISOLA01,General,0x00,CAL_RX0,0x00,8,8,0,FALSE,CALRXP0,RX Phase Correction Word for Channel 0,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_RX0,0x00,8,8,0,FALSE,CALRXG0,RX Gain Correction Word for Channel 0,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_RX1,0x01,8,8,32,FALSE,CALPD1,Channel 1 Power Detector Correction Word,RW,6,0,2,Numeric,0;3;1,FALSE
-SISOLA01,General,0x00,CAL_RX1,0x01,8,8,0,FALSE,CALRXP1,RX Phase Correction Word for Channel 1,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_RX1,0x01,8,8,0,FALSE,CALRXG1,RX Gain Correction Word for Channel 1,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_RX2,0x02,8,8,251,FALSE,CALPD2,Channel 2 Power Detector Correction Word,RW,6,0,2,Numeric,0;3;1,FALSE
-SISOLA01,General,0x00,CAL_RX2,0x02,8,8,0,FALSE,CALRXP2,RX Phase Correction Word for Channel 2,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_RX2,0x02,8,8,0,FALSE,CALRXG2,RX Gain Correction Word for Channel 2,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_RX3,0x03,8,8,24,FALSE,CALPD3,Channel 3 Power Detector Correction Word,RW,6,0,2,Numeric,0;3;1,FALSE
-SISOLA01,General,0x00,CAL_RX3,0x03,8,8,0,FALSE,CALRXP3,RX Phase Correction Word for Channel 3,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_RX3,0x03,8,8,0,FALSE,CALRXG3,RX Gain Correction Word for Channel 3,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX0,0x04,8,8,156,FALSE,CALPDfd,RFfd port  Power Detector Correction Word,RW,6,0,2,Numeric,0;3;1,FALSE
-SISOLA01,General,0x00,CAL_TX0,0x04,8,8,0,FALSE,CALTXP0,TX Phase Correction Word for Channel 0,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX0,0x04,8,8,0,FALSE,CALTXG0,TX Gain Correction Word for Channel 0,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX1,0x05,8,8,22,FALSE,CALTEMP,Temperature Sensor Correction Word,RW,6,0,2,Numeric,0;3;1,FALSE
-SISOLA01,General,0x00,CAL_TX1,0x05,8,8,0,FALSE,CALTXP1,TX Phase Correction Word for Channel 1,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX1,0x05,8,8,0,FALSE,CALTXG1,TX Gain Correction Word for Channel 1,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX2,0x06,8,8,1,FALSE,Not_Used_0,Not Used,RW,6,0,2,Numeric,,FALSE
-SISOLA01,General,0x00,CAL_TX2,0x06,8,8,0,FALSE,CALTXP2,TX Phase Correction Word for Channel 2,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX2,0x06,8,8,0,FALSE,CALTXG2,TX Gain Correction Word for Channel 2,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX3,0x07,8,8,12,FALSE,Not_Used_1,Not Used,RW,6,0,2,Numeric,,FALSE
-SISOLA01,General,0x00,CAL_TX3,0x07,8,8,0,FALSE,CALTXP3,TX Phase Correction Word for Channel 3,RW,3,0,3,Numeric,0;7;1,FALSE
-SISOLA01,General,0x00,CAL_TX3,0x07,8,8,0,FALSE,CALTXG3,TX Gain Correction Word for Channel 3,RW,0,0,3,Numeric,0;7;1,FALSE
-SISOLA01,System,0x00,CONFIG1,0x08,8,8,68,FALSE,read_trig,Rising Edge triggers default values Read Cycle,RW,7,0,1,Numeric,0;1;1,FALSE
-SISOLA01,System,0x00,CONFIG1,0x08,8,8,0,FALSE,Reserved_0,Reserved,RW,4,0,3,Numeric,,FALSE
-SISOLA01,System,0x00,CONFIG1,0x08,8,8,0,FALSE,adc_mode,ADC enable and input selection,RW,0,0,4,List,0:ADC disabled;1:RF0 power detector;2:RF1 power detector;3:RF2 power detector;4:RF3 power detector;5:RFfd power detector;6:Temperature Sensor;7:reserved;8:reserved,FALSE
-SISOLA01,System,0x00,CONFIG2,0x09,8,8,112,FALSE,soft_reset,Rising Edge triggers reset of all RegMap registers (all set to 00000000),RW,7,0,1,Numeric,0;1;1,FALSE
-SISOLA01,System,0x00,CONFIG2,0x09,8,8,0,FALSE,Reserved_1,Reserved,RW,4,0,3,Numeric,,FALSE
-SISOLA01,System,0x00,CONFIG2,0x09,8,8,0,FALSE,ana_disable_3,Disable bit for Analog Channel 3,RW,3,0,1,List,0:Channel3 Enable;1:Channel3 Disable,FALSE
-SISOLA01,System,0x00,CONFIG2,0x09,8,8,0,FALSE,ana_disable_2,Disable bit for Analog Channel 2,RW,2,0,1,List,0:Channel2 Enable;1:Channel2 Disable,FALSE
-SISOLA01,System,0x00,CONFIG2,0x09,8,8,0,FALSE,ana_disable_1,Disable bit for Analog Channel 1,RW,1,0,1,List,0:Channel1 Enable;1:Channel1 Disable,FALSE
-SISOLA01,System,0x00,CONFIG2,0x09,8,8,0,FALSE,ana_disable_0,Disable bit for Analog Channel 0,RW,0,0,1,List,0:Channel0 Enable;1:Channel0 Disable,FALSE
-SISOLA01,System,0x00,BIAS,0x0A,8,8,65,FALSE,NotUsed_2,Not Used,RW,7,0,1,Numeric,,FALSE
-SISOLA01,System,0x00,BIAS,0x0A,8,8,0,FALSE,ana_txbias,TX bias setting,RW,4,0,3,List,1:Nominal Bias level;4:22% reduction in Bias,FALSE
-SISOLA01,System,0x00,BIAS,0x0A,8,8,0,FALSE,Not_Used_3,Not Used,RW,3,0,1,Numeric,,FALSE
-SISOLA01,System,0x00,BIAS,0x0A,8,8,0,FALSE,ana_rxbias,RX bias setting,RW,0,0,3,List,1:Nominal Bias level;4:22% reduction in Bias,FALSE
-SISOLA01,System,0x00,reserved_reg_1,0x0B,8,8,55,FALSE,reserved_reg_11,Reserved,R,0,0,8,Numeric,,FALSE
-SISOLA01,System,0x00,reserved_reg_2,0x0C,8,8,25,FALSE,reserved_reg_21,Reserved,R,0,0,8,Numeric,,FALSE
-SISOLA01,System,0x00,General_settings,0x0D,8,8,0,FALSE,General_settings_1,,RW,0,0,8,Numeric,,FALSE
+Register Name,Register Address,Default Data
+CAL_RX0,0x00,12
+CAL_RX0,0x00,0
+CAL_RX0,0x00,0
+CAL_RX1,0x01,32
+CAL_RX1,0x01,0
+CAL_RX1,0x01,0
+CAL_RX2,0x02,251
+CAL_RX2,0x02,0
+CAL_RX2,0x02,0
+CAL_RX3,0x03,24
+CAL_RX3,0x03,0
+CAL_RX3,0x03,0
+CAL_TX0,0x04,156
+CAL_TX0,0x04,0
+CAL_TX0,0x04,0
+CAL_TX1,0x05,22
+CAL_TX1,0x05,0
+CAL_TX1,0x05,0
+CAL_TX2,0x06,1
+CAL_TX2,0x06,0
+CAL_TX2,0x06,0
+CAL_TX3,0x07,12
+CAL_TX3,0x07,0
+CAL_TX3,0x07,0
+CONFIG1,0x08,68
+CONFIG1,0x08,0
+CONFIG1,0x08,0
+CONFIG2,0x09,112
+CONFIG2,0x09,0
+CONFIG2,0x09,0
+CONFIG2,0x09,0
+CONFIG2,0x09,0
+CONFIG2,0x09,0
+BIAS,0x0A,65
+BIAS,0x0A,0
+BIAS,0x0A,0
+BIAS,0x0A,0
+reserved_reg_1,0x0B,55
+reserved_reg_2,0x0C,25
+General_settings,0x0D,0
