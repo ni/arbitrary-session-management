@@ -5,7 +5,6 @@ description = "Simple Measurement Plug-In example that performs the device commu
 authors = [
     {name = "NI", email ="opensource@ni.com"}
 ]
-package-mode = false
 readme = "README.md"
 requires-python = ">=3.9,<4.0"
 
@@ -16,6 +15,29 @@ click = ">=8.1.3,<9.0.0"
 # The client-session is the package that provides the client interface for the device communication to this measurement.
 device_communication_client = { path = "../../client"}
 
+[tool.poetry.group.dev.dependencies]
+ni-python-styleguide = "^0.4.6"
+mypy = "^1.15.0"
+bandit = "^1.8.3"
+
+[tool.poetry]
+package-mode = false
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["^stubs/.*"]
+
+[tool.bandit]
+exclude_dirs = [".venv"]
+
+[tool.ni-python-styleguide]
+extend_exclude = '.tox/,*_pb2_grpc.py,*_pb2_grpc.pyi,*_pb2.py,*_pb2.pyi'
+
+[tool.black]
+extend_exclude = '\.tox/|_pb2(_grpc)?\.(py|pyi)$'
+line-length = 100
