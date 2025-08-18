@@ -1,11 +1,11 @@
 """File containing class for constructing device communication session."""
 
-from stubs.device_comm_service_pb2 import Protocol # type: ignore[import-untyped]
 from device_communication_client.session import DeviceCommunicationClient
 from ni_measurement_plugin_sdk_service.session_management import (
     SessionInformation,
     SessionInitializationBehavior,
 )
+from stubs.device_comm_service_pb2 import Protocol  # type: ignore[import-untyped]
 
 # Use the same instrument type ID configured in PinMap.
 # Expected to be imported and used by measurement plugins.
