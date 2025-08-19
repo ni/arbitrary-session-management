@@ -68,7 +68,7 @@ The [DeviceCommunication sequence](DeviceCommExample.seq) demonstrates how multi
       - Then click `Configure...` and enter the venv path.
       - Select Python version of the corresponding venv.
     - Navigate to the `pinmap` directory and open `CustomInstrumentInfo.pinmap`. Update the instrument name to your custom instrument name.
-    - Execute the sequence to observe shared custom instrument session behavior between two measurement plug-ins.
+    - Run the sequence to observe shared custom instrument session behavior between two measurement plug-ins.
 
 > [!Note]
 >
