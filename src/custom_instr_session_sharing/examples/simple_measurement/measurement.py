@@ -51,7 +51,7 @@ def measure(register_value_in: str, resource_name: str) -> tuple[str]:
             device_session = device_session_info.session
             # Performing read & write operations with the DUT.
             device_session.write_register(register_name="USER_DATA_0", value=register_value_in)
-            register_value_out = device_session.read_register(register_name="READ_DATA_LSB")
+            register_value_out = device_session.read_register(register_name="USER_DATA_0")
 
     return (register_value_out,)
 
