@@ -31,7 +31,7 @@
 
 This repository serves as a **reference implementation and guide** for sharing **arbitrary resources** across Measurement Plugins through **NI Session Management Service**.
 
-A custom instrument as a resource to be shared among Measurement Plugins is chosen for this reference example. However, the concept is not limited to instrument sessions - **any session object or reference to a resource** (such as an file session, database connection, hardware lock, or network stream, etc.,) can be managed and shared using the same pattern described here.
+A custom instrument resource to be shared among Measurement Plug-ins is chosen for this reference example. However, the concept is not limited to instrument sessions - **any session object or reference to a resource** (such as an file session, database connection, hardware lock, or network stream, etc.,) can be managed and shared using the same pattern described here.
 
 For NI Instruments, [NI gRPC Device](https://github.com/ni/grpc-device) server provides built-in support for the following drivers:
 
@@ -113,7 +113,7 @@ arbitrary-session-management
    - [simple_measurement_with_device_communication](src/custom_instr_session_sharing/examples/simple_measurement/README.md)
    - [teststand_sequence](src/custom_instr_session_sharing/examples/teststand_sequence/README.md)
 
-4. Start the server and run the example workflows as described in the respective `README.md`.
+4. Start the server and run the example as described in the `README.md` files.
 
 Running the server and examples, it can be observed that the TestStand sequence uses the same instrument session throughout the workflow. In the setup section, the instrument session is created, and in the main section, the same instrument session is shared and used across both measurement steps. This demonstrates instrument session sharing among measurement plugins.
 
@@ -168,8 +168,8 @@ It is essential to familiarize with basics of gRPC in Python using the following
 
     | Field                             | Description                                                                                                   |
     | --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-    | `session_id`                      | A unique identifier for the created or reused session. The client will use this ID in future calls.           |
-    | `new_session_initialized`         | A boolean flag indicating whether a new session was created (`true`) or an existing one was reused (`false`). |
+    | `session_id`                      | A unique identifier for the created or reused session. The client will use this ID in future calls. (example, to write to or close the resource)          |
+    | `new_session_initialized`         | A boolean flag indicating whether a new session was created (`true`) or an existing one was reused (`false`).  This helps coordinate shared access. |
 
     `Close` - Release or Destroy the Resource
 
