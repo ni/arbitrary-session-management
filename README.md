@@ -31,7 +31,7 @@
 
 This repository serves as a **reference implementation and guide** for sharing **arbitrary resources** across Measurement Plugins through **NI Session Management Service**.
 
-A custom instrument as resource to be share among Measurement Plugins is chosen for this reference example. However, the concept is not limited to instrument sessions - **any session object or reference to a resource** (such as an file session, communication reference, database connection, hardware lock, or network stream, etc.,) can be managed and shared using the same pattern described here.
+A custom instrument as a resource to be shared among Measurement Plugins is chosen for this reference example. However, the concept is not limited to instrument sessions - **any session object or reference to a resource** (such as an file session, database connection, hardware lock, or network stream, etc.,) can be managed and shared using the same pattern described here.
 
 For NI Instruments, [NI gRPC Device](https://github.com/ni/grpc-device) server provides built-in support for the following drivers:
 
@@ -74,22 +74,14 @@ Once the plugin is done, it **unreserves the session**. The session tracking and
 ```text
 arbitrary-session-management
 |-- src/
-|   |--file_session_sharing/
-|       |-- server/                        gRPC server implementation for session management and logging
-|       |-- client/                        Example client code for interacting with the server
-|       |-- examples/               
-│           |-- nidcpower_measurement_with_logger/   Example: DCPower measurement with logging
-│           |-- nidmm_measurement_with_logger/       Example: DMM measurement with logging
-|           |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
-|           |-- pinmap/                              Pinmap for the Measurement Plugins and TestStand sequence
 |   |--custom-instr-session-sharing
-|       |-- server/                        gRPC server implementation for session management and logging
+|       |-- server/                        gRPC server implementation for session management and device communication
 |       |-- client/                        Example client code for interacting with the server
 |       |-- protos/                        Protocol Buffers definitions for gRPC
 |       |-- stubs/                         gRPC stubs for the custom instrument
-|       |-- examples/               
-│           |-- register_map/                        Example: Register map for the custom instrument
-│           |-- simple_measurement/                  Example: Simple measurement with the custom instrument
+|       |-- examples/
+│           |-- register_map/                        Example: Register map for the device communication
+│           |-- simple_measurement/                  Example: Simple measurement which performs device communication with the help of custom instrument
 │           |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
 │           |-- pinmap/                              Example: Pinmap for the custom instrument
 |-- README.md
@@ -123,7 +115,7 @@ arbitrary-session-management
 
 4. Start the server and run the example workflows as described in the respective `README.md`.
 
-Running the server and examples, it can be observed that the TestStand sequence uses same data instrument session throughout the workflow. In the setup section, the instrument session is created, and in the main section, the same instrument session is shared and used across both measurement steps. This demonstrates instrument session sharing among measurement plugins.
+Running the server and examples, it can be observed that the TestStand sequence uses the same instrument session throughout the workflow. In the setup section, the instrument session is created, and in the main section, the same instrument session is shared and used across both measurement steps. This demonstrates instrument session sharing among measurement plugins.
 
 ## Step-by-Step Implementation Guide for Arbitrary Session Management
 
@@ -141,7 +133,7 @@ The following steps provide a detailed guide for implementing session sharing fo
 
 The first step is to define a `.proto` file. In this implementation, a custom gRPC server is used to handle session-based functionalities.
 
-A [sample.proto](src/custom_instr_session_sharing/protos/device_comm_service.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed logging of measurement data**. This means one can use the same approach to expose other resources, like instruments, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
+A [sample.proto](src/custom_instr_session_sharing/protos/device_comm_service.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed device communication APIs**. This means one can use the same approach to expose other resources, like file sessions, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
 
 It is essential to familiarize with basics of gRPC in Python using the following resources,
 
@@ -211,7 +203,7 @@ It is essential to familiarize with basics of gRPC in Python using the following
 
     3. Update the `import` statements in your component or implementation as needed. For reference:
       - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.py#L6)
-      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.pyi#L26)
+      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.pyi#L23)
 
 ---
 
@@ -222,13 +214,13 @@ This completes the process of defining your proto file and generating the necess
 Beyond the core lifecycle RPCs, define methods specific to your resource's functionality:
 
     | Example RPC          | Purpose                                    |
-    | ------------------- | ------------------------------------------ |
-    | `WriteRegister`     | Write values to device registers           |
-    | `ReadRegister`      | Read values from device registers          |
-    | `WriteGpioChannel`  | Control individual GPIO channels           |
-    | `ReadGpioChannel`   | Read state of GPIO channels               |
-    | `WriteGpioPort`     | Write to entire GPIO ports                |
-    | `ReadGpioPort`      | Read entire GPIO port states              |
+    | ------------------- | ------------------------------------------  |
+    | `WriteRegister`     | Write values to device registers            |
+    | `ReadRegister`      | Read values from device registers           |
+    | `WriteGpioChannel`  | Control individual GPIO channels            |
+    | `ReadGpioChannel`   | Read state of GPIO channels                 |
+    | `WriteGpioPort`     | Write to entire GPIO ports                  |
+    | `ReadGpioPort`      | Read entire GPIO port states                |
 
 > [!Note]
 > - The core pattern remains: **initialize/open** and **close/release**
@@ -253,7 +245,7 @@ The [example implementation](src/custom_instr_session_sharing/server/server.py) 
 
     Typically named `server.py`.
 
-2. **Implement the [Initialize API](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L76)**
+2. **Implement the [Initialize API](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L100)**
 
     The Initialize API handles client requests to create or open a resource (such as a custom instrument resource used in this reference) and manages session sharing based on the specified session initialization behavior.
 
@@ -264,20 +256,20 @@ The [example implementation](src/custom_instr_session_sharing/server/server.py) 
       - INITIALIZE_NEW: If a session for the resource exists and is still open, return an ALREADY_EXISTS error. Otherwise create a new session.
       - ATTACH_TO_EXISTING: If a session for the resource exists and is still open, return the existing session. Otherwise, return a NOT_FOUND error.
 
-3. **Implement the [Close API](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L186)**
+3. **Implement the [Close API](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L414)**
 
     - Receive a request containing a session ID.
     - Check if the resource is already closed
       - If no, close the resource handle, return a success response.
       - If yes, return NOT_FOUND error
 
-4. **Implement the other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L112)**
+4. **Implement the other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L174)**
 
     - Receive the request
     - Execute the business logic
     - Return the response
 
-5. **Implement the [Start Server Logic](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L405)**
+5. **Implement the [Start Server Logic](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/server/server.py#L644)**
 
     - Create an instance of the gRPC service implementation.
     - Add the service implementation to the gRPC server.
@@ -303,12 +295,12 @@ The [example implementation](src/custom_instr_session_sharing/server/server.py) 
     {
       "services": [
         {
-          "displayName": "Device communication Service",
-          "version": "1.0.0",
-          "serviceClass": "ni.DeviceControl.CommService",
-          "descriptionUrl": "",
-          "providedInterface": "ni.device_control.v1.service",
-          "path": "start.bat"
+          "displayName": "Device Communication Service",          // Human-readable name for the service                    
+          "version": "1.0.0",                                     // Service version
+          "serviceClass": "ni.DeviceControl.CommService",         // Format: <organization>.<functionality>.<name>
+          "descriptionUrl": "",                                   // URL with additional service documentation (optional)
+          "providedInterface": "ni.DeviceControl.v1.CommService", // Format: <organization>.<functionality>.<version>.<name>
+          "path": "start.bat"                                     // Script or command to start the service
         }
       ]
     }
@@ -332,7 +324,7 @@ The client class:
 
 - Connects to the gRPC service using NI Discovery Service.
 - Initializes or attaches to a session-managed resource (example, a custom instrument for device communication).
-- Implement methods to expose the required RPC methods (gRPC server exposed functions - in this example, log_data)
+- Implement methods to expose the required RPC methods (gRPC server exposed functions - in this example, read and write register data)
 - Closes the session when appropriate, based on the initialization behavior.
 
 #### Reference
@@ -371,19 +363,19 @@ The client class:
 
 3. **Define Lifecycle Methods:** `__init__`, `__enter__`, `__exit__`
 
-    a. [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L57)
+    a. [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L91)
 
     - Initializes the client.
     - Uses the Discovery Service to locate the gRPC server.
     - Call the Initialize RPC call and get the response from server.
     - Stores the session name and whether a new session was created.
 
-    b. [`__enter__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L89)
+    b. [`__enter__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L135)
 
     - Enables the client to be used with a `with` statement (i.e., a context manager).
     - Returns the client instance for use inside the block.
 
-    c. [`__exit__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L93)
+    c. [`__exit__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L139)
 
     - Automatically called when exiting a `with` block.
     - Handles session cleanup based on the initialization behavior:
@@ -393,7 +385,7 @@ The client class:
 
     Using the client as a context manager ensures proper resource cleanup and avoids session leaks.
 
-4. **Implement the Other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L157)**
+4. **Implement the Other [Arbitrary Function APIs](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session.py#L216)**
 
    - Construct and send the request to the server.
    - Wait for and process the server's response.
@@ -403,22 +395,22 @@ The client class:
 
     After creating the `client.py` or `session.py`, now, create client constructor. To streamline the integration of the client with measurement plugins, a helper class should be defined. This class encapsulates the logic for constructing a client using session information passed from the measurement plugin.
 
-    - Define an [instrument type constant](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session_constructor.py#L11). This should match the instrument type ID configured in your PinMap.
+    - Define an [instrument type constant](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session_constructor.py#L12). This should match the instrument type ID configured in your PinMap.
 
       ```python
       INSTRUMENT_TYPE = "DeviceCommunicationService"
       ```
 
     - Define constructor methods. The constructor class should contain the following methods:
-      - [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session_constructor.py#L17): Initializes the constructor with a specific session initialization behavior.
+      - [`__init__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session_constructor.py#L18): Initializes the constructor with a specific session initialization behavior.
 
         **Parameters:**
         initialization_behavior: Specifies how the session should be initialized. Defaults to `SessionInitializationBehavior.AUTO`.
 
         **Purpose:**
-        This allows the constructor to be configured once and reused across multiple plugins or measurement steps with consistent behavior.
+        This allows the constructor to be configured once and reused across multiple plugins or measurement steps with consistent behavior. In the example, it uses other parameters like register_map_path, reset and protocol which can be customized as needed.
 
-      - [`__call__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session_constructor.py#L31): Makes the class instance callable like a function. It takes a SessionInformation object and returns a DeviceCommunicationClient.
+      - [`__call__`](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/client/device_communication_client/session_constructor.py#L41): Makes the class instance callable like a function. It takes a SessionInformation object and returns a DeviceCommunicationClient.
 
         **Parameters:**
         session_info: An object containing data about the session, including the resource name (in this example, the custom instrument name).
@@ -479,7 +471,7 @@ This section describes how to use your session-managed client within a Measureme
   Use the NI Session Management Service to reserve the resource and initialize the session using your client constructor.
 
 1. **Use the Session in Measurement Logic**  
-  Call arbitrary functions (example, log data) using the session within your measurement step.
+  Call arbitrary functions (example, read and write registers) using the session within your measurement step.
 
 1. **Cleanup**  
   The session is automatically cleaned up based on the initialization behavior and context management.
@@ -507,7 +499,7 @@ This section describes how to use your session-managed client within a Measureme
 
         # Defaults to AUTO initialization behavior.
         device_comm_session_constructor = DeviceCommunicationSessionConstructor(
-            register_map_path=REGISTER_MAP_PATH,
+            register_map_path="../register_map/sample_register_map.csv",
             reset=False,
             protocol=Protocol.SPI,
         )
@@ -558,6 +550,6 @@ This approach ensures consistent session sharing and proper resource cleanup thr
 
 ## Conclusion
 
-This guide provides a comprehensive reference for implementing arbitrary resource management using NI Session Management Service and gRPC in Python. By following the outlined steps, you can design session-shareable services for arbitrary resources such as instruments, files, databases, etc. The provided patterns ensure integration with Measurement Plugins.
+This guide provides a comprehensive reference for implementing arbitrary resource management using NI Session Management Service and gRPC in Python. By following the outlined steps, you can design session-shareable services for arbitrary resources such as files, databases, etc. The provided patterns ensure integration with Measurement Plugins.
 
 For further details, consult the example implementations in this repository and refer to the official NI documentation linked throughout this guide.
