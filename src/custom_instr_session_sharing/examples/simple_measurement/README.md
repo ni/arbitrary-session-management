@@ -37,7 +37,6 @@ start.bat
 
 ### Run the Measurement from InstrumentStudio
 
-1. Open **InstrumentStudio**.
-2. Go to **File -> Open Project -> Browse**, and select the measurement plug-in project.
-3. Update the file path in `CustomInstrumentInfo.pinmap` available in `pinmap` directory to use an **absolute path** for the custom instrument name.
-4. Run the measurement plug-in from InstrumentStudio.
+1. Double-click on the **SimpleMeasurement.instudioproj** to launch the measurement plug-in.
+2. Navigate to the `pinmap` directory and open `CustomInstrumentInfo.pinmap`. Update the instrument name to your custom instrument name.
+3. Run the measurement plug-in from InstrumentStudio.

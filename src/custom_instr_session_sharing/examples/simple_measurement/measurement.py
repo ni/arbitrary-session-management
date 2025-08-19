@@ -22,7 +22,6 @@ measurement_service = nims.MeasurementService(
 REGISTER_MAP_PATH = str(
     pathlib.Path(service_directory).parent / "register_map" / "sample_register_map.csv"
 )
-READ_DATA_LSB = "READ_DATA_LSB"
 
 
 @measurement_service.register_measurement
@@ -51,8 +50,8 @@ def measure(register_value_in: str, resource_name: str) -> tuple[str]:
             logging.info("Initializing the device communication session...")
             device_session = device_session_info.session
             # Performing read & write operations with the DUT.
-            device_session.write_register(register_name=READ_DATA_LSB, value=register_value_in)
-            register_value_out = device_session.read_register(register_name=READ_DATA_LSB)
+            device_session.write_register(register_name="USER_DATA_0", value=register_value_in)
+            register_value_out = device_session.read_register(register_name="READ_DATA_LSB")
 
     return (register_value_out,)
 
