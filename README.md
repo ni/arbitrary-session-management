@@ -80,7 +80,7 @@ arbitrary-session-management
 |       |-- protos/                        Protocol Buffers definitions for gRPC
 |       |-- stubs/                         gRPC stubs for the custom instrument
 |       |-- examples/
-│           |-- register_map/                        Example: Register map for the device communication
+│           |-- register_map/                        Example: Sample register map for the device communication
 │           |-- simple_measurement/                  Example: Simple measurement which performs device communication with the help of custom instrument
 │           |-- teststand_sequence/                  Example: TestStand sequence to showcase session sharing
 │           |-- pinmap/                              Example: Pinmap for the custom instrument
