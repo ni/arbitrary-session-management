@@ -6,7 +6,7 @@ import sys
 
 import click
 import ni_measurement_plugin_sdk_service as nims
-from device_communication_client.session_constructor import ( # type: ignore
+from device_communication_client.session_constructor import (  # type: ignore
     INSTRUMENT_TYPE,
     DeviceCommunicationSessionConstructor,
 )
