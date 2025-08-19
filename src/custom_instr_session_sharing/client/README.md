@@ -9,12 +9,13 @@ This client provides interfaces for users to initialize instrument and manage se
 - Provides a simplified client interface to interact with the Device Communication Service.
 - Handles device configuration, command transmission, and retrieval of measurement data in a structured format.
 - Designed for easy reuse across examples involving various hardware in measurement plug-ins.
+- Handles binary data (as string) to numeric conversions for human-readable data read/write operations.
 
 ## Required Software
 
 - [Python 3.9 or later](https://www.python.org/downloads/release/python-390/)
 - [Poetry 2.0.1 or later](https://python-poetry.org/docs/#installing-with-pipx)
-- [Device Communication Proto Stubs](../device_comm_proto_stubs/)
+- [Device Communication Stubs](../stubs)
 - [VS Code](https://code.visualstudio.com/download) (Optional)
 - [Instrument Studio 2025 Q2 or later](https://www.ni.com/en/support/downloads/software-products/download.instrumentstudio.html#564301)
 
