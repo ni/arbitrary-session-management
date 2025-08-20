@@ -70,26 +70,22 @@ poetry install
 
 # Update gRPC Stubs (If Needed)
 
-The `src/file_session_sharing/server/stubs`, `src/file_session_sharing/client/client_session/stubs`, `src/custom_instr_session_sharing/stubs` directories contain the
+The `src/server` and `src/client` directories contain the
 auto-generated Python files based on (`.proto`) file. The following files need
-to be replaced whenever there is a change to this [`json_logger_server.proto`](src/file_session_sharing/server/json_logger.proto) or [`json_logger_client.proto`](src/file_session_sharing/client/json_logger.proto) files or [`device_comm_service.proto`](src/custom_instr_session_sharing/stubs/device_comm_service.proto) files:
+to be replaced whenever there is a change to this [`server.proto`](src/server/json_logger.proto) or [`client.proto`](src/client/client_session/json_logger.proto) files:
 
-The gRPC stubs are auto-generated in:
-
-- [Json file logger server stubs](src/file_session_sharing/server/stubs/)
-- [Json file logger client stubs](src/file_session_sharing/client/stubs/)
-- [Device Communication stubs](src/custom_instr_session_sharing/stubs/)
+- [server stubs](src/server/stubs/)
+- [client stubs](src/client/client_session/stubs/)
 
 To regenerate the gRPC stubs, `cd` to the directory, install
 it with `poetry install`, and run `poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> <proto_file_path>`.
 
 Update your import statements in your component or implementation as needed. For reference:
 
-- [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/stubs/json_logger_pb2_grpc.py#L6)
-- [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/stubs/json_logger_pb2_grpc.pyi#L26)
-- [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/stubs/json_logger_pb2_grpc.py#L6)
-- [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/stubs/json_logger_pb2_grpc.pyi#L26)
-- [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.py#L6)
+- [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.py#L6)
+- [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/server/stubs/json_logger_pb2_grpc.pyi#L26)
+- [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.py#L6)
+- [stubs directory is a package and the component is also a Python package - <proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/client/client_session/stubs/json_logger_pb2_grpc.pyi#L26)
 
 # Lint and Build Code
 
