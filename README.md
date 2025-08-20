@@ -133,7 +133,8 @@ The following steps provide a detailed guide for implementing session sharing fo
 
 The first step is to define a `.proto` file. In this implementation, a custom gRPC server is used to handle session-based functionalities.
 
-A [sample.proto](src/custom_instr_session_sharing/protos/device_comm_service.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed device communication APIs**. This means one can use the same approach to expose other resources, like file sessions, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins.
+A [sample.proto](src/custom_instr_session_sharing/protos/device_comm_service.proto) file is provided in the `server` directory. This example demonstrates how to define a gRPC service for **session-managed device communication APIs**. 
+This approach can be used to expose other resources, like file sessions, database connections, hardware locks, or network streams, and share those resources across different Measurement Plugins
 
 It is essential to familiarize with basics of gRPC in Python using the following resources,
 
@@ -202,7 +203,8 @@ It is essential to familiarize with basics of gRPC in Python using the following
         ```
 
     3. Update the `import` statements in your component or implementation as needed. For reference:
-      - [stubs directory is a package while the component isn't a Python package - <proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.py#L6)
+      - [<proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.py#L6)
+      - [<proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.pyi#L23)
 
 ---
 
@@ -210,7 +212,8 @@ This completes the process of defining your proto file and generating the necess
 
 #### Adapting for Your Own Use Case
 
-Beyond the core lifecycle RPCs, define methods specific to your resource's functionality:
+The structure described above is flexible and can be adapted to manage any resource that benefits from session-based access.
+Beyond the core RPCs - initialize/open and close/release, define methods specific to your resource's functionality. Here are some examples::
 
     | Example RPC          | Purpose                                    |
     | ------------------- | ------------------------------------------  |
@@ -222,7 +225,7 @@ Beyond the core lifecycle RPCs, define methods specific to your resource's funct
     | `ReadGpioPort`      | Read entire GPIO port states                |
 
 > [!Note]
-> - The core pattern remains: **initialize/open** and **close/release**
+> - The fundamental pattern-**initialize/open and close/release**-remains unchanged.
 > - Use meaningful error codes in your RPC definitions (example, `NOT_FOUND`, `INVALID_ARGUMENT`)
 > - Consider including resource-specific configuration in the Initialize request
 > - Additional RPCs should follow gRPC best practices for request/response message design

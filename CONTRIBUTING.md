@@ -83,13 +83,12 @@ The gRPC stubs are auto-generated in:
 To regenerate the gRPC stubs, `cd` to the directory, install
 it with `poetry install`, and run `poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> <proto_file_path>`.
 
-Update your import statements in your component or implementation as needed. Stubs directory is a package while the component isn't a Python package. For reference:
+Update the import statements in your component or implementation as needed. 
+Stubs directory is a package while the component isn't a Python package. For reference:
 
-- [<proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/stubs/json_logger_pb2_grpc.py#L6)
-- [<proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/server/stubs/json_logger_pb2_grpc.pyi#L26)
-- [<proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/stubs/json_logger_pb2_grpc.py#L6)
-- [<proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/file_session_sharing/client/stubs/json_logger_pb2_grpc.pyi#L26)
-- [<proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.py#L6)
+  - [<proto_file_name>_pb2_grpc.py](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.py#L6)
+  - [<proto_file_name>_pb2_grpc.pyi](https://github.com/ni/arbitrary-session-management/blob/main/src/custom_instr_session_sharing/stubs/stubs/device_comm_service_pb2_grpc.pyi#L23)
+
 
 # Lint and Build Code
 
