@@ -20,7 +20,7 @@ This ensures that the sessions are shareable across different measurement plugin
 
 import abc
 import collections.abc
-import device_comm_service_pb2
+import stubs.device_comm_service_pb2 as device_comm_service_pb2
 import grpc
 import grpc.aio
 import typing
