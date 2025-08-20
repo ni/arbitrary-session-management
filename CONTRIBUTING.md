@@ -73,9 +73,7 @@ poetry install
 The `src/custom_instr_session_sharing/stubs` directories contain the auto-generated Python files based on (`.proto`) file. The following files need
 to be replaced whenever there is a change to this [`device_comm_service.proto`](src/custom_instr_session_sharing/stubs/device_comm_service.proto) files:
 
-The gRPC stubs are auto-generated in:
-
-- [Device Communication stubs](src/custom_instr_session_sharing/stubs/)
+- [Device Communication stubs](src/custom_instr_session_sharing/stubs/stubs)
 
 To regenerate the gRPC stubs, `cd` to the directory, install
 it with `poetry install`, and run `poetry run python -m grpc_tools.protoc --proto_path=. --python_out=<stubs_directory> --grpc_python_out=<stubs_directory> --mypy_out=<stubs_directory> --mypy_grpc_out=<stubs_directory> <proto_file_path>`.

@@ -422,14 +422,13 @@ The client class:
 
 #### Packaging the Client for Reuse
 
-To enable reuse of the client across Measurement Plugins and users, it is recommended to package the client code as a standalone Python package.
+To enable reuse of the client across Measurement Plugins and users, it is recommended to package the client code and stubs as a standalone Python package.
 
-- Follow the structure provided in the `client/` directory as a reference. The structure should include:
+- Follow the structure provided in the `src/custom_instr_session_sharing/client` directory as a reference. The structure should include:
 
   - The core client logic (`session.py`)
   - The session constructor (`session_constructor.py`)
-  - The `.proto` file used to define the gRPC service
-  - The generated gRPC stubs
+  - The generated gRPC stubs as a sub dependency
 
 - Run the following command to build a wheel file if needed. This wheel file can be installed in the Measurement Plugins project environment.
 
@@ -467,7 +466,7 @@ This section describes how to use your session-managed client within a Measureme
   Import the session constructor and instrument type constant into your plugin's `measurement.py`.
 
 1. **Configure the Resource Pin**  
-  Define a configuration parameter for your resource (example, a logger pin) using the instrument type constant. This can also be hardcoded in your logic.
+  Define a configuration parameter for your resource (example, a custom instrument pin) using the instrument type constant. This can also be hardcoded in your logic.
 
 1. **Reserve and Initialize the Session**  
   Use the NI Session Management Service to reserve the resource and initialize the session using your client constructor.
