@@ -70,14 +70,11 @@ poetry install
 
 # Update gRPC Stubs (If Needed)
 
-The `src/file_session_sharing/server/stubs`, `src/file_session_sharing/client/client_session/stubs`, `src/custom_instr_session_sharing/stubs` directories contain the
-auto-generated Python files based on (`.proto`) file. The following files need
-to be replaced whenever there is a change to this [`json_logger_server.proto`](src/file_session_sharing/server/json_logger.proto) or [`json_logger_client.proto`](src/file_session_sharing/client/json_logger.proto) files or [`device_comm_service.proto`](src/custom_instr_session_sharing/stubs/device_comm_service.proto) files:
+The `src/custom_instr_session_sharing/stubs` directories contain the auto-generated Python files based on (`.proto`) file. The following files need
+to be replaced whenever there is a change to this [`device_comm_service.proto`](src/custom_instr_session_sharing/stubs/device_comm_service.proto) files:
 
 The gRPC stubs are auto-generated in:
 
-- [Json file logger server stubs](src/file_session_sharing/server/stubs/)
-- [Json file logger client stubs](src/file_session_sharing/client/stubs/)
 - [Device Communication stubs](src/custom_instr_session_sharing/stubs/)
 
 To regenerate the gRPC stubs, `cd` to the directory, install
