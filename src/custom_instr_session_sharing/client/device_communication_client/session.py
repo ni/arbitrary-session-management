@@ -29,8 +29,8 @@ from stubs.device_comm_service_pb2 import (  # type: ignore[import-untyped]
     WriteGpioPortRequest,
     WriteRegisterRequest,
 )
-from stubs.device_comm_service_pb2_grpc import (
-    DeviceCommunicationStub,  # type: ignore[import-untyped]
+from stubs.device_comm_service_pb2_grpc import (  # type: ignore[import-untyped]
+    DeviceCommunicationStub,
 )
 
 # These constants help to get the Device Comm Service Location from the Discovery Service.

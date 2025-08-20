@@ -1,6 +1,11 @@
 @echo off
-REM The discovery service uses this script to start the measurement service.
-REM You can customize this script for your Python setup. The -v option logs
-REM messages with level INFO and ab
+REM The discovery service uses this script to start the measurement plugin.
+REM You can customize this script for your Python setup.
 
-py measurement.py -v
+REM Set up the project environment and install dependencies if not already done
+if not exist .venv (
+    poetry install --only main
+)
+
+REM Run the server.
+.venv\Scripts\python.exe measurement.py
